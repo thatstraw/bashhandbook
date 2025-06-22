@@ -1,0 +1,215 @@
+= Bash History
+
+Every time you enter a command in the Bash shell, it gets recorded in a history file. This allows you to recall, repeat, and modify previous commands—saving time and keystrokes.
+
+== Viewing and Managing Command History
+
+The `history` built-in command is your main interface to view and control past commands.
+
+[cols="1,3",options="header"]
+|===
+|Command |Description
+
+| `history`
+| Display the full list of previously executed commands.
+
+| `history n`
+| Show only the last `n` commands from the history list.
+
+| `history -c`
+| Clear your current session history. New commands will still be added afterward.
+
+| `history -d n`
+| Delete the `nth` entry from the history list.
+
+| `sudo !!`
+| Re-run the last command with `sudo`. Extremely handy when you forget privileges.
+
+| `<space> command`
+| Avoid saving a command to history by prefixing it with a space (if `HISTCONTROL=ignorespace` is set).
+
+| `shopt -s histverify`
+| Prevent immediately running a command after history expansion; allows review before execution.
+
+| `echo $HISTSIZE`
+| Print the number of commands Bash stores in memory for the current session.
+|===
+
+[TIP]
+====
+The default history size is typically 500 or 1000 commands, but you can change this by modifying `HISTSIZE` in your shell configuration file.
+====
+
+=== History Event Designators
+
+Event designators let you refer to past commands using `!` shortcuts.
+
+[cols="1,3",options="header"]
+|===
+|Event |Description
+
+| `!!`
+| Expand to the previous command.
+
+| `!-n`
+| Expand to the `n`th most recent command (counting backwards).
+
+| `!n`
+| Expand to the command with index `n` in the history list.
+
+| `!<command>`
+| Expand to the most recent use of `<command>`.
+
+| `!<text>`
+| Expand to the last command that begins with `<text>`.
+
+| `!n:p` or `!<text>:p`
+| Print the expanded command, but don’t execute it.
+
+| `^old^new`
+| Re-run the last command, replacing `old` with `new`.
+
+| `!#`
+| Expand to the entire command line typed so far.
+|===
+
+[TIP]
+====
+History expansion is powerful but can be dangerous. Use `:p` to preview before running if unsure.
+====
+
+== Word Designators
+
+Word designators let you target parts of a previous command (its arguments or parameters).
+
+[NOTE]
+====
+You append a word designator after the event using a colon (`:`). For example: `!!:$` expands to the **last** argument of the previous command.
+====
+
+[cols="1,3",options="header"]
+|===
+|Word |Description
+
+| `!$`
+| Expand the **last** argument of the previous command.
+
+| `!*`
+| Expand **all** arguments of the previous command.
+
+| `!^`
+| Expand the **first** argument of the previous command.
+
+| `!%`
+| Expand the word matched in the most recent `?string?` search.
+
+| `!x-y`
+| Expand a **range** of arguments from position `x` to `y`.
+|===
+
+== Modifiers for Word Designators
+
+After selecting a word or range, you can apply **modifiers** to manipulate it:
+
+- `:h` → Remove trailing filename, leaving directory
+- `:t` → Remove leading path, leaving filename
+- `:r` → Remove file extension
+- `:e` → Extract file extension
+- `:p` → Print the command after expansion, don’t execute
+
+.Example: Strip filename and print
+[source,bash]
+----
+$ cat demo.sh
+$ !$:h:p
+----
+
+.Output
+[source,console]
+----
+demo
+----
+
+[IMPORTANT]
+====
+Modifiers can be chained and are useful for quick one-liners when manipulating file paths from history.
+====
+
+=== History Modifiers
+
+Once you've referenced a previous command using an event designator like `!!` or `!$`, you can apply **modifiers** to tweak parts of it before execution. These modifiers help transform file paths, substitute text, and control execution.
+
+[cols="1,3",options="header"]
+|===
+|Modifier |Description
+
+| `:h`
+| Strip the **file name**, leaving the **directory path** (head). Think of it as trimming everything after the last `/`.
+
+| `:t`
+| Strip the **directory path**, leaving only the **file name** (tail).
+
+| `:r`
+| Remove the file extension (trailing `.ext`) from a filename, keeping the root name.
+
+| `:e`
+| Keep only the file extension (trailing `.ext`), stripping everything else.
+
+| `:p`
+| Print the final command **after** substitution, but **don’t run** it. Great for previewing before execution.
+
+| `:q`
+| Quote the substituted words to prevent further expansion or splitting.
+
+| `:x`
+| Like `:q`, but also breaks the string into words at spaces and newlines, quoting each part individually.
+
+| `:s/old/new/`
+| Replace the first occurrence of `old` with `new`.
+
+| `:gs/old/new/`
+| Replace **all** occurrences of `old` with `new`. The `g` means global.
+
+| `:&`
+| Repeat the **last substitution** done with `:s`.
+
+| `:G`
+| Apply the `:s` or `:&` modifier **once per word** in the event, rather than to the full line.
+|===
+
+[TIP]
+====
+You can chain modifiers together, like `!!:h:p` to strip the filename and preview the command.
+====
+
+=== History Slices
+
+You can extract **specific arguments** (called tokens) from a previous command using slices. This is helpful when you only want part of the last command.
+
+Each word (or token) in a command is numbered, starting at zero for the command itself.
+
+[cols="1,3",options="header"]
+|===
+|Slice |Description
+
+| `!!:n`
+| Expand only the **n**th word (0 is the command, 1 is the first argument, and so on).
+
+| `!^`
+| Expand the **first argument** from the most recent command. Equivalent to `!!:1`.
+
+| `!$`
+| Expand the **last argument** from the most recent command.
+
+| `!!:n-m`
+| Expand a **range** of words from position `n` to `m`.
+
+| `!!:n-$`
+| Expand from word `n` to the **last word**.
+|===
+
+[NOTE]
+====
+Slices and modifiers work together. For example, `!!:1:r` expands the first argument of the previous command and removes its file extension.
+====
+

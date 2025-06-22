@@ -1,0 +1,595 @@
+[appendix]
+= Terminal Shortcuts Reference
+
+== Bash Navigation
+
+[cols="1,3", options="header"]
+|===
+| Shortcut | Action
+
+| Ctrl + A | Move to the start of the command line
+| Ctrl + E | Move to the end of the command line
+| Ctrl + F | Move one character forward
+| Ctrl + B | Move one character backward
+| Ctrl + XX | Switch cursor between start of line and current position
+| Ctrl + ] + x | Move forward to next occurrence of `x`
+| Alt + F / Esc + F | Move one word forward
+| Alt + B / Esc + B | Move one word backward
+| Alt + Ctrl + ] + x | Move to previous occurrence of `x`
+|===
+
+== Bash Control and Process Handling
+
+[cols="1,3", options="header"]
+|===
+| Shortcut | Action
+
+| Ctrl + L | Clear the terminal screen
+| Ctrl + S | Pause command output to the screen
+| Ctrl + Q | Resume paused output
+| Ctrl + Z | Suspend current command and move to background
+| Ctrl + C | Send SIGINT to terminate current command
+| Ctrl + D | Close the current terminal or send EOF
+|===
+
+== Bash History Shortcuts
+
+[cols="1,3", options="header"]
+|===
+| Shortcut | Action
+
+| Ctrl + R | Incremental reverse search through history
+| Alt + P | Non-incremental reverse search
+| Ctrl + J | End history search at current result
+| Ctrl + _ | Undo last command change
+| Ctrl + P / Up | Previous command
+| Ctrl + N / Down | Next command
+| Ctrl + S | Forward search in history (may need to disable terminal flow control)
+| Ctrl + O | Execute and recall command from search
+| Ctrl + G | Exit history search
+|===
+
+== Bash History Expansions
+
+[cols="1,3", options="header"]
+|===
+| Shortcut | Action
+
+| `!!` | Repeat the last command
+| `!*` | Repeat all arguments from last command
+| `!*:p` | Print expanded arguments
+| `!x` | Run last command starting with `x`
+| `!x:p` | Print last command starting with `x`
+| `!$` | Use last argument from previous command
+| `!^` | Use first argument from previous command
+| `!$:p` | Print last argument
+| `^old^new` | Replace `old` with `new` in last command
+| `!n:m` | Use arguments n to m from command `!n`
+| `!n` | Run command number `n`
+| `!n:p` | Print command number `n`
+| `!n:$` | Use arguments n to last from command `n`
+| `!fi` | Run last command starting with `fi`
+|===
+
+== Bash Line Editing
+
+[cols="1,3", options="header"]
+|===
+| Shortcut | Action
+
+| Ctrl + U | Delete from cursor to beginning of line
+| Ctrl + K | Delete from cursor to end of line
+| Ctrl + W | Delete word before cursor
+| Ctrl + D | Delete character under cursor
+| Ctrl + H | Delete character before cursor
+| Alt + D | Delete from cursor to end of word
+| Alt + Backspace | Delete from cursor to start of word
+| Alt + . / Esc + . | Insert last argument from previous command
+| Alt + < | Move to beginning of history
+| Alt + > | Move to end of history
+| Esc + T | Swap last two words before cursor
+| Alt + T | Swap current and previous words
+|===
+
+== Bash Autocomplete and Information
+
+[cols="1,3", options="header"]
+|===
+| Shortcut | Action
+
+| TAB | Autocomplete command or file
+| ~TAB TAB | List all system users
+| Ctrl + I | Same as TAB (autocomplete)
+| Alt + ? | List files/folders in path for help
+| Alt + * | Insert all files/folders in path as argument
+|===
+
+[[bash-special-parameters]]
+== Bash Special Parameters
+
+Special parameters are predefined variables set and used by the shell. Unlike regular variables, their names are usually a single symbol or a digit, and they serve specific purposes during script execution.
+
+=== Positional Parameters
+
+[cols="1,2", options="header"]
+|===
+| Parameter | Description
+| `$0`      | The name of the script or shell
+| `$1` to `$9` | The first to ninth arguments passed to the script or function
+| `${10}` and beyond | Access to arguments beyond the ninth; requires braces
+| `$#`      | The number of positional parameters
+| `$*`      | All positional parameters as a single word
+| `$@`      | All positional parameters as separate words
+|===
+
+[IMPORTANT]
+====
+The difference between `$*` and `$@` is only visible when quoted:
+
+* `"$*"` expands to one string: `"arg1 arg2 arg3"`
+* `"$@"` expands to multiple strings: `"arg1"` `"arg2"` `"arg3"`
+====
+
+=== Other Special Parameters
+
+[cols="1,2", options="header"]
+|===
+| Parameter | Description
+| `$?`      | Exit status of the last command
+| `$$`      | PID of the current shell
+| `$!`      | PID of the last background command
+| `$-`      | Current option flags set by `set`
+| `$_`      | The last argument to the previous command
+|===
+
+[NOTE]
+====
+Special parameters are readonly and managed by the shell itself—you don’t assign to them; you use them to access internal shell state.
+====
+
+[[appendix-special-parameters]]
+== Bash Special Parameters
+
+Bash provides a set of special parameters that behave differently from normal variables. They are typically a single symbol and are used to retrieve metadata about the current shell state, scripts, and arguments.
+
+Here's a breakdown of the most common ones:
+
+=== `$?` — Exit Status of Last Command
+
+This parameter returns the exit status of the last executed command.
+
+[source,bash]
+----
+ls /not-a-real-dir
+echo $?
+----
+
+If the command fails, `$?` returns a non-zero value. If it succeeds, it returns `0`.
+
+[IMPORTANT]
+====
+Always check `$?` immediately after a command. Running another command will overwrite its value.
+====
+
+=== `$0` — Name of the Script
+
+When running a script, `$0` contains the name (or path) used to invoke the script.
+
+[source,bash]
+----
+echo "Script name is $0"
+----
+
+Useful for printing usage messages.
+
+=== `$#` — Number of Positional Parameters
+
+Returns the number of arguments passed to the script.
+
+[source,bash]
+----
+./myscript.sh arg1 arg2
+# Inside the script
+echo "You passed $# arguments"
+----
+
+=== `$@` and `$*` — All Positional Parameters
+
+Both expand to all positional parameters, but behave differently when quoted.
+
+- `$@` treats each argument as a separate word.
+- `$*` treats the entire list as a single word.
+
+[source,bash]
+----
+for arg in "$@"; do
+  echo "$arg"
+done
+----
+
+[NOTE]
+====
+Prefer `"$@"` in scripts to preserve the integrity of each argument.
+====
+
+=== `$!` — PID of Last Background Process
+
+Returns the process ID of the most recently executed background command.
+
+[source,bash]
+----
+sleep 30 &
+echo "PID: $!"
+----
+
+=== `$$` — PID of Current Shell
+
+This parameter expands to the process ID of the current shell.
+
+[source,bash]
+----
+echo "Current shell PID: $$"
+----
+
+=== `$-` — Current Shell Options
+
+Shows the current shell options (like `interactive`, `xtrace`, etc.).
+
+[source,bash]
+----
+echo $-
+----
+
+=== `$?`, `$#`, `$@`, and more…
+
+These are the core special parameters you’ll frequently encounter. We'll cover more as we go deeper into scripting scenarios.
+
+[[bash-signals]]
+== Bash Signals
+
+Signals are a way for processes to receive notifications from the operating system or other processes. Each signal has a number and a name, and some signals can be handled or trapped by a script using the `trap` command.
+
+=== Common Signals
+
+[cols="1,1,2", options="header"]
+|===
+| Name   | Number | Description
+| `SIGHUP`   | `1`   | Hangup detected on controlling terminal or death of controlling process
+| `SIGINT`   | `2`   | Interrupt from keyboard (Ctrl+C)
+| `SIGQUIT`  | `3`   | Quit from keyboard (Ctrl+\)
+| `SIGILL`   | `4`   | Illegal instruction
+| `SIGABRT`  | `6`   | Abort signal
+| `SIGFPE`   | `8`   | Floating point exception
+| `SIGKILL`  | `9`   | Kill signal (cannot be caught or ignored)
+| `SIGSEGV`  | `11`  | Invalid memory reference (segmentation fault)
+| `SIGPIPE`  | `13`  | Broken pipe
+| `SIGALRM`  | `14`  | Timer signal
+| `SIGTERM`  | `15`  | Termination signal
+| `SIGUSR1`  | `10`  | User-defined signal 1
+| `SIGUSR2`  | `12`  | User-defined signal 2
+| `SIGCHLD`  | `17`  | Child process terminated or stopped
+| `SIGCONT`  | `18`  | Continue if stopped
+| `SIGSTOP`  | `19`  | Stop process (cannot be caught or ignored)
+| `SIGTSTP`  | `20`  | Stop typed at terminal (Ctrl+Z)
+| `SIGTTIN`  | `21`  | Background process attempting read
+| `SIGTTOU`  | `22`  | Background process attempting write
+|===
+
+=== Viewing Available Signals
+
+You can list all signal names and their numbers with the `kill` command:
+
+[source,bash]
+----
+kill -l
+----
+
+=== Sending Signals
+
+To send a signal to a process, use:
+
+[source,bash]
+----
+kill -SIGTERM <PID>
+kill -9 <PID>    # SIGKILL, force terminate
+----
+
+=== Handling Signals in Scripts
+
+Use the `trap` command to catch and handle signals in your scripts:
+
+[source,bash]
+----
+trap 'echo "Interrupted! Cleaning up..."; exit 1' SIGINT
+----
+
+[WARNING]
+====
+`SIGKILL` and `SIGSTOP` cannot be trapped or ignored.
+====
+
+[[bash-prompt-customization]]
+== Prompt Customization Examples
+
+The appearance of your Bash prompt is controlled by special environment variables:
+
+- `PS1`: The primary prompt string.
+- `PS2`: The secondary prompt (used for multiline commands).
+- `PS3`: The prompt used for `select` in scripts.
+- `PS4`: The prompt used when executing with `set -x` (useful for debugging).
+
+=== Basic PS1 Example
+
+[source,bash]
+----
+PS1="\u@\h:\w\$ "
+----
+
+This produces a prompt like:
+
+----
+user@host:/current/dir$
+----
+
+Legend:
+
+- `\u`: Username
+- `\h`: Hostname (short)
+- `\w`: Current working directory
+- `\$`: Shows `$` (user) or `#` (root)
+
+=== Add Color to the Prompt
+
+You can add colors using ANSI escape codes. Here's an example with color:
+
+[source,bash]
+----
+PS1="\[\e[0;32m\]\u@\h\[\e[0m\]:\[\e[0;34m\]\w\[\e[0m\]\$ "
+----
+
+This makes the username and hostname green, and the directory blue.
+
+[NOTE]
+====
+The `\[` and `\]` are necessary to properly calculate prompt length when using color escape sequences.
+====
+
+=== Customize PS2
+
+The default value of `PS2` is `> `. It appears when Bash expects continuation of a multiline command.
+
+You can change it like this:
+
+[source,bash]
+----
+PS2="...> "
+----
+
+=== Customize PS4
+
+Useful when debugging scripts with `set -x`. Example:
+
+[source,bash]
+----
+export PS4='+ ${BASH_SOURCE}:${LINENO}:${FUNCNAME[0]}: '
+set -x
+----
+
+This will prefix trace output with the script name, line number, and function name.
+
+=== Prompt with Git Branch
+
+You can add Git branch info to your prompt like this:
+
+[source,bash]
+----
+PS1='\u@\h:\w$(git branch 2>/dev/null | grep "^*" | sed "s/*/ (/;s/$/)/")\$ '
+----
+
+This shows the current Git branch in parentheses when inside a Git repository.
+
+[INFO]
+====
+For more advanced prompts, consider using frameworks like `starship`, or tools like `bash-git-prompt`.
+====
+
+[[reserved-bash-keywords]]
+== Reserved Bash Keywords
+
+Bash has a set of reserved words that cannot be used as variable names or function names. These keywords have special meaning in the shell syntax and are used for control flow, functions, and other structural elements.
+
+Here’s a reference of the most common Bash reserved words:
+
+[cols="1,3"]
+|===
+| Keyword | Description
+
+| `if`      | Begins a conditional block.
+| `then`    | Marks the start of commands to execute if the condition is true.
+| `else`    | Specifies commands to execute if the condition is false.
+| `elif`    | Else-if: checks another condition if the first `if` fails.
+| `fi`      | Ends the `if` block.
+| `case`    | Begins a case statement for pattern matching.
+| `esac`    | Ends a `case` block (reverse of case).
+| `for`     | Begins a loop over a list.
+| `in`      | Used with `for` to list items to iterate over.
+| `while`   | Starts a loop that runs while a condition is true.
+| `until`   | Starts a loop that runs until a condition becomes true.
+| `do`      | Marks the start of the loop body.
+| `done`    | Ends a `for`, `while`, or `until` loop.
+| `function`| Declares a function (alternative to `name() { ... }` syntax).
+| `select`  | Begins a menu-based loop (useful for building simple menus).
+| `time`    | Measures execution time of a command or block.
+| `then`    | Used after `if` and `elif` conditions.
+| `break`   | Exits from a loop prematurely.
+| `continue`| Skips the rest of the loop body and begins the next iteration.
+| `return`  | Returns from a function with an optional status code.
+| `exit`    | Exits the script with an optional status code.
+| `declare` | Declares variables and gives them attributes.
+| `local`   | Declares variables local to a function.
+| `readonly`| Declares variables that cannot be modified.
+| `export`  | Makes a variable available to child processes.
+| `let`     | Performs arithmetic evaluation.
+| `[[` and `]]` | Used for advanced conditional expressions.
+| `!`       | Logical NOT operator used in conditions.
+| `:`       | No-op (does nothing; returns success).
+| `.`       | Sources another script in the current shell.
+| `source`  | Same as `.` — runs a script in the current shell.
+| `trap`    | Defines actions to take when receiving signals.
+| `eval`    | Evaluates and executes arguments as a Bash command.
+| `test`    | Evaluates conditional expressions (alias of `[ ... ]`).
+| `true`    | Always returns success (0).
+| `false`   | Always returns failure (1).
+|===
+
+[NOTE]
+====
+Some keywords like `[[`, `]]`, `!`, `:`, and `.` are not strictly "reserved words" in POSIX, but behave as such in Bash syntax.
+====
+
+[[debugging-bash-scripts]]
+== Debugging Bash Scripts
+
+Even the best-written Bash scripts can go wrong. When things don’t behave as expected, debugging becomes essential. Bash provides several built-in tools and options to help you understand and fix issues in your scripts.
+
+=== Enabling Debug Mode with `-x`
+
+One of the most useful ways to debug a script is to enable **execution tracing**, which prints each command before it’s executed.
+
+You can do this in two ways:
+
+.Enable debugging for the entire script
+[source,bash]
+----
+#!/bin/bash
+set -x  # Turns on debug mode
+
+echo "Start"
+ls /tmp
+set +x  # Turns it off
+echo "End"
+----
+
+.Run the script with `-x`
+[source,bash]
+----
+bash -x myscript.sh
+----
+
+Each line and its arguments will be echoed to the terminal before being executed.
+
+[TIP]
+====
+Use `set +x` to turn off debug mode selectively if you only want to trace part of the script.
+====
+
+=== Syntax Checking with `-n`
+
+To check for syntax errors without executing the script:
+
+[source,bash]
+----
+bash -n myscript.sh
+----
+
+This is helpful for catching common mistakes like unmatched quotes or missing `fi`.
+
+=== Verbose Mode with `-v`
+
+Verbose mode prints each line of the script as it is **read**, not executed:
+
+[source,bash]
+----
+bash -v myscript.sh
+----
+
+This is useful to understand how Bash is parsing the script, especially when using dynamic evaluation.
+
+[NOTE]
+====
+You can also combine `-v` and `-x` for even more visibility:
+[source,bash]
+bash -xv myscript.sh
+====
+
+=== Use `trap` to Catch Errors
+
+You can catch errors and perform cleanup or log messages using the `trap` command:
+
+[source,bash]
+----
+#!/bin/bash
+trap 'echo "Something went wrong at line $LINENO"; exit 1' ERR
+
+echo "Doing something..."
+cp source.txt destination/
+----
+
+This will print an error message with the line number if any command fails.
+
+=== Print Debug Messages Manually
+
+Sometimes, adding your own log messages is the easiest way to debug:
+
+[source,bash]
+----
+#!/bin/bash
+debug() {
+    echo "[DEBUG] $1"
+}
+
+debug "Starting script..."
+myvar="hello"
+debug "myvar is $myvar"
+----
+
+[IMPORTANT]
+====
+Avoid leaving debug print statements in production scripts unless they are guarded by a verbose/debug flag.
+====
+
+=== Use `return` and `exit` Codes
+
+Always check and use proper exit statuses in your functions or scripts:
+
+[source,bash]
+----
+myfunc() {
+    cp file1 file2 || return 1
+}
+
+myfunc || echo "Copy failed"
+----
+
+You can inspect the exit status of the last command using `$?`.
+
+=== Debugging Loops and Conditionals
+
+You can echo values inside loops and conditionals to see what’s happening:
+
+[source,bash]
+----
+for file in *.txt; do
+    echo "Checking $file"
+    [[ -s "$file" ]] && echo "$file is not empty"
+done
+----
+
+This technique is especially helpful when dealing with logic bugs.
+
+=== Summary
+
+Here’s a quick overview of tools available for debugging Bash scripts:
+
+- `set -x` / `bash -x` → Trace execution
+- `set -v` / `bash -v` → Trace input
+- `bash -n` → Syntax check
+- `trap` → Error handling
+- `echo` / custom debug functions → Manual inspection
+- `$LINENO` → Shows the current line number
+- `$?` → Shows last command exit code
+
+[NOTE]
+====
+When debugging complex scripts, isolate the problem by commenting out large sections and reintroducing them bit by bit.
+====

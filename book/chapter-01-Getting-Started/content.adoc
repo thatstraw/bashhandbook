@@ -1,8 +1,8 @@
 = Getting started
 
-In this section, you’ll learn the foundational elements of Bash scripting, including how to define and use variables, write comments, and create simple scripts. Each concept builds on the last, helping you get comfortable writing your own Bash scripts from scratch.
+In this section, you'll learn the foundational elements of Bash scripting, including how to define and use variables, write comments, and create simple scripts. Each concept builds on the last, helping you get comfortable writing your own Bash scripts from scratch.
 
-=== Variables
+== Variables
 
 Variables in Bash are used to store and reference data. You assign a value using the `=` operator, and retrieve the value using the `$` symbol.
 
@@ -29,13 +29,13 @@ NAME = "TRAW"   # => Error (due to spaces)
 
 [IMPORTANT]
 ====
-To **assign** a value, you don’t use the dollar sign (`$`). But when you **reference** a variable’s value, you do:
+To **assign** a value, you don't use the dollar sign (`$`). But when you **reference** a variable's value, you do:
 
 - Assignment: `NAME="TRAW"`
 - Reference: `echo $NAME`
 ====
 
-=== Comments
+== Comments
 
 Comments help explain your code and are ignored during execution. Use the `#` symbol for single-line comments.
 
@@ -44,7 +44,7 @@ Comments help explain your code and are ignored during execution. Use the `#` sy
 # This is an inline Bash comment.
 ----
 
-For multi-line comments, Bash doesn’t have a dedicated syntax like other languages, but you can use a `: '` block trick.
+For multi-line comments, Bash doesn't have a dedicated syntax like other languages, but you can use a `: '` block trick.
 
 [source,bash]
 ----
@@ -62,9 +62,8 @@ If it looks very neat
 For multi-line comments, use `: '` to open and `'` to close the block.
 ====
 
-=== Example Script
 
-Here’s a simple Bash script that stores a greeting and prints it to the terminal.
+Here's a simple Bash script that stores a greeting and prints it to the terminal.
 
 [source,bash]
 ----
@@ -86,7 +85,7 @@ $ ./helloworld.sh
 $ bash helloworld.sh
 ----
 
-=== Special Parameters
+== Special Parameters
 
 Special parameters in Bash are predefined variables that give you information about arguments, the shell environment, and the script's execution state.
 
@@ -117,7 +116,7 @@ Special parameters in Bash are predefined variables that give you information ab
 For deeper reference, see: https://wiki.bash-hackers.org/syntax/shellvars#special_parameters_and_shell_variables
 ====
 
-=== Functions
+== Functions
 
 Functions in Bash allow you to group reusable code into named blocks. You can define them with or without the `function` keyword.
 
@@ -142,7 +141,7 @@ echo "You are $(get_username)"
 Functions can return values using `echo`, and the result can be captured via command substitution like `$(...)`.
 ====
 
-=== Conditions
+== Conditions
 
 Conditional statements in Bash allow you to make decisions in your scripts. The `if` statement evaluates whether a condition is true, and executes the appropriate block of code.
 
@@ -166,7 +165,7 @@ fi
 - Use `[[ ... ]]` for more robust conditional expressions.
 ====
 
-=== Command Substitution
+== Command Substitution
 
 Command substitution lets you capture the output of a command and use it as part of another command or assignment.
 
@@ -181,10 +180,10 @@ echo "I'm `whoami`"
 
 [IMPORTANT]
 ====
-The modern syntax `$(command)` is preferred over backticks `` `command` `` because it’s easier to read and allows nesting.
+The modern syntax `$(command)` is preferred over backticks `` `command` `` because it's easier to read and allows nesting.
 ====
 
-=== Brace Expansion
+== Brace Expansion
 
 Brace expansion is a convenient way to generate strings or sequences in Bash.
 
@@ -206,3 +205,119 @@ Brace expansion is useful for generating multiple similar strings without writin
 For more examples, see: https://wiki.bash-hackers.org/syntax/expansion/brace
 ====
 
+== Operators in Bash
+
+Operators allow you to perform operations on values and variables in Bash. Bash provides various types of operators for different purposes:
+
+- Arithmetic Operators
+- Assignment Operators
+- Relational Operators
+- Logical Operators
+- Bitwise Operators
+- Ternary Operator
+
+This article will provide a detailed explanation of each type of operator in Bash scripting.
+
+=== Arithmetic Operators
+
+Arithmetic operators allow you to perform mathematical operations on integers. They combine integer variables and values to produce a new integer result.
+
+Below is a list of all the arithmetic operators available in Bash:
+
+[cols="1,2,2", options="header"]
+|===
+| Operator | Description | Example
+| +        | Addition     | `$a + $b`
+| -        | Subtraction  | `$a - $b`
+| *        | Multiplication | `$a * $b`
+| /        | Division     | `$a / $b`
+| %        | Modulus (remainder) | `$a % $b`
+| **       | Exponentiation (a to the power b) | `$a ** $b`
+|===
+
+The addition, subtraction, multiplication, and division operators work as expected for mathematical operations.
+
+The modulus (`%`) operator returns the remainder of the division between two integers. This is useful for checking if a number is even or odd, among other uses.
+
+=== Assignment Operators
+
+Assignment operators store values or the result of an expression into a variable.
+
+[cols="1,2,2", options="header"]
+|===
+| Operator | Description | Example
+| =        | Simple assignment | `a=5`
+| +=       | Add and assign | `a+=2`
+| -=       | Subtract and assign | `a-=3`
+| *=       | Multiply and assign | `a*=4`
+| /=       | Divide and assign | `a/=5`
+| %=       | Modulus and assign | `a%=6`
+|===
+
+Simple assignment allows storing values in a variable. The combined assignment operators like `+=` and `-=` allow modifying variables more concisely. For instance, `a+=b` is the same as `a = a + b`.
+
+=== Relational Operators
+
+Relational operators are used for comparing integers and strings to evaluate conditions.
+
+[cols="1,2,2", options="header"]
+|===
+| Operator | Description | Example
+| -eq      | Equal to | `[ $a -eq $b ]`
+| -ne      | Not equal to | `[ $a -ne $b ]`
+| -gt      | Greater than | `[ $a -gt $b ]`
+| -ge      | Greater than or equal to | `[ $a -ge $b ]`
+| -lt      | Less than | `[ $a -lt $b ]`
+| -le      | Less than or equal to | `[ $a -le $b ]`
+| <        | Less than (strings) | `[ "$a" < "$b" ]`
+| <=       | Less than or equal (strings) | `[ "$a" <= "$b" ]`
+| >        | Greater than (strings) | `[ "$a" > "$b" ]`
+| >=       | Greater than or equal (strings) | `[ "$a" >= "$b" ]`
+| ==       | Equal to | `[ $a == $b ]`
+| !=       | Not equal to | `[ $a != $b ]`
+|===
+
+`-eq`, `-ne`, `-gt`, `-ge`, `-lt`, and `-le` work on integers, while `<`, `<=`, `>`, and `>=` work on string sorting order. These are commonly used in `if` statements and loops to control program flow. The equal (`==`) and not equal (`!=`) operators are useful for comparing integers.
+
+=== Logical Operators
+
+Logical operators are used for combining and negating conditional expressions.
+
+[cols="1,2,2", options="header"]
+|===
+| Operator | Description | Example
+| !        | Negation | `! [ $a -eq $b ]`
+| &&       | AND | `[ $a -eq 5 ] && [ $b -eq 10 ]`
+| \|\|     | OR | `[ $a -eq 5 ] \|\| [ $b -eq 10 ]`
+|===
+
+The NOT operator (`!`) inverts a true condition to false or a false condition to true. The AND operator (`&&`) evaluates to true if both operands are true, while the OR operator (`||`) evaluates to true if either operand is true. These allow creating complex conditional logic in scripts.
+
+=== Bitwise Operators
+
+Bitwise operators manipulate integers at the bit level.
+
+[cols="1,2,2", options="header"]
+|===
+| Operator | Description | Example
+| &        | Bitwise AND | `$a & $b`
+| \|       | Bitwise OR | `$a | $b`
+| ~        | Bitwise NOT | `~$a`
+| ^        | Bitwise XOR | `$a ^ $b`
+| <<       | Left shift | `$a << 2`
+| >>       | Right shift | `$a >> 2`
+|===
+
+Bitwise operators treat integers as binary strings and set, unset, or toggle bits at specific positions. This allows bitmasking, toggling, and shifting values for flags and low-level binary operations.
+
+=== Ternary Operator
+
+The ternary operator allows simple conditional expressions.
+
+[cols="2,4", options="header"]
+|===
+| Syntax | Description
+| `<condition> ? <if true> : <if false>` | Evaluates test condition and returns the "if true" or "if false" result
+|===
+
+The ternary operator is structured as `condition ? resultIfTrue : resultIfFalse`. It tests the given condition and returns the specified result depending on whether the condition evaluated to true or false. This provides a concise way to assign values based on conditions.

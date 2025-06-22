@@ -2,7 +2,7 @@
 
 Bash provides conditional expressions and control structures that allow your scripts to make decisions, evaluate input, and execute logic based on comparisons or patterns.
 
-=== Numeric Conditions
+== Numeric Conditions
 
 Use these expressions to compare integer values. Bash supports both traditional `[[ ... ]]` comparisons and arithmetic-style `\(( ... ))` expressions.
 
@@ -28,7 +28,7 @@ Use these expressions to compare integer values. Bash supports both traditional 
 Use `\(( ... ))` for cleaner syntax when comparing numbers — it's often more readable and doesn't require quoting variables.
 ====
 
-=== String Conditions
+== String Conditions
 
 Use these expressions when comparing strings or checking for patterns.
 
@@ -50,7 +50,7 @@ Use these expressions when comparing strings or checking for patterns.
 Always use `[[ ... ]]` instead of `[ ... ]` when working with strings — it provides more robust syntax and supports pattern matching like `=~`.
 ====
 
-=== File Conditions
+== File Conditions
 
 Use these expressions to test properties of files, symbolic links, pipes, sockets, and devices.
 
@@ -82,7 +82,7 @@ Use these expressions to test properties of files, symbolic links, pipes, socket
 | `[[ FILE1 -ef FILE2 ]]` | FILE1 and FILE2 refer to the same file (same inode/device)
 |===
 
-=== Compound Conditions
+== Compound Conditions
 
 Use logical operators to combine multiple conditions.
 
@@ -102,7 +102,7 @@ You can use either `[[ ... ]]` or `[ ... ]` for most tests. However, compound ex
 Prefer using `[[ ... ]] && [[ ... ]]` and `[[ ... ]] || [[ ... ]]` for clarity and correctness.
 ====
 
-=== More Conditions
+== More Conditions
 
 These are additional conditional expressions you may encounter or use in more advanced scripting scenarios.
 
@@ -119,11 +119,11 @@ These are additional conditional expressions you may encounter or use in more ad
 The `[[ -o OPTION ]]` form is useful for checking shell behaviors, like whether overwriting files is disabled (`noclobber`), whether `allexport` is set, and so on.
 ====
 
-=== if Statements
+== if Statements
 
 The `if` statement is one of the most important control structures in Bash. It allows you to execute commands conditionally — based on the success or failure (exit status) of a command or expression.
 
-==== Basic Syntax
+=== Basic Syntax
 
 [source,bash]
 ----
@@ -134,7 +134,7 @@ fi
 
 If the condition is true (i.e., the command returns an exit status of 0), the code inside the `then` block is executed.
 
-==== if...else
+=== if...else
 
 [source,bash]
 ----
@@ -147,7 +147,7 @@ fi
 
 Use `else` to define an alternate path when the condition is false.
 
-==== if...elif...else
+=== if...elif...else
 
 You can chain multiple conditions using `elif`.
 
@@ -162,7 +162,7 @@ else
 fi
 ----
 
-==== Using `[[ ... ]]` vs `[ ... ]` vs `(( ... ))`
+=== Using `[[ ... ]]` vs `[ ... ]` vs `(( ... ))`
 
 - Use `[[ ... ]]` for string tests, pattern matching, and complex conditions.
 - Use `\(( ... ))` for arithmetic comparisons.
@@ -184,7 +184,7 @@ fi
 Every `if` must be closed with `fi`. Also, remember that Bash uses exit status (0 = success, non-zero = failure) to evaluate truth.
 ====
 
-==== if with Command Execution
+=== if with Command Execution
 
 You can use `if` to check the result of any command — not just expressions.
 
@@ -202,7 +202,7 @@ fi
 Redirecting output (e.g., `> /dev/null`) is often used to silence command output in conditions.
 ====
 
-==== Nested if Statements
+=== Nested if Statements
 
 You can place an `if` block inside another `if` block to evaluate multiple conditions in sequence.
 
@@ -224,7 +224,7 @@ fi
 Nested `if` statements can make your script harder to read — use them carefully. Consider using `elif` or logical operators when possible.
 ====
 
-==== Compound Conditions with && and ||
+=== Compound Conditions with && and ||
 
 Instead of nesting multiple `if` statements, you can use logical operators to combine them in a single line.
 
@@ -245,7 +245,7 @@ if [[ "$user" == "admin" || "$user" == "support" ]]; then
 fi
 ----
 
-==== Grouping with Double Brackets
+=== Grouping with Double Brackets
 
 When combining multiple conditions, always use `[[ ... ]]` to take advantage of grouping and short-circuit logic.
 
@@ -261,11 +261,11 @@ fi
 Grouping with parentheses requires a space between `(` and the condition inside, and the whole condition must be within `[[ ... ]]`.
 ====
 
-=== The `test` Command
+== The `test` Command
 
 The `test` command is used to evaluate expressions such as comparisons and file checks. It's often written using square brackets (`[ ... ]`), which is just a shorthand for `test`.
 
-==== Basic Syntax
+=== Basic Syntax
 
 [source,bash]
 ----
@@ -276,7 +276,7 @@ test EXPRESSION
 
 If the expression is true, `test` returns exit status `0`; otherwise, it returns a non-zero exit status.
 
-==== Examples
+=== Examples
 
 [source,bash]
 ----
@@ -301,7 +301,7 @@ There must be **spaces** around the brackets and between arguments. For example:
 ✘ `["$name"="Jay"]` (syntax error)
 ====
 
-==== Why Use `test`?
+=== Why Use `test`?
 
 - POSIX-compliant (portable across different shells)
 - Available even in minimal shell environments
@@ -312,7 +312,7 @@ There must be **spaces** around the brackets and between arguments. For example:
 For more advanced comparisons (like regex matching), prefer `[[ ... ]]` which is a Bash extension with better quoting rules and features.
 ====
 
-=== Advanced if-then Features
+== Advanced if-then Features
 
 Bash gives you several powerful syntaxes to enhance `if` conditions with subshells, arithmetic, and extended test features.
 
@@ -335,7 +335,7 @@ Bash gives you several powerful syntaxes to enhance `if` conditions with subshel
 Prefer using `[[ ... ]]` and `\(( ... ))` over single brackets or external commands like `test` for more consistent and safer condition handling in modern Bash.
 ====
 
-=== case Statement
+== case Statement
 
 The `case` statement lets you compare one value against multiple patterns. It's ideal when you want to handle different inputs or conditions without writing several `if-elif` blocks.
 
@@ -409,11 +409,11 @@ Use the `|` symbol to match multiple patterns in one case. You can also use glob
 Always quote the variable used in `case` (e.g., `"$file"`) to avoid word-splitting or unexpected matches when it contains spaces.
 ====
 
-=== Loops That Use Conditions
+== Loops That Use Conditions
 
 Some Bash loops depend directly on the result of a condition — they keep running while the condition is true, or until it becomes true. 
 
-==== while
+=== while
 
 The `while` loop repeats as long as the condition remains true.
 
@@ -429,7 +429,7 @@ done
 
 The loop stops when the condition fails — in this case, when `$counter` becomes greater than 3.
 
-==== until
+=== until
 
 The `until` loop is the opposite of `while` — it runs until the condition becomes true.
 
@@ -445,29 +445,4 @@ done
 
 This keeps running **while** the condition is false, and stops **once it becomes true**.
 
-
-==== select
-
-The `select` loop is a Bash feature for interactive scripts. It creates a numbered menu automatically and lets the user choose an option.
-
-[source,bash]
-----
-select fruit in apple banana cherry; do
-    echo "You selected $fruit"
-    break
-done
-----
-
-This prints:
-
-1. apple
-2. banana
-3. cherry
-
-#? The user types a number, and Bash assigns the selected value to the variable `fruit`.
-
-[INFO]
-====
-`select` is ideal for simple interactive menus. It saves you from manually writing a prompt and parsing input.
-====
 

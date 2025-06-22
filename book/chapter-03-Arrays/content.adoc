@@ -2,7 +2,7 @@
 
 Arrays let you store multiple values in a single variable. Bash supports both indexed and associative arrays. Here's how to declare them:
 
-=== Array Declaration Syntax
+== Array Declaration Syntax
 
 [cols="1,3", options="header"]
 |===
@@ -13,7 +13,7 @@ Arrays let you store multiple values in a single variable. Bash supports both in
 | `declare -A ARRAY`  | Declares an **associative** array. This is the only way to create associative arrays in Bash.
 |===
 
-=== Storing Values in Arrays
+== Storing Values in Arrays
 
 There are many ways to assign values to arrays in Bash. This includes assigning individual elements, using compound assignment, copying from other arrays, and even reading from files.
 
@@ -45,7 +45,7 @@ Compound assignment is very powerful and can be used to build arrays efficiently
 For clarification: When you use the subscripts `@` or `*` for mass-expanding arrays, their behavior matches that of `$@` and `$*` when [expanding positional parameters](https://wiki.bash-hackers.org/scripting/posparams#mass_usage). It's worth reading that article to fully understand the nuances.
 ====
 
-=== Getting Values from Arrays
+== Getting Values from Arrays
 
 You can access specific elements, the entire array, or a slice of elements using parameter expansion.
 
@@ -75,7 +75,7 @@ For clarification: When using `@` or `*` to expand arrays, their behavior mirror
 When using slicing, the same quoting rules apply. If you're getting unexpected results, check your Bash version and test in your shell.
 ====
 
-=== Indexes and Metadata
+== Indexes and Metadata
 
 You can inspect arrays using special parameter expansion patterns that give you access to their structure and metadata.
 
@@ -97,7 +97,7 @@ You can inspect arrays using special parameter expansion patterns that give you 
 | `${!ARRAY[*]}` | Same as above.
 |===
 
-=== Destroying Arrays
+== Destroying Arrays
 
 You can remove individual elements or entire arrays using the `unset` built-in.
 
@@ -125,12 +125,12 @@ See: https://wiki.bash-hackers.org/commands/builtin/unset#portability_considerat
 💡 Learn more: https://wiki.bash-hackers.org/syntax/arrays
 ====
 
-=== Array Discussion
+== Array Discussion
 
 This section takes a deeper look at how arrays work in Bash. You'll explore different ways to assign values to both indexed and associative arrays, how to append and merge them, and how to loop through elements. We'll also cover how to pass arrays to functions, extract values, and remove elements using built-in tools and expansion syntax.
 
 
-==== Compound Indexed Array Assignment
+=== Compound Indexed Array Assignment
 
 You can assign an entire array at once using parentheses. This sets all elements in one step, starting from index 0.
 
@@ -144,7 +144,7 @@ NAMES=('Creg' 'Jan' 'Anna')
 declare -a Numbers=(1 2 3)
 ----
 
-==== Indexed Array Assignment
+=== Indexed Array Assignment
 
 You can also assign elements one at a time by specifying the index. The index can be any valid arithmetic expression.
 
@@ -156,7 +156,7 @@ NAMES[2]='Anna'
 # NAMES => Creg Jan Anna
 ----
 
-==== Indexed Array Assignment Using Brace Expansion
+=== Indexed Array Assignment Using Brace Expansion
 
 Brace expansion is a quick way to generate predictable patterns for array elements.
 
@@ -168,7 +168,7 @@ ARRAY3=({1..5})           # => 1 2 3 4 5
 ARRAY4=({A..B}{1..2})     # => A1 A2 B1 B2
 ----
 
-==== Key-Based Associative Array Assignment
+=== Key-Based Associative Array Assignment
 
 Associative arrays store values using string keys. You must use `declare -A` to define one.
 
@@ -183,7 +183,7 @@ person[eye_color]="blue"
 # person => Jay 22 blue
 ----
 
-==== Compound Associative Array Assignment
+=== Compound Associative Array Assignment
 
 You can initialize all keys and values at once using a compound assignment.
 
@@ -200,7 +200,7 @@ person=(["name"]="Jay" [age]=22 ["eye_color"]="blue")
 # person => Jay 22 blue
 ----
 
-==== Working with Associative Arrays
+=== Working with Associative Arrays
 
 Once an associative array is created, you can interact with it using standard Bash expansions.
 
@@ -223,7 +223,7 @@ unset -v person[age]    # Delete age entry
 All of these operations work the same way with indexed arrays — just use numeric indexes instead of string keys.
 ====
 
-==== Appending Values to Arrays
+=== Appending Values to Arrays
 
 You can add new elements to an array using the `+=` operator or by expanding the current array into a new list.
 
@@ -239,7 +239,7 @@ NAMES=(${NAMES[@]} 'Jay' 'Jimmy' 'Tom')
 # NAMES => Creg Jan Anna Jay Jimmy Tom
 ----
 
-==== Iterating Over an Indexed Array
+=== Iterating Over an Indexed Array
 
 You can loop through array values directly or use indices to access each element.
 
@@ -258,7 +258,7 @@ for i in "${!names[@]}"; do
 done
 ----
 
-==== Iterating Over an Associative Array
+=== Iterating Over an Associative Array
 
 Looping over associative arrays is similar — just replace numeric indexes with string keys.
 
@@ -278,7 +278,7 @@ for key in "${!person[@]}"; do
 done
 ----
 
-==== Merging / Concatenating Arrays
+=== Merging / Concatenating Arrays
 
 You can merge multiple arrays into one using parameter expansion.
 
@@ -296,7 +296,7 @@ ARRAY4=(${ARRAY1[@]} ${ARRAY2[@]} ${ARRAY3[@]})
 # ARRAY4=(${ARRAY1[*]} ${ARRAY2[*]} ${ARRAY3[*]})
 ----
 
-==== Array Arguments to Functions
+=== Array Arguments to Functions
 
 You can pass arrays to functions using **namerefs** (`local -n`) to make them accessible by name.
 
