@@ -1,0 +1,126 @@
+== Bash Built-in Commands
+
+Built-in commands are part of the shell itself and do not require launching a separate executable. Because they're compiled directly into the shell, they are generally faster and more efficient than external commands.
+
+=== Built-ins
+
+[cols="1,3", options="header"]
+|===
+| Command | Description
+| `.` (dot)     | Same as `source`. Executes a script in the current shell environment.
+| `&`           | Runs a job in the background.
+| `((x))`       | Evaluates the arithmetic expression `x`.
+| `:`           | No-op command. Does nothing and always succeeds (similar to `true`).
+| `[ t ]`       | Tests the expression `t` (same as the `test` command).
+| `[[ e ]]`     | Evaluates the conditional expression `e`. Preferred for complex conditions.
+| `alias`       | Creates a shortcut or alias for another command.
+| `bg`          | Resumes a suspended job in the background.
+| `bind`        | Binds keyboard sequences to readline functions or macros.
+| `break`       | Exits a `for`, `while`, `select`, or `until` loop early.
+| `builtin`     | Forces execution of a shell built-in, bypassing any function or alias with the same name.
+|===
+
+=== Built-ins: C–D
+
+[cols="1,3", options="header"]
+|===
+| Command | Description
+| `caller`     | Displays the call stack — useful inside functions and scripts.
+| `case`       | Executes commands based on pattern matching.
+| `cd`         | Changes the current working directory.
+| `command`    | Runs a command while bypassing shell function or alias lookup.
+| `compgen`    | Displays possible autocompletion options for a given word.
+| `complete`   | Specifies how arguments should be completed for a command.
+| `compopt`    | Sets completion behavior for arguments.
+| `continue`   | Skips the rest of a loop and begins the next iteration.
+| `coproc`     | Starts a background process connected to the script via file descriptors.
+| `declare`    | Declares variables and assigns attributes like `-a` for arrays or `-i` for integers.
+| `dirs`       | Shows a list of remembered directories in the directory stack.
+| `disown`     | Removes a job from the shell’s job table (won’t be affected by `HUP` signals).
+|===
+
+=== Built-ins: E–F
+
+[cols="1,3", options="header"]
+|===
+| Command | Description
+| `echo`       | Prints text or variables to standard output.
+| `enable`     | Enables or disables built-in shell commands.
+| `eval`       | Combines arguments into a single string and evaluates them as a command.
+| `exec`       | Replaces the current shell process with a different program.
+| `exit`       | Exits the shell with a status code.
+| `export`     | Makes variables available to child processes.
+| `false`      | Always returns a non-zero exit status (indicating failure).
+| `fc`         | Lists or edits commands from history.
+| `fg`         | Resumes a background job in the foreground.
+| `for`        | Iterates over a list of items, executing commands for each.
+| `function`   | Declares a shell function.
+|===
+
+=== Built-ins: G–P
+
+[cols="1,3", options="header"]
+|===
+| Command | Description
+| `getopts`   | Parses positional parameters for flags (used in argument parsing).
+| `hash`      | Caches the location of commands to speed up lookup.
+| `help`      | Displays help information for Bash built-in commands.
+| `history`   | Shows the command history.
+| `if`        | Runs a block of commands conditionally.
+| `jobs`      | Lists current background and suspended jobs.
+| `kill`      | Sends a signal (e.g., `SIGKILL`, `SIGTERM`) to a process by PID.
+| `let`       | Performs arithmetic evaluation on arguments.
+| `local`     | Declares a variable with local scope inside functions.
+| `logout`    | Exits a login shell session.
+| `mapfile`   | Reads lines from standard input into an array.
+| `popd`      | Removes the top directory from the directory stack.
+| `printf`    | Prints formatted output (more powerful than `echo`).
+| `pushd`     | Adds a directory to the directory stack.
+| `pwd`       | Displays the current working directory.
+|===
+
+=== Built-ins: R–Z and Symbols
+
+[cols="1,3", options="header"]
+|===
+| Command | Description
+| `read`        | Reads one line of input and assigns it to variables.
+| `readarray`   | Reads lines into an array (same as `mapfile`).
+| `readonly`    | Marks a variable as read-only (cannot be modified).
+| `return`      | Exits a function and optionally returns a value.
+| `select`      | Presents a numbered menu to the user for input.
+| `set`         | Sets shell flags or environment variables.
+| `shift`       | Shifts positional parameters left by one.
+| `shopt`       | Toggles optional shell behavior (like `globstar`).
+| `source`      | Executes commands from a file in the current shell.
+| `suspend`     | Suspends the shell until it receives `SIGCONT`.
+| `test`        | Evaluates a condition and returns success or failure.
+| `time`        | Measures the time taken by a command to execute.
+| `times`       | Displays shell CPU time usage.
+| `trap`        | Specifies commands to run on receiving a signal.
+| `true`        | Always returns a successful (0) exit status.
+| `type`        | Tells how a command would be interpreted (alias, function, builtin, etc.).
+| `typeset`     | Declares variables (same as `declare`, legacy use).
+| `ulimit`      | Sets resource usage limits.
+| `umask`       | Sets default permission bits for new files/directories.
+| `unalias`     | Removes one or more aliases.
+| `unset`       | Unsets variables or shell functions.
+| `until`       | Repeats a command block until a condition becomes true.
+| `wait`        | Waits for background jobs to finish.
+| `while`       | Repeats a command block while a condition remains true.
+| `{ c; }`      | Groups commands in the current shell context.
+|===
+
+[INFO]
+====
+Use the `help` command to see built-in command details right from your terminal:
+====
+
+
+Or to get help for a specific built-in:
+
+[source,bash]
+----
+help builtin_name
+----
+
