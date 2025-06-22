@@ -1,0 +1,278 @@
+= Bash Arithmetic Operations
+
+Bash supports a rich set of arithmetic and bitwise operators. You can use them inside arithmetic expansion `$(( ... ))`, or with conditional structures like `if`, `while`, and `let`.
+
+The table below summarizes all the available arithmetic operators in Bash:
+
+[cols="1,3", options="header"]
+|===
+| Arithmetic Operator | Description
+| `+`, `-` | Addition and subtraction
+| `*`, `/`, `%` | Multiplication, division, and remainder (modulo)
+| `**` | Exponentiation
+| `<=`, `>=`, `<`, `>` | Less than or equal, greater than or equal, less than, and greater than
+| `==`, `!=` | Equality and inequality
+| `=`, `*=`, `/=`, `%=`, `+=`, `-=`, `<<=`, `>>=`, `&=`, `^=`, `|=` | Assignment-style operators
+| `id++`, `id--` | Post-increment and post-decrement
+| `++id`, `--id` | Pre-increment and pre-decrement
+| `&&` | Logical AND
+| `||` | Logical OR
+| `-`, `+` | Unary minus, unary plus
+| `!`, `~` | Logical and bitwise negation
+| `<<`, `>>` | Bitwise left and right shifts
+| `&` | Bitwise AND
+| `^` | Bitwise XOR
+| `|` | Bitwise OR
+| `expr ? expr : expr` | Conditional ternary operator
+|===
+
+[NOTE]
+====
+All arithmetic operations in Bash must be performed in a valid arithmetic context — usually inside `(( ... ))` or with the `let` command.
+====
+
+== Bash Arithmetic Operations
+
+=== Using `let` to Perform Arithmetic Operations
+
+The `let` command is a built-in in Bash used to evaluate arithmetic expressions. It allows you to assign the result of a calculation to a variable or perform inline operations.
+
+The basic syntax is:
+
+[source,bash]
+----
+let <arithmetic expression>
+----
+
+If you don't quote the expression, you must **not use spaces** between operators and operands. Quoting allows you to use spaces and makes expressions more readable.
+
+[source,bash]
+----
+# Without quotes, no spaces allowed
+let result=6+4
+echo $result   # => 10
+
+# With quotes, you can add spaces
+let "result = 4 + 4"
+echo $result   # => 8
+----
+
+You can also use shorthand operators like `++` or `+=` to modify values.
+
+[source,bash]
+----
+# Increment result by 1
+let result++
+echo $result   # => 9
+
+# Multiply two numbers
+let "result = 4 * 5"
+echo $result   # => 20
+----
+
+You can pass values using variables, such as command-line arguments:
+
+[source,bash]
+----
+let "result = $1 + 30"
+echo $result   # 30 plus the first argument
+----
+
+[TIP]
+====
+`let` is simple and readable, but it doesn’t support floating-point math. For that, you’ll need external tools like `bc` or `awk`.
+====
+
+=== Using `expr` to Perform Arithmetic Operations
+
+The `expr` command is an external program (not a Bash built-in) that can perform arithmetic operations and string evaluations. Since it spawns a new process, it's generally **slower** than Bash-native methods like `let` or `$((...))`, especially inside loops.
+
+[WARNING]
+====
+Because `expr` is external and may behave differently on different systems, it's not recommended for performance-critical or portable scripts.
+====
+
+==== Basic Syntax
+
+[source,bash]
+----
+expr item1 operator item2
+----
+
+Unlike `let`, you **must use spaces** between the expression items, and **should not use quotes** around the expression.
+
+[source,bash]
+----
+expr 7 + 5      # => 12
+expr 3+2        # => 3+2 (no spaces = not evaluated)
+expr "6 + 3"    # => 6 + 3 (quoted = not evaluated)
+----
+
+==== Multiplication and Special Characters
+
+Some symbols (like `*`) have special meaning in Bash, so you must **escape them with a backslash**.
+
+[source,bash]
+----
+expr 5 \* 3     # => 15
+----
+
+==== Modulus and Other Operators
+
+You can also perform modulus, subtraction, or any other integer operation supported:
+
+[source,bash]
+----
+expr 15 % 2     # => 1
+----
+
+==== Capturing the Result
+
+Use command substitution to store the result of `expr` in a variable:
+
+[source,bash]
+----
+result=$( expr 15 - 2 )
+echo $result    # => 13
+----
+
+[NOTE]
+====
+Always include spaces between the operands and operator. Bash treats `expr 1+1` and `expr "1 + 1"` as literal strings, not calculations.
+====
+
+=== Using `((...))` for Arithmetic Operations
+
+The double parentheses syntax `((...))` is the most recommended way to perform arithmetic in Bash. It is **built into the shell**, faster, more flexible, and does not require quoting or escaping special characters.
+
+==== Syntax
+
+[source,bash]
+----
+$(( arithmetic expression ))
+----
+
+This is known as **arithmetic expansion**.
+
+==== Examples
+
+[source,bash]
+----
+# Basic usage
+result=$(( 6 + 5 ))
+echo $result   # => 11
+
+# No need to use `$` inside arithmetic expressions
+result2=$(( result + 3 ))
+echo $result2  # => 14
+
+# You can still use `$` if you prefer
+result3=$(( $result + 4 ))
+echo $result3  # => 15
+
+# Pre/post increment without `$`
+(( result3++ ))
+echo $result3  # => 16
+
+# Augmented assignment
+(( result3 += 4 ))
+echo $result3  # => 20
+
+# Multiplication without escaping `*`
+result=$(( 4 * 5 ))
+echo $result   # => 20
+----
+
+[NOTE]
+====
+Inside `((...))`, variable names **don’t need the `$`** prefix. Both `((x + 1))` and `(($x + 1))` work, but using the plain name is cleaner.
+====
+
+[WARNING]
+====
+There is also an older syntax using square brackets: `$[ expression ]` — but this is deprecated and **should not be used**.
+====
+
+==== `declare -i` for integer math
+
+You can declare a variable as an integer with `declare -i`, which allows arithmetic evaluation automatically:
+
+[source,bash]
+----
+declare -i sum
+sum=5+3
+echo $sum  # => 8
+----
+
+
+== Floating Point Arithmetic with `bc`
+
+[source,bash]
+----
+# Bash doesn't support floating-point arithmetic directly.
+# To perform calculations with decimals, use the `bc` command.
+
+result=$(echo "scale=2; 5.4 + 3.3" | bc)
+echo "$result"  # => 8.7
+
+# multiplication
+result=$(echo "3.2 * 2.1" | bc)
+echo "$result"  # => 6.72
+
+# division
+result=$(echo "scale=3; 10 / 3" | bc)
+echo "$result"  # => 3.333
+----
+
+[NOTE]
+====
+`scale=2` sets the number of decimal places in the result. Without it, `bc` defaults to zero for division.
+====
+
+=== Floating Point Arithmetic with `awk`
+
+[source,bash]
+----
+# awk can also handle decimals
+
+result=$(awk 'BEGIN { print 10.5 / 2.5 }')
+echo "$result"  # => 4.2
+
+# more complex expression
+result=$(awk 'BEGIN { print (3.5 + 1.2) * 2 }')
+echo "$result"  # => 9.4
+----
+
+== Arithmetic with Arrays
+
+[source,bash]
+----
+# summing array values
+numbers=(3 7 2)
+sum=0
+
+for n in "${numbers[@]}"; do
+    (( sum += n ))
+done
+
+echo "Sum: $sum"  # => 12
+----
+
+== Preventing Division by Zero
+
+[source,bash]
+----
+a=10
+b=0
+
+if [[ $b -eq 0 ]]; then
+    echo "Division by zero is not allowed"
+else
+    echo $(( a / b ))
+fi
+----
+
+[WARNING]
+====
+Division by zero will crash your script with an error. Always check the denominator before dividing.
+====

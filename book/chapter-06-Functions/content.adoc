@@ -1,0 +1,196 @@
+= Bash Functions
+
+Functions in Bash are reusable blocks of code you can call by name. They help organize scripts, eliminate repetition, and create readable logic structures.
+
+== Defining Functions
+
+There are two ways to define a function. Both are valid and work the same way.
+
+[source,bash]
+----
+greet() {
+    echo "hello $1 $2"
+}
+
+# Alternate syntax
+function greet() {
+    echo "hello $1 $2"
+}
+
+# Calling the function
+greet "John" "Paul"
+----
+
+Arguments passed to the function are accessed using `$1`, `$2`, etc., just like positional parameters in scripts.
+
+== Returning Values
+
+Bash functions don’t use `return` to send back data. Instead, use `echo` and **command substitution** to capture output.
+
+[source,bash]
+----
+add_numbers() {
+    local result=$(( $1 + $2 ))
+    echo $result
+}
+
+# Storing the result
+sum="$(add_numbers 1 2)"
+echo "Result: $sum"
+----
+
+[IMPORTANT]
+====
+The `return` keyword in Bash can only return **exit status codes** (0–255), not data.
+====
+
+== Raising Errors with return
+
+You can use `return` to indicate success or failure using exit codes.
+
+[source,bash]
+----
+myfunc() {
+    return 1  # non-zero means failure
+}
+
+if myfunc; then
+    echo "success"
+else
+    echo "failure"
+fi
+----
+
+This allows your script to react to different outcomes, like testing the result of a condition.
+
+== Recursive Functions
+
+A function can call itself — just be sure to define a condition to stop the recursion, or it will loop forever.
+
+[source,bash]
+----
+countdown() {
+    if [[ $1 -le 0 ]]; then
+        echo "Done!"
+        return
+    fi
+    echo "$1"
+    countdown $(( $1 - 1 ))
+}
+
+countdown 3
+----
+
+This prints:
+[source, output]
+----
+3
+2
+1
+Done!
+----
+
+
+[WARNING]
+====
+Bash doesn't optimize recursion. Use it sparingly — deep recursion may cause stack overflows or performance issues.
+====
+
+== Fork Bomb
+
+A fork bomb is a self-replicating function that quickly consumes system resources by endlessly spawning itself. It's used for demonstration or malicious purposes — **never run this on a real system**.
+
+[source,bash]
+----
+:(){ :|:& };:
+----
+
+This creates a function `:` that calls itself twice in the background, over and over.
+
+[WARNING]
+====
+Running a fork bomb will freeze your system by consuming all process slots. Only test it inside an isolated VM or container — if at all.
+====
+
+== More  on Functions
+
+Functions in Bash are flexible, but there are a few important behaviors and lesser-known features worth noting.
+
+=== Variables Are Global by Default
+
+Unless you explicitly use `local`, any variable you define inside a function will affect the global shell environment.
+
+[source,bash]
+----
+greet() {
+    name="Jay"       # This is global
+}
+
+greet
+echo "$name"         # Prints: Jay
+----
+
+To avoid accidental overwrites, use `local`:
+
+[source,bash]
+----
+greet() {
+    local name="Jay"
+    echo "$name"
+}
+----
+
+=== Unsetting or Overwriting Functions
+
+You can redefine a function by simply writing a new version with the same name. To remove a function from the shell, use:
+
+[source,bash]
+----
+unset -f greet
+----
+
+This is useful for cleaning up function definitions in long scripts or interactive sessions.
+
+=== Listing Functions
+
+To see a list of all defined functions in your current shell:
+
+[source,bash]
+----
+declare -F
+----
+
+This prints the names (and optionally locations) of every declared function.
+
+=== Valid Function Names
+
+Function names should start with a letter or underscore and avoid special characters. Avoid using names that conflict with built-in commands (like `test`, `echo`, or `read`), unless you intend to override them.
+
+[source,bash]
+----
+# valid
+hello_world() { echo "Hi"; }
+
+# not recommended
+test() { echo "bad idea"; }   # Conflicts with the `test` command
+----
+
+=== Exporting Functions to Subshells (Bash 4+)
+
+You can export a function to be used by child shells or other scripts that run in the same environment.
+
+[source,bash]
+----
+say_hello() {
+    echo "Hello from parent shell"
+}
+
+export -f say_hello
+bash -c 'say_hello'   # Works because it's exported
+----
+
+[NOTE]
+====
+Only Bash version 4.0 or later supports function exporting this way.
+====
+
