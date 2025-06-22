@@ -1,0 +1,94 @@
+# ───────────────────────────────────────────────────────────────
+# EXTENDING Asciidoctor PDF: PER-TYPE ADMONITION STYLING
+# ───────────────────────────────────────────────────────────────
+# This custom converter allows you to define theme overrides for
+# individual admonition types (tip, caution, warning, etc.)
+# using blocks like `admonition_tip`, `admonition_caution`, etc.
+#
+# It extracts theme keys with the prefix `admonition_<type>_`
+# and applies them as overrides during rendering.
+#
+# Example usage in your theme YAML:
+#
+#   admonition_tip:
+#     background-color: #f3f1ff
+#     border-color: #5e35b1
+#     border-style: solid
+#
+# NOTE: This allows per-type background/border/font overrides.
+# However, there’s an important caveat when working with icons.
+
+[source, ruby]
+----
+class PDFConverterAdmonitionThemePerType < (Asciidoctor::Converter.for 'pdf')
+  register_for 'pdf'
+
+  def convert_admonition node
+    type = node.attr 'name'
+    key_prefix = %(admonition_#{type}_)
+    entries = theme.each_pair.select { |name, val| name.to_s.start_with? key_prefix }
+    return super if entries.empty?
+    save_theme do
+      entries.each do |name, val|
+        theme[%(admonition_#{name.to_s.delete_prefix key_prefix})] = val
+      end
+      super
+    end
+  end
+end
+----
+
+# ─────────────────────────────────────────────────────
+# Theme YAML: Per-Type Admonition Styling
+# ─────────────────────────────────────────────────────
+
+# This section controls the visual style (background, borders, etc.)
+# for a specific admonition type (`tip` in this case).
+#
+# The key format is: admonition_<type>
+#
+# ⚠️ IMPORTANT NOTE:
+# Even though this block accepts an `icon:` key,
+# it will be ignored if you're using font-based icons.
+# Asciidoctor PDF only reads icons for font-based sets from:
+#
+#   admonition:
+#     icon:
+#       <type>: ...
+
+# ✅ Style settings for TIP admonition
+admonition_tip:
+  background-color: #f3f1ff
+  border-color: #5e35b1
+  border-style: solid
+  border-width: 0.75
+  # This icon config will be IGNORED with `icons=font`:
+  icon:
+    name: fas-lightbulb
+    stroke-color: #5e35b1
+    size: 14
+
+
+# Note: yYou must explicitly define the admonition border-width.    
+
+# ✅ Icon settings that WILL be respected with font-based icons
+admonition:
+  icon:
+    tip:
+      name: fas-lightbulb
+      stroke-color: #5e35b1
+      size: 14
+
+# TL;DR:
+# - Use `admonition_<type>` for visual styles.
+# - Use `admonition.icon.<type>` for icons when using `icons=font`.
+# - Don't rely on icons inside `admonition_<type>` unless using `icons=svg`.
+
+# This subtle behavior caused hours of confusion.
+# Hopefully this saves the next person the same rabbit hole!
+
+
+# sudo asciidoctor-pdf -a icons=font -a icon-set=fas -r ./extender.rb example.adoc --trace
+
+
+# when referencing the extender with -r option make sure to use absolute path not relative path.
