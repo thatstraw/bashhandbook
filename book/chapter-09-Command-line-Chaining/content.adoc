@@ -1,0 +1,145 @@
+= Command Line Chaining
+
+Bash allows you to combine multiple commands on a single line, controlling how and when each command runs. This is called *command chaining*. It's useful when you want to execute commands conditionally, sequentially, or in the background.
+
+== `&` – Run in the Background
+
+Run a command in the background so your terminal stays available for other input:
+
+[source,bash]
+----
+sleep 10 &
+----
+
+This runs `sleep` in the background and immediately returns control to the terminal. The job will still complete in the background.
+
+== `&&` – Run If Previous Succeeds
+
+Use `&&` when you want the second command to run *only if* the first one is successful (exit status 0):
+
+[source,bash]
+----
+mkdir project && cd project
+----
+
+If `mkdir` creates the directory successfully, then `cd` into it. If `mkdir` fails (e.g. directory exists), `cd` is skipped.
+
+== `||` – Run If Previous Fails
+
+This runs the second command *only if* the first one fails (non-zero exit status):
+
+[source,bash]
+----
+cd missing_dir || echo "Directory not found"
+----
+
+Here, if the directory doesn't exist and `cd` fails, it prints an error message.
+
+== `;` – Always Run Next Command
+
+The semicolon executes all commands in sequence, regardless of the success or failure of the previous one:
+
+[source,bash]
+----
+echo "Start" ; invalid_command ; echo "Still running"
+----
+
+Even if `invalid_command` fails, the last `echo` will still execute.
+
+== `!` – Negate Exit Status
+
+Use `!` to invert a command’s result. A successful command becomes a failure and vice versa:
+
+[source,bash]
+----
+! grep "text" file.txt
+----
+
+If `grep` finds "text", `!` treats it as failure. If it doesn't find it, `!` treats it as success.
+
+== `&& ||` – Simulate If-Else
+
+Combining `&&` and `||` mimics if-else logic:
+
+[source,bash]
+----
+check_something && echo "OK" || echo "FAILED"
+----
+
+- If `check_something` succeeds, prints `OK`.
+- If it fails, prints `FAILED`.
+
+Use grouping to avoid fall-through when the middle command fails:
+
+[source,bash]
+----
+check_something && { echo "OK"; } || echo "FAILED"
+----
+
+== `|` – Pipe Output to Another Command
+
+The pipe takes output from one command and feeds it to the next:
+
+[source,bash]
+----
+ls -l | grep ".txt"
+----
+
+This lists files and filters only `.txt` ones using `grep`.
+
+== `>`, `>>`, `<` – Redirect Input and Output
+
+- `>` redirects and overwrites a file.
+- `>>` appends to a file.
+- `<` reads input from a file.
+
+[source,bash]
+----
+echo "Line" > file.txt      # Overwrites
+echo "Another" >> file.txt  # Appends
+wc -l < file.txt            # Reads input
+----
+
+== `\` – Continue Command on New Line
+
+Split long commands across multiple lines for readability:
+
+[source,bash]
+----
+echo "This is a long line \
+that continues here"
+----
+
+The backslash tells Bash to treat the next line as a continuation.
+
+== `()` – Subshell Execution
+
+Parentheses group commands in a *subshell*. Variables inside won't affect the outer shell:
+
+[source,bash]
+----
+(count=5; echo $count)
+echo $count  # Not defined
+----
+
+== `{}` – Grouping in Current Shell
+
+Curly braces group commands in the current shell and allow redirection to apply to all of them:
+
+[source,bash]
+----
+{ echo "First"; echo "Second"; } > all_output.txt
+----
+
+All grouped commands output to the same file.
+
+[TIP]
+====
+Use grouping when you want to treat several commands as a block, especially in loops or redirection.
+====
+
+
+[NOTE] 
+====
+When chaining commands, always consider exit statuses and context. For example, `&&` and `||` depend on how a command exits, so chaining them without checking return values can lead to unexpected behavior.
+====
