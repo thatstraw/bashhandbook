@@ -1,0 +1,429 @@
+= Bash Loops
+
+Loops allow you to run a set of commands repeatedly. Bash provides several loop types, each suited for different use cases. 
+
+=== Basic for Loop
+
+The `for` loop is often used to iterate over a list of items. In its most common form, it loops through the results of a glob or a word list.
+
+[source,bash]
+----
+for i in /etc/*; do
+    echo $i
+done
+----
+
+You can also write the loop using a line-break style, which works identically:
+
+[source,bash]
+----
+for i in /etc/*
+do
+    echo $i
+done
+----
+
+This loop prints every file or directory inside `/etc`.
+
+=== C-like for Loop
+
+Bash also supports a C-style `for` loop, which gives you full control over initialization, condition, and increment.
+
+[source,bash]
+----
+for ((i = 0 ; i < 100 ; i++)); do
+    echo $i
+done
+----
+
+This is equivalent to:
+
+[source,bash]
+----
+for ((i = 0 ; i < 100 ; i++))
+do
+    echo $i
+done
+----
+
+Use this form when working with numeric ranges or indexed iteration.
+
+=== Using Ranges
+
+Brace expansion provides a simple way to loop through a sequence of numbers.
+
+[source,bash]
+----
+for i in {1..10}; do
+    echo "Number: $i"
+done
+----
+
+You can also specify a step value:
+
+[source,bash]
+----
+for i in {5..50..5}; do
+    echo "Number: $i"
+done
+----
+
+This prints: 5, 10, 15, ..., 50
+
+[NOTE]
+====
+Brace expansion happens **before** the loop runs. If you're using variables to define the range (like `{1..$limit}`), it won't work — you'll need to use a `C-style` loop or `seq`.
+====
+
+
+=== Bash while Loop
+
+The `while` loop repeats commands **as long as a condition remains true**. It’s useful when you're not sure how many times a loop should run and want to stop based on logic instead of a fixed list.
+
+==== Counting Up
+
+[source,bash]
+----
+i=1
+while [[ $i -lt 4 ]]; do
+    echo "Number: $i"
+    ((i++)) 
+done
+----
+
+This prints numbers 1 through 3. The loop runs while `$i` is less than 4.
+
+==== Counting Down
+
+[source,bash]
+----
+i=3
+while [[ $i -gt 0 ]]; do
+    echo "Number: $i"
+    ((i--))
+done
+----
+
+This prints numbers 3, 2, 1 — and stops when `$i` is no longer greater than 0.
+
+=== while true Loop
+
+If you want a loop that runs forever (until manually broken), you can use `while true` or `while :`.
+
+[source,bash]
+----
+# Long form
+while true; do
+    # TODO
+done
+
+# Shorthand
+while :; do
+    # TODO
+done
+----
+
+Use `break` to exit the loop when a condition is met inside.
+
+=== Reading Files with while
+
+The `while` loop is commonly used to read a file line by line.
+
+[source,bash]
+----
+# Using a pipe
+cat file.txt | while read line; do
+    echo $line
+done
+----
+
+This works but has a subshell caveat — any variables modified inside the loop won't persist outside.
+
+To avoid that, use input redirection instead:
+
+[source,bash]
+----
+while read line; do
+    echo $line
+done < "/path/to/txt/file"
+----
+
+This version runs in the current shell, so variables inside the loop are retained after it ends.
+
+[NOTE]
+====
+`read` reads one line at a time and splits input on whitespace. Use `IFS=` before `read` if you want to preserve leading/trailing spaces:
+
+[source,bash]
+----
+while IFS= read -r line; do
+    echo "$line"
+done < file.txt
+----
+====
+
+=== until Loop
+
+The `until` loop is like the opposite of `while`: it runs **until** the condition becomes true.
+
+[source,bash]
+----
+count=0
+until [ $count -gt 10 ]; do
+    echo "$count"
+    ((count++))
+done
+----
+
+This loop runs as long as `$count` is **not** greater than 10 — that is, from 0 to 10.
+
+You can also count down:
+
+[source,bash]
+----
+count=10
+until [ $count -eq 0 ]; do
+    echo "$count"
+    ((count--))
+done
+----
+
+The loop stops once `$count` reaches 0.
+
+[NOTE]
+====
+Unlike `while`, `until` loops continue **while the condition is false**, and exit when it becomes true.
+====
+
+=== continue Statement
+
+The `continue` statement skips the rest of the current loop iteration and jumps to the next one.
+
+[source,bash]
+----
+for number in $(seq 1 3); do
+    if [[ $number == 2 ]]; then
+        continue
+    fi
+    echo "$number"
+done
+----
+
+This prints:
+1
+3
+
+
+The number 2 is skipped because of the `continue`.
+
+[INFO]
+====
+The `seq` command is a convenient way to generate a range: `seq 1 3` produces `1 2 3`.
+====
+
+=== break Statement
+
+The `break` statement exits the loop immediately, skipping all remaining iterations.
+
+[source,bash]
+----
+for number in $(seq 1 3); do
+    if [[ $number == 2 ]]; then
+        break
+    fi
+    echo "$number"
+done
+----
+
+This prints:
+1
+
+
+As soon as the loop sees `2`, it stops entirely.
+
+[IMPORTANT]
+====
+Both `break` and `continue` can be used in any loop type: `for`, `while`, `until`, and even `select`.
+====
+
+=== Additional Notes on Loops
+
+You've now seen all the core loop types in Bash — `for`, `while`, `until`, and `select` — along with control statements like `break` and `continue`. Below are some extra tips and features that may come in handy when your scripts get more advanced.
+
+==== Nested Loops
+
+You can place one loop inside another to work with two dimensions (e.g., rows and columns, files and lines, etc.).
+
+[source,bash]
+----
+for i in {1..2}; do
+    for j in {A..B}; do
+        echo "$i$j"
+    done
+done
+----
+
+This prints: `1A`, `1B`, `2A`, `2B`.
+
+==== Looping Over Arrays with read -a
+
+You can use `read -a` to read words into an array and then loop through the array.
+
+[source,bash]
+----
+read -a colors <<< "red green blue"
+
+for color in "${colors[@]}"; do
+    echo $color
+done
+----
+
+This is useful when working with space-separated input.
+
+==== Breaking or Continuing Multiple Levels
+
+If you're in nested loops, you can use `break N` or `continue N` to jump out of multiple levels at once.
+
+[source,bash]
+----
+for i in {1..3}; do
+    for j in {1..3}; do
+        if [[ $j -eq 2 ]]; then
+            break 2  # Exits both loops
+        fi
+        echo "$i $j"
+    done
+done
+----
+
+==== Looping Over Command Output Safely
+
+To loop over the output of a command (e.g., `find`), use a **process substitution** and `read` with `IFS=` to preserve whitespace.
+
+[source,bash]
+----
+while IFS= read -r file; do
+    echo "$file"
+done < <(find . -type f)
+----
+
+Avoid using `for file in $(command)` — it breaks when filenames contain spaces.
+
+==== Creating an Infinite Loop with a Delay
+
+Sometimes you want a loop to run continuously with a pause between runs. Here's a common pattern:
+
+[source,bash]
+----
+while true; do
+    echo "Checking system..."
+    sleep 10
+done
+----
+
+Use `sleep` to control how frequently the loop runs.
+
+==== Performance and Portability Tip
+
+The `seq` command is useful for quick loops, but it's an external command — which means it spawns a subprocess.
+
+[source,bash]
+----
+for i in $(seq 1 100000); do
+    ...
+done
+----
+
+In large-scale scripts, a Bash-native `for ((...))` loop performs better:
+
+[source,bash]
+----
+for ((i = 1; i <= 100000; i++)); do
+    ...
+done
+----
+
+[INFO]
+====
+Use native Bash syntax (`((...))`, `[[...]]`, brace expansion) wherever possible — it's faster and doesn't rely on external commands.
+====
+
+
+
+== The select Loop
+
+The `select` loop is a Bash-specific feature designed to simplify interactive menus. It automatically displays a numbered list of choices and waits for the user to make a selection.
+
+It's most useful in scripts that require basic user input without needing to build a menu system from scratch.
+
+=== Basic Syntax
+
+[source,bash]
+----
+select variable in list; do
+    commands
+    break
+done
+----
+
+- `variable` is assigned the value of the selected item.
+- `list` is a space-separated list of options.
+- The loop continues until you manually break it using `break` or `exit`.
+
+=== Menu Example
+
+[source,bash]
+----
+select fruit in apple banana cherry; do
+    echo "You selected $fruit"
+    break
+done
+----
+
+When run, this prints:
+
+apple
+
+banana
+
+cherry #?
+
+
+Typing `2` selects `banana`, assigns it to `fruit`, and prints:
+
+
+=== Handling Invalid Input
+
+If the user enters an invalid number (like 0 or something out of range), the variable will be empty. You can check for this and continue prompting:
+
+[source,bash]
+----
+select option in "Start" "Stop" "Restart"; do
+    if [[ -n "$option" ]]; then
+        echo "You chose: $option"
+        break
+    else
+        echo "Invalid selection"
+    fi
+done
+----
+
+=== Changing the Prompt
+
+By default, `select` uses `PS3` as the prompt. You can customize it to give better context to the user.
+
+[source,bash]
+----
+PS3="Choose a service action: "
+select action in Start Stop Restart; do
+    echo "Action: $action"
+    break
+done
+----
+
+[INFO]
+====
+The `select` loop is rarely used in scripts that run automatically, but it’s a great tool for building simple, interactive menus.
+====
+
+

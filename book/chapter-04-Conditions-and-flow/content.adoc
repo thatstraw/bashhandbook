@@ -1,0 +1,473 @@
+= Bash Conditions and Flow Control
+
+Bash provides conditional expressions and control structures that allow your scripts to make decisions, evaluate input, and execute logic based on comparisons or patterns.
+
+=== Numeric Conditions
+
+Use these expressions to compare integer values. Bash supports both traditional `[[ ... ]]` comparisons and arithmetic-style `\(( ... ))` expressions.
+
+[cols="1,3", options="header"]
+|===
+| Condition | Description
+| `[[ INTEGER1 -eq INTEGER2 ]]` | INTEGER1 is equal to INTEGER2
+| `[[ INTEGER1 -ne INTEGER2 ]]` | INTEGER1 is not equal to INTEGER2
+| `[[ INTEGER1 -lt INTEGER2 ]]` | INTEGER1 is less than INTEGER2
+| `[[ INTEGER1 -le INTEGER2 ]]` | INTEGER1 is less than or equal to INTEGER2
+| `[[ INTEGER1 -gt INTEGER2 ]]` | INTEGER1 is greater than INTEGER2
+| `[[ INTEGER1 -ge INTEGER2 ]]` | INTEGER1 is greater than or equal to INTEGER2
+| `\(( INTEGER1 < INTEGER2 ))` | INTEGER1 is less than INTEGER2
+| `\(( INTEGER1 <= INTEGER2 ))` | INTEGER1 is less than or equal to INTEGER2
+| `\(( INTEGER1 > INTEGER2 ))` | INTEGER1 is greater than INTEGER2
+| `\(( INTEGER1 >= INTEGER2 ))` | INTEGER1 is greater than or equal to INTEGER2
+| `\(( INTEGER1 == INTEGER2 ))` | INTEGER1 is equal to INTEGER2
+| `\(( INTEGER1 != INTEGER2 ))` | INTEGER1 is not equal to INTEGER2
+|===
+
+[NOTE]
+====
+Use `\(( ... ))` for cleaner syntax when comparing numbers — it's often more readable and doesn't require quoting variables.
+====
+
+=== String Conditions
+
+Use these expressions when comparing strings or checking for patterns.
+
+[cols="1,3", options="header"]
+|===
+| Condition | Description
+| `[[ -z STR ]]` | True if the string is empty
+| `[[ -n STR ]]` | True if the string is not empty
+| `[[ STR == STR ]]` | Strings are equal
+| `[[ STR = STR ]]` | Same as above (alternate syntax)
+| `[[ STR < STR ]]` | STR is less than the other (ASCII order)
+| `[[ STR > STR ]]` | STR is greater than the other (ASCII order)
+| `[[ STR != STR ]]` | Strings are not equal
+| `[[ STR =~ REGEXP ]]` | Matches regular expression pattern
+|===
+
+[IMPORTANT]
+====
+Always use `[[ ... ]]` instead of `[ ... ]` when working with strings — it provides more robust syntax and supports pattern matching like `=~`.
+====
+
+=== File Conditions
+
+Use these expressions to test properties of files, symbolic links, pipes, sockets, and devices.
+
+[cols="1,3", options="header"]
+|===
+| Condition | Description
+| `[[ -b FILE ]]` | FILE exists and is a block device
+| `[[ -c FILE ]]` | FILE exists and is a character device
+| `[[ -d FILE ]]` | FILE exists and is a directory
+| `[[ -e FILE ]]` | FILE exists (regardless of type)
+| `[[ -f FILE ]]` | FILE exists and is a regular file
+| `[[ -g FILE ]]` | FILE exists and has the set-group-ID bit set
+| `[[ -G FILE ]]` | FILE exists and is owned by the effective group ID
+| `[[ -h FILE ]]` | FILE exists and is a symbolic link (same as `-L`)
+| `[[ -k FILE ]]` | FILE exists and has the sticky bit set
+| `[[ -L FILE ]]` | FILE exists and is a symbolic link (same as `-h`)
+| `[[ -N FILE ]]` | FILE exists and was modified since last read
+| `[[ -O FILE ]]` | FILE exists and is owned by the effective user ID
+| `[[ -p FILE ]]` | FILE exists and is a named pipe (FIFO)
+| `[[ -r FILE ]]` | FILE exists and is readable by the user
+| `[[ -s FILE ]]` | FILE exists and has a size greater than zero
+| `[[ -S FILE ]]` | FILE exists and is a socket
+| `[[ -t FD ]]` | File descriptor `FD` is open and refers to a terminal
+| `[[ -u FILE ]]` | FILE exists and has the set-user-ID bit set
+| `[[ -w FILE ]]` | FILE exists and is writable by the user
+| `[[ -x FILE ]]` | FILE exists and is executable (or searchable if a directory)
+| `[[ FILE1 -nt FILE2 ]]` | FILE1 is newer than FILE2
+| `[[ FILE1 -ot FILE2 ]]` | FILE1 is older than FILE2
+| `[[ FILE1 -ef FILE2 ]]` | FILE1 and FILE2 refer to the same file (same inode/device)
+|===
+
+=== Compound Conditions
+
+Use logical operators to combine multiple conditions.
+
+[cols="1,3", options="header"]
+|===
+| Condition | Description
+| `[[ condition1 ]] && [[ condition2 ]]` | True if both conditions are true (AND)
+| `[[ condition1 ]] || [[ condition2 ]]` | True if either condition is true (OR)
+| `[ condition1 -a condition2 ]` | AND operator using single brackets (not recommended)
+| `[ condition1 -o condition2 ]` | OR operator using single brackets (not recommended)
+|===
+
+[NOTE]
+====
+You can use either `[[ ... ]]` or `[ ... ]` for most tests. However, compound expressions using `-a` (AND) or `-o` (OR) **only work with** single square brackets and are prone to syntax errors.
+
+Prefer using `[[ ... ]] && [[ ... ]]` and `[[ ... ]] || [[ ... ]]` for clarity and correctness.
+====
+
+=== More Conditions
+
+These are additional conditional expressions you may encounter or use in more advanced scripting scenarios.
+
+[cols="1,3", options="header"]
+|===
+| Condition | Description
+| `[[ -o noclobber ]]` | True if the shell option `noclobber` is enabled
+| `EXPR` | Evaluates whether an expression is true
+| `! EXPR` | Logical negation — true if the expression is false
+|===
+
+[NOTE]
+====
+The `[[ -o OPTION ]]` form is useful for checking shell behaviors, like whether overwriting files is disabled (`noclobber`), whether `allexport` is set, and so on.
+====
+
+=== if Statements
+
+The `if` statement is one of the most important control structures in Bash. It allows you to execute commands conditionally — based on the success or failure (exit status) of a command or expression.
+
+==== Basic Syntax
+
+[source,bash]
+----
+if CONDITION; then
+    commands
+fi
+----
+
+If the condition is true (i.e., the command returns an exit status of 0), the code inside the `then` block is executed.
+
+==== if...else
+
+[source,bash]
+----
+if CONDITION; then
+    commands_if_true
+else
+    commands_if_false
+fi
+----
+
+Use `else` to define an alternate path when the condition is false.
+
+==== if...elif...else
+
+You can chain multiple conditions using `elif`.
+
+[source,bash]
+----
+if [[ $value -eq 1 ]]; then
+    echo "Value is 1"
+elif [[ $value -eq 2 ]]; then
+    echo "Value is 2"
+else
+    echo "Value is something else"
+fi
+----
+
+==== Using `[[ ... ]]` vs `[ ... ]` vs `(( ... ))`
+
+- Use `[[ ... ]]` for string tests, pattern matching, and complex conditions.
+- Use `\(( ... ))` for arithmetic comparisons.
+- `[ ... ]` is POSIX-compatible but more limited and error-prone.
+
+[source,bash]
+----
+if [[ "$name" == "Jay" ]]; then
+    echo "Hello Jay"
+fi
+
+if (( 10 > 5 )); then
+    echo "Math works"
+fi
+----
+
+[IMPORTANT]
+====
+Every `if` must be closed with `fi`. Also, remember that Bash uses exit status (0 = success, non-zero = failure) to evaluate truth.
+====
+
+==== if with Command Execution
+
+You can use `if` to check the result of any command — not just expressions.
+
+[source,bash]
+----
+if grep "error" logfile.txt > /dev/null; then
+    echo "Found an error in the log"
+else
+    echo "No errors found"
+fi
+----
+
+[NOTE]
+====
+Redirecting output (e.g., `> /dev/null`) is often used to silence command output in conditions.
+====
+
+==== Nested if Statements
+
+You can place an `if` block inside another `if` block to evaluate multiple conditions in sequence.
+
+[source,bash]
+----
+if [[ "$user" == "admin" ]]; then
+    if [[ "$access" == "full" ]]; then
+        echo "Admin with full access"
+    else
+        echo "Admin with limited access"
+    fi
+else
+    echo "Not an admin"
+fi
+----
+
+[NOTE]
+====
+Nested `if` statements can make your script harder to read — use them carefully. Consider using `elif` or logical operators when possible.
+====
+
+==== Compound Conditions with && and ||
+
+Instead of nesting multiple `if` statements, you can use logical operators to combine them in a single line.
+
+[source,bash]
+----
+if [[ "$user" == "admin" && "$access" == "full" ]]; then
+    echo "Admin with full access"
+fi
+----
+
+- `&&` (AND): both conditions must be true
+- `||` (OR): at least one condition must be true
+
+[source,bash]
+----
+if [[ "$user" == "admin" || "$user" == "support" ]]; then
+    echo "Privileged user"
+fi
+----
+
+==== Grouping with Double Brackets
+
+When combining multiple conditions, always use `[[ ... ]]` to take advantage of grouping and short-circuit logic.
+
+[source,bash]
+----
+if [[ "$status" == "ok" && ( "$role" == "user" || "$role" == "admin" ) ]]; then
+    echo "Access granted"
+fi
+----
+
+[IMPORTANT]
+====
+Grouping with parentheses requires a space between `(` and the condition inside, and the whole condition must be within `[[ ... ]]`.
+====
+
+=== The `test` Command
+
+The `test` command is used to evaluate expressions such as comparisons and file checks. It's often written using square brackets (`[ ... ]`), which is just a shorthand for `test`.
+
+==== Basic Syntax
+
+[source,bash]
+----
+test EXPRESSION
+# or using the shorthand
+[ EXPRESSION ]
+----
+
+If the expression is true, `test` returns exit status `0`; otherwise, it returns a non-zero exit status.
+
+==== Examples
+
+[source,bash]
+----
+# Check if a file exists
+test -e /etc/passwd
+[ -e /etc/passwd ]
+
+# Compare numbers
+test 5 -gt 3
+[ 5 -gt 3 ]
+
+# Compare strings
+test "$name" = "Jay"
+[ "$name" = "Jay" ]
+----
+
+[IMPORTANT]
+====
+There must be **spaces** around the brackets and between arguments. For example:
+
+✔ `[ "$name" = "Jay" ]`  
+✘ `["$name"="Jay"]` (syntax error)
+====
+
+==== Why Use `test`?
+
+- POSIX-compliant (portable across different shells)
+- Available even in minimal shell environments
+- Useful when writing scripts that don’t rely on Bash-specific features
+
+[NOTE]
+====
+For more advanced comparisons (like regex matching), prefer `[[ ... ]]` which is a Bash extension with better quoting rules and features.
+====
+
+=== Advanced if-then Features
+
+Bash gives you several powerful syntaxes to enhance `if` conditions with subshells, arithmetic, and extended test features.
+
+- **Subshells with parentheses** `( ... )`  
+  You can execute a command in a subshell and use its result in your condition. Useful for isolating environment changes or combining multiple commands.
+
+- **Arithmetic with double parentheses** `\(( ... ))`  
+  Enables arithmetic comparisons and calculations. This makes numeric logic simpler and more readable.
+
+  [TIP]
+  ====
+  For more on math in Bash, see the section on performing arithmetic operations.
+  ====
+
+- **Advanced tests with double brackets** `[[ ... ]]`  
+  Offers extended syntax for string comparison, regex matching (`=~`), and better quoting behavior than `[ ... ]`.
+
+[IMPORTANT]
+====
+Prefer using `[[ ... ]]` and `\(( ... ))` over single brackets or external commands like `test` for more consistent and safer condition handling in modern Bash.
+====
+
+=== case Statement
+
+The `case` statement lets you compare one value against multiple patterns. It's ideal when you want to handle different inputs or conditions without writing several `if-elif` blocks.
+
+Here’s the basic structure:
+
+[source,bash]
+----
+case WORD in
+    PATTERN1)
+        commands
+        ;;
+    PATTERN2)
+        commands
+        ;;
+    *)
+        fallback_commands
+        ;;
+esac
+----
+
+The patterns can include wildcards like `*`, and the fallback case is written as `*).
+
+Let’s say you’re writing a script that accepts a user action like `start`, `stop`, or `restart`. A case statement makes this much easier to read than nested `if` blocks.
+
+[source,bash]
+----
+read -p "Choose [start|stop|restart]: " action
+
+case "$action" in
+    start)
+        echo "Starting service..."
+        ;;
+    stop)
+        echo "Stopping service..."
+        ;;
+    restart)
+        echo "Restarting service..."
+        ;;
+    *)
+        echo "Unknown action: $action"
+        ;;
+esac
+----
+
+You can also use `case` to process file types. Here’s how to identify file types based on their extension:
+
+[source,bash]
+----
+file="notes.txt"
+
+case "$file" in
+    *.txt)
+        echo "It's a text file"
+        ;;
+    *.jpg | *.png)
+        echo "It's an image file"
+        ;;
+    *)
+        echo "File type not recognized"
+        ;;
+esac
+----
+
+[TIP]
+====
+Use the `|` symbol to match multiple patterns in one case. You can also use glob-style matching (like `*.sh` or `file-*`) inside each pattern.
+====
+
+[IMPORTANT]
+====
+Always quote the variable used in `case` (e.g., `"$file"`) to avoid word-splitting or unexpected matches when it contains spaces.
+====
+
+=== Loops That Use Conditions
+
+Some Bash loops depend directly on the result of a condition — they keep running while the condition is true, or until it becomes true. 
+
+==== while
+
+The `while` loop repeats as long as the condition remains true.
+
+[source,bash]
+----
+counter=1
+
+while [[ $counter -le 3 ]]; do
+    echo "Count: $counter"
+    ((counter++))
+done
+----
+
+The loop stops when the condition fails — in this case, when `$counter` becomes greater than 3.
+
+==== until
+
+The `until` loop is the opposite of `while` — it runs until the condition becomes true.
+
+[source,bash]
+----
+counter=1
+
+until [[ $counter -gt 3 ]]; do
+    echo "Count: $counter"
+    ((counter++))
+done
+----
+
+This keeps running **while** the condition is false, and stops **once it becomes true**.
+
+
+==== select
+
+The `select` loop is a Bash feature for interactive scripts. It creates a numbered menu automatically and lets the user choose an option.
+
+[source,bash]
+----
+select fruit in apple banana cherry; do
+    echo "You selected $fruit"
+    break
+done
+----
+
+This prints:
+
+1. apple
+2. banana
+3. cherry
+
+#? The user types a number, and Bash assigns the selected value to the variable `fruit`.
+
+[INFO]
+====
+`select` is ideal for simple interactive menus. It saves you from manually writing a prompt and parsing input.
+====
+
