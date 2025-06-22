@@ -1,0 +1,208 @@
+= Getting started
+
+In this section, you’ll learn the foundational elements of Bash scripting, including how to define and use variables, write comments, and create simple scripts. Each concept builds on the last, helping you get comfortable writing your own Bash scripts from scratch.
+
+=== Variables
+
+Variables in Bash are used to store and reference data. You assign a value using the `=` operator, and retrieve the value using the `$` symbol.
+
+[source,bash]
+----
+NAME="TRAW"
+
+echo ${NAME}     # => TRAW :This prints the variable value
+echo $NAME       # => TRAW :This prints the variable value
+echo "$NAME"     # => TRAW :This prints the variable value
+echo '$NAME'     # => $NAME : This will print the exact string, not the value
+echo "${NAME}!"  # => TRAW! : Concatenation of variable value with !
+----
+
+[WARNING]
+====
+When declaring variables, there must be no space between the variable name, the `=` sign, or the value:
+
+[source,bash]
+----
+NAME = "TRAW"   # => Error (due to spaces)
+----
+====
+
+[IMPORTANT]
+====
+To **assign** a value, you don’t use the dollar sign (`$`). But when you **reference** a variable’s value, you do:
+
+- Assignment: `NAME="TRAW"`
+- Reference: `echo $NAME`
+====
+
+=== Comments
+
+Comments help explain your code and are ignored during execution. Use the `#` symbol for single-line comments.
+
+[source,bash]
+----
+# This is an inline Bash comment.
+----
+
+For multi-line comments, Bash doesn’t have a dedicated syntax like other languages, but you can use a `: '` block trick.
+
+[source,bash]
+----
+: '
+This is a
+Multi-line comment
+in bash
+
+If it looks very neat
+'
+----
+
+[TIP]
+====
+For multi-line comments, use `: '` to open and `'` to close the block.
+====
+
+=== Example Script
+
+Here’s a simple Bash script that stores a greeting and prints it to the terminal.
+
+[source,bash]
+----
+#!/usr/bin/env bash
+
+greet="world World"
+echo "$greet!, I'm new here." 
+# => Hello world! I'm new here.
+----
+
+You can save this script to a file and run it in two ways:
+
+[source,bash]
+----
+$ chmod +x helloworld.sh
+$ ./helloworld.sh
+
+# or just
+$ bash helloworld.sh
+----
+
+=== Special Parameters
+
+Special parameters in Bash are predefined variables that give you information about arguments, the shell environment, and the script's execution state.
+
+[cols="1,3", options="header"]
+|===
+| Parameter | Description
+| `$1`…`$9`  | Parameters 1 to 9 (positional arguments)
+| `$0`       | Name of the script or the shell
+| `$1`       | First argument passed to the script or function
+| `${10}`    | Positional parameter 10 (and beyond)
+| `$#`       | Total number of positional parameters
+| `$*`       | All positional parameters as a single word
+| `$@`       | All positional parameters as separate words
+| `$$`       | Process ID of the current shell
+| `$-`       | Current shell options
+| `$_`       | Last argument of the previous command
+| `$!`       | PID of the last background command
+| `$?`       | Exit status of the last foreground command
+|===
+
+[NOTE]
+====
+`$*` and `$@` both expand all positional parameters, but behave differently when quoted. We'll explore that further in later sections.
+====
+
+[INFO]
+====
+For deeper reference, see: https://wiki.bash-hackers.org/syntax/shellvars#special_parameters_and_shell_variables
+====
+
+=== Functions
+
+Functions in Bash allow you to group reusable code into named blocks. You can define them with or without the `function` keyword.
+
+[source,bash]
+----
+#!/usr/bin/env bash
+
+get_username() {
+    echo "TRAW"
+}
+
+# Or using the function keyword
+function get_username() {
+    echo "TRAW"
+}
+
+echo "You are $(get_username)"
+----
+
+[TIP]
+====
+Functions can return values using `echo`, and the result can be captured via command substitution like `$(...)`.
+====
+
+=== Conditions
+
+Conditional statements in Bash allow you to make decisions in your scripts. The `if` statement evaluates whether a condition is true, and executes the appropriate block of code.
+
+[source,bash]
+----
+#!/usr/bin/env bash
+
+string="test"
+
+if [[ -z "$string" ]]; then
+    echo "String is empty"
+elif [[ -n "$string" ]]; then
+    echo "String is not empty"
+fi
+----
+
+[NOTE]
+====
+- `-z` checks if a string is empty.
+- `-n` checks if a string is not empty.
+- Use `[[ ... ]]` for more robust conditional expressions.
+====
+
+=== Command Substitution
+
+Command substitution lets you capture the output of a command and use it as part of another command or assignment.
+
+[source,bash]
+----
+# => I'm TRAW
+echo "I'm $(whoami)"
+
+# Similar to:
+echo "I'm `whoami`"
+----
+
+[IMPORTANT]
+====
+The modern syntax `$(command)` is preferred over backticks `` `command` `` because it’s easier to read and allows nesting.
+====
+
+=== Brace Expansion
+
+Brace expansion is a convenient way to generate strings or sequences in Bash.
+
+[cols="1,3", options="header"]
+|===
+| Example | Description
+| `$ echo {A,B}.txt` | Outputs: A.txt B.txt
+| `{A,B}`            | Expands to: A B
+| `{1..5}`           | Expands to: 1 2 3 4 5
+|===
+
+[TIP]
+====
+Brace expansion is useful for generating multiple similar strings without writing them out manually. Great for looping over files or ranges.
+====
+
+[INFO]
+====
+For more examples, see: https://wiki.bash-hackers.org/syntax/expansion/brace
+====
+
