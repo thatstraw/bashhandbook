@@ -1,0 +1,322 @@
+== Bash Arrays
+
+Arrays let you store multiple values in a single variable. Bash supports both indexed and associative arrays. Here's how to declare them:
+
+=== Array Declaration Syntax
+
+[cols="1,3", options="header"]
+|===
+| Syntax | Description
+| `ARRAY=()`          | Declares an **indexed** array and initializes it as empty. Also used to reset an existing array.
+| `ARRAY[0]=value`    | Sets the first element of an indexed array. If the array doesn't exist yet, it's created.
+| `declare -a ARRAY`  | Declares an indexed array without initializing it.
+| `declare -A ARRAY`  | Declares an **associative** array. This is the only way to create associative arrays in Bash.
+|===
+
+=== Storing Values in Arrays
+
+There are many ways to assign values to arrays in Bash. This includes assigning individual elements, using compound assignment, copying from other arrays, and even reading from files.
+
+[cols="1,3", options="header"]
+|===
+| Syntax | Description
+| `ARRAY[N]=VALUE` | Sets element `N` of an **indexed** array to `VALUE`. `N` can be any valid [arithmetic expression](https://wiki.bash-hackers.org/syntax/arith_expr).
+| `ARRAY[STRING]=VALUE` | Sets element `STRING` of an **associative** array to `VALUE`.
+| `ARRAY=VALUE` | Assigns `VALUE` to index `0` by default. This also works for associative arrays — `VALUE` is stored under key `"0"`.
+| `ARRAY=(E1 E2 …)` | Compound assignment for indexed arrays. Clears the array and assigns values starting at index 0. Does not work for associative arrays.
+| `ARRAY=([X]=E1 [Y]=E2 …)` | Indexed array assignment using index-value pairs. `X` and `Y` are arithmetic expressions.
+| `ARRAY=([S1]=E1 [S2]=E2 …)` | Compound assignment for **associative** arrays using string keys.
+| `ARRAY+=(E1 E2 …)` | Appends elements to the existing array.
+| `ARRAY=("${ARRAY[@]}" E1 …)` | Alternative method for appending elements using array expansion.
+| `ARRAY=("${ANOTHER_ARRAY[@]}")` | Copies elements from `ANOTHER_ARRAY` into `ARRAY`. Quotes are optional.
+| `ARRAY=("${ARRAY[@]}" "${ANOTHER_ARRAY[@]}")` | Concatenates two arrays. You can omit the quotes or use `*` instead of `@`.
+| `ARRAY=($(cat file))` | Reads a file and stores each word or line (depending on IFS) into an array.
+| `ARRAY=({N..M})` | Uses brace expansion to populate the array. `N` and `M` can be numbers or letters.
+|===
+
+[NOTE]
+====
+Compound assignment is very powerful and can be used to build arrays efficiently. Just be cautious: reassigning an array this way will unset previous values unless `+=` is used.
+====
+
+
+[INFO]
+====
+For clarification: When you use the subscripts `@` or `*` for mass-expanding arrays, their behavior matches that of `$@` and `$*` when [expanding positional parameters](https://wiki.bash-hackers.org/scripting/posparams#mass_usage). It's worth reading that article to fully understand the nuances.
+====
+
+=== Getting Values from Arrays
+
+You can access specific elements, the entire array, or a slice of elements using parameter expansion.
+
+[cols="1,3", options="header"]
+|===
+| Syntax | Description
+| `${ARRAY[N]}` | Gets the value at index `N` in an **indexed** array. If `N` is negative, it's counted backward from the highest assigned index (only for reading, not assigning).
+| `${ARRAY[S]}` | Gets the value at key `S` in an **associative** array.
+| `${ARRAY[@]}` | Expands to all elements (unquoted: expands to a word list).
+| `"${ARRAY[@]}"` | Expands to all elements, each quoted separately.
+| `${ARRAY[*]}` | Expands to all elements as a single word (if unquoted).
+| `"${ARRAY[*]}"` | Expands to all elements as one quoted string.
+| `${ARRAY[@]:N:M}` | Expands to a slice of `M` elements starting at index `N` (unquoted).
+| `"${ARRAY[@]:N:M}"` | Quoted slice expansion — each element quoted separately.
+| `${ARRAY[*]:N:M}` | Slice expansion with `*` (unquoted).
+| `"${ARRAY[*]:N:M}"` | Slice expansion with `*`, quoted as a single string.
+|===
+
+[INFO]
+====
+For clarification: When using `@` or `*` to expand arrays, their behavior mirrors how `$@` and `$*` behave with [positional parameters](https://wiki.bash-hackers.org/scripting/posparams#mass_usage).
+
+- Quoted `"$@"` → each element separately quoted.
+- Quoted `"$*"` → all elements quoted as one string.
+- Unquoted `@` and `*` behave the same — they expand to a space-separated list of elements.
+
+When using slicing, the same quoting rules apply. If you're getting unexpected results, check your Bash version and test in your shell.
+====
+
+=== Indexes and Metadata
+
+You can inspect arrays using special parameter expansion patterns that give you access to their structure and metadata.
+
+[cols="1,3", options="header"]
+|===
+| Syntax | Description
+| `${ARRAY[0]}` | Gets the first element. See the **Getting Values** section.
+| `${ARRAY[-1]}` | Gets the last element (backward index — read-only).
+| `${ARRAY[*]}` | Expands to all elements. See the **Getting Values** section.
+| `${ARRAY[@]}` | Same as above. See the **Getting Values** section.
+| `${#ARRAY[@]}` | Expands to the **number of elements** in the array.
+| `${#ARRAY[*]}` | Same as above — total number of items.
+| `${#ARRAY}` | Expands to the **length** of the first element only.
+| `${#ARRAY[N]}` | Expands to the **length** of the string at index `N`.
+| `${#ARRAY[STRING]}` | Expands to the length of the associative array value at key `STRING`.
+| `${#ARRAY[@]:N:M}` | Expands to the number of elements from index `N` up to `N+M`. `M` is optional.
+| `${#ARRAY[*]:N:M}` | Same as above with `*` instead of `@`.
+| `${!ARRAY[@]}` | Expands to a list of all indexes in the array.
+| `${!ARRAY[*]}` | Same as above.
+|===
+
+=== Destroying Arrays
+
+You can remove individual elements or entire arrays using the `unset` built-in.
+
+[cols="1,3", options="header"]
+|===
+| Syntax | Description
+| `unset -v ARRAY` | Unsets the entire array.
+| `unset -v ARRAY[@]` | Same — clears the entire array.
+| `unset -v ARRAY[*]` | Same — clears the entire array.
+| `unset -v 'ARRAY[N]'` | Unsets the element at index `N`. Always quote the index.
+| `unset -v ARRAY[STRING]` | Removes an element from an associative array at key `STRING`.
+| `ARRAY=( ${ARRAY[@]/STR*/} )` | Removes elements matching a pattern (`STR`).
+| `ARRAY=( ${ARRAY[*]/STR*/} )` | Same as above.
+|===
+
+[TIP]
+====
+It’s best to explicitly use `-v` with `unset` for clarity and portability.
+
+See: https://wiki.bash-hackers.org/commands/builtin/unset#portability_considerations
+====
+
+[INFO]
+====
+💡 Learn more: https://wiki.bash-hackers.org/syntax/arrays
+====
+
+=== Array Discussion
+
+This section takes a deeper look at how arrays work in Bash. You'll explore different ways to assign values to both indexed and associative arrays, how to append and merge them, and how to loop through elements. We'll also cover how to pass arrays to functions, extract values, and remove elements using built-in tools and expansion syntax.
+
+
+==== Compound Indexed Array Assignment
+
+You can assign an entire array at once using parentheses. This sets all elements in one step, starting from index 0.
+
+[source,bash]
+----
+# Compound array assignment - sets the whole array
+# NAMES => Creg Jan Anna
+NAMES=('Creg' 'Jan' 'Anna')
+
+# Using declare with compound assignment
+declare -a Numbers=(1 2 3)
+----
+
+==== Indexed Array Assignment
+
+You can also assign elements one at a time by specifying the index. The index can be any valid arithmetic expression.
+
+[source,bash]
+----
+NAMES[0]='Creg'
+NAMES[1]='Jan'
+NAMES[2]='Anna'
+# NAMES => Creg Jan Anna
+----
+
+==== Indexed Array Assignment Using Brace Expansion
+
+Brace expansion is a quick way to generate predictable patterns for array elements.
+
+[source,bash]
+----
+ARRAY1=(foo{1..2})        # => foo1 foo2
+ARRAY2=({A..D})           # => A B C D
+ARRAY3=({1..5})           # => 1 2 3 4 5
+ARRAY4=({A..B}{1..2})     # => A1 A2 B1 B2
+----
+
+==== Key-Based Associative Array Assignment
+
+Associative arrays store values using string keys. You must use `declare -A` to define one.
+
+[source,bash]
+----
+declare -A person
+
+person[name]="Jay"
+person[age]=22
+person[eye_color]="blue"
+
+# person => Jay 22 blue
+----
+
+==== Compound Associative Array Assignment
+
+You can initialize all keys and values at once using a compound assignment.
+
+[source,bash]
+----
+: '
+Individual mass-setting for associative arrays.
+The named indexes (e.g., name, age) are strings.
+'
+
+declare -A person  # Required declaration
+person=(["name"]="Jay" [age]=22 ["eye_color"]="blue")
+
+# person => Jay 22 blue
+----
+
+==== Working with Associative Arrays
+
+Once an associative array is created, you can interact with it using standard Bash expansions.
+
+[source,bash]
+----
+declare -A person 
+person=(["name"]="Jay" [age]=22 ["eye_color"]="blue")
+
+echo ${person[name]}    # Get person's name
+echo ${person[@]}       # Get all values
+echo ${person[*]}       # Get all values
+echo ${!person[@]}      # Get all keys
+echo ${#person[@]}      # Get number of elements
+
+unset -v person[age]    # Delete age entry
+----
+
+[NOTE]
+====
+All of these operations work the same way with indexed arrays — just use numeric indexes instead of string keys.
+====
+
+==== Appending Values to Arrays
+
+You can add new elements to an array using the `+=` operator or by expanding the current array into a new list.
+
+[source,bash]
+----
+NAMES=('Creg' 'Jan' 'Anna')
+
+NAMES+=('Jay' 'Jimmy' 'Tom')
+# NAMES => Creg Jan Anna Jay Jimmy Tom
+
+# Same as:
+NAMES=(${NAMES[@]} 'Jay' 'Jimmy' 'Tom')
+# NAMES => Creg Jan Anna Jay Jimmy Tom
+----
+
+==== Iterating Over an Indexed Array
+
+You can loop through array values directly or use indices to access each element.
+
+[source,bash]
+----
+names=('Jay' 'Joe' 'Jimmy')
+
+# Direct element access
+for name in "${names[@]}"; do
+    echo $name
+done
+
+# Index-based access
+for i in "${!names[@]}"; do
+    printf "%s\t%s\n" "$i" "${names[$i]}"
+done
+----
+
+==== Iterating Over an Associative Array
+
+Looping over associative arrays is similar — just replace numeric indexes with string keys.
+
+[source,bash]
+----
+declare -A person 
+person=(["name"]="Jay" [age]=22 ["eye_color"]="blue")
+
+# Loop over values
+for value in "${person[@]}"; do
+    echo $value
+done
+
+# Loop over keys and values
+for key in "${!person[@]}"; do
+    echo "$key  ${person[$key]}"
+done
+----
+
+==== Merging / Concatenating Arrays
+
+You can merge multiple arrays into one using parameter expansion.
+
+[source,bash]
+----
+ARRAY1=(foo{1..2})   # => foo1 foo2
+ARRAY2=({A..D})      # => A B C D
+ARRAY3=({1..5})      # => 1 2 3 4 5
+
+# Merge all into one
+ARRAY4=(${ARRAY1[@]} ${ARRAY2[@]} ${ARRAY3[@]})
+# ARRAY4 => foo1 foo2 A B C D 1 2 3 4 5
+
+# You can also use * instead of @
+# ARRAY4=(${ARRAY1[*]} ${ARRAY2[*]} ${ARRAY3[*]})
+----
+
+==== Array Arguments to Functions
+
+You can pass arrays to functions using **namerefs** (`local -n`) to make them accessible by name.
+
+[source,bash]
+----
+function extract()
+{
+    # Create a local reference to the array passed as $1
+    local -n local_names=$1
+    local index=$2
+    echo "${local_names[$index]}"
+}
+
+names=('Jay' 'Joe' 'Jimmy')
+
+extract names 2     # => Jimmy
+----
+
+[IMPORTANT]
+====
+Namerefs (using `local -n`) are supported in Bash 4.3 and later.
+====
+
