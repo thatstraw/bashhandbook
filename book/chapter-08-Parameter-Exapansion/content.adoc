@@ -1,0 +1,121 @@
+= Bash Parameter Expansion
+
+Parameter expansion in Bash gives you powerful tools to manipulate variable content directly within the shell—without needing to rely on external commands. It's commonly used for string trimming, pattern replacement, conditional value assignment, and more. These operations are lightweight and efficient because they are handled internally by the shell.
+
+== Syntax
+
+These forms let you modify variables by removing or replacing portions of their contents based on patterns. You can strip prefixes or suffixes, or perform inline substitutions using search-and-replace logic.
+
+[cols="1,3", options="header"]
+|===
+| Syntax | Description
+| `${parameter%suffix}` | Remove suffix
+| `${parameter#prefix}` | Remove prefix
+| `${parameter%%suffix}` | Remove longest matching suffix
+| `${parameter##prefix}` | Remove longest matching prefix
+| `${parameter/pattern/string}` | Replace first `pattern` match with `string`
+| `${parameter//pattern/string}` | Replace all `pattern` matches with `string`
+| `${parameter/%pattern/string}` | Replace suffix `pattern` with `string`
+| `${parameter/#pattern/string}` | Replace prefix `pattern` with `string`
+|===
+
+== Substrings
+
+You can extract specific portions of a string using a start position and length, similar to substring functions in other programming languages. Bash also allows indexing from the end of the string using negative numbers.
+
+[cols="1,3", options="header"]
+|===
+| Syntax | Description
+| `${FOO:0:3}` | Substring (position, length)
+| `${FOO:(-3):3}` | Substring from the right
+|===
+
+== Length
+
+You can retrieve the length of a variable’s value—particularly useful when validating input or processing strings programmatically.
+
+[cols="1,3", options="header"]
+|===
+| Syntax | Description
+| `${#FOO}` | Length of `$FOO`
+|===
+
+== Default Values
+
+These forms allow you to define fallback behaviors when a variable is unset or null. You can provide a default value, assign one on the fly, or even display an error if a variable isn’t set.
+
+[cols="1,3", options="header"]
+|===
+| Syntax | Description
+| `${FOO:-val}` | `$FOO`, or `val` if unset
+| `${FOO:=val}` | Set `$FOO` to `val` if unset
+| `${FOO:+val}` | `val` if `$FOO` is set
+| `${FOO:?message}` | Show message and exit if `$FOO` is unset
+|===
+
+== Substitution
+
+[source,bash]
+----
+echo ${food:-Cake}  #=> $food or "Cake"
+STR="/path/to/foo.cpp"
+echo ${STR%.cpp}    # /path/to/foo
+echo ${STR%.cpp}.o  # /path/to/foo.o
+echo ${STR%/*}      # /path/to
+
+echo ${STR##*.}     # cpp (extension)
+echo ${STR##*/}     # foo.cpp (basepath)
+
+echo ${STR#*/}      # path/to/foo.cpp
+echo ${STR##*/}     # foo.cpp
+
+echo ${STR/foo/bar} # /path/to/bar.cpp
+----
+
+== Slicing
+
+[source,bash]
+----
+name="John"
+echo ${name}           # => John
+echo ${name:0:2}       # => Jo
+echo ${name::2}        # => Jo
+echo ${name::-1}       # => Joh
+echo ${name:(-1)}      # => n
+echo ${name:(-2)}      # => hn
+echo ${name:(-2):2}    # => hn
+
+length=2
+echo ${name:0:length}  # => Jo
+----
+
+== Substrings
+
+== Basepath & Dirpath
+
+[source,bash]
+----
+SRC="/path/to/foo.cpp"
+BASEPATH=${SRC##*/}   
+echo $BASEPATH  # => "foo.cpp"
+
+DIRPATH=${SRC%$BASEPATH}
+echo $DIRPATH   # => "/path/to/"
+----
+
+== Transform
+
+[source,bash]
+----
+STR="HELLO WORLD!"
+echo ${STR,}   # => hELLO WORLD!
+echo ${STR,,}  # => hello world!
+
+STR="hello world!"
+echo ${STR^}   # => Hello world!
+echo ${STR^^}  # => HELLO WORLD!
+
+ARR=(hello World)
+echo "${ARR[@],}" # => hello world
+echo "${ARR[@]^}" # => Hello World
+----
