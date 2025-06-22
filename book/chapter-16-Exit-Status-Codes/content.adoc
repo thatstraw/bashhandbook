@@ -1,0 +1,178 @@
+= Exit Status and the `exit` Command
+
+In Bash, every command you run has an exit status. This exit status is a numeric code that tells you whether the command succeeded or failed. Understanding and using exit codes is essential for scripting logic and error handling.
+
+== What Is an Exit Status?
+
+Every command that runs in Bash returns an exit status when it completes:
+
+- `0` means success — the command ran without any errors.
+- Any non-zero number indicates a failure or an error.
+
+Bash provides a special variable, `$?`, which always holds the exit status of the last executed command.
+
+.Example: Successful command
+[source,bash]
+----
+cat manifesto.txt
+echo $?
+----
+
+.Output
+[source,console]
+----
+A Gentle reminder, I use Arch BTW!
+0
+----
+
+In this example, `cat` successfully displayed the file, so the exit status is `0`.
+
+.Example: Failed command
+[source,bash]
+----
+cat no-file
+echo $?
+----
+
+.Output
+[source,console]
+----
+cat: no-file: No such file or directory
+1
+----
+
+This time, the file doesn’t exist, so the command fails and the exit code is `1`.
+
+[INFO]
+====
+The exact exit codes and their meanings can vary depending on the command. You can often find exit code definitions in the command’s `man` page.
+====
+
+== Exit Status with Pipelines
+
+When using pipes (`|`) to chain commands, the exit status stored in `$?` will be the exit code of the **last command** in the pipeline — not the first, even if the first one failed.
+
+.Example: Last command determines the exit status
+[source,bash]
+----
+ls -lah | head -n 4
+echo $?
+----
+
+.Output
+[source,console]
+----
+total 88K
+drwxr-x--- 5 mint mint 4.0K Mar 13 22:24 .
+drwxr-xr-x 5 root root 4.0K Nov 22 13:54 ..
+-rw------- 1 mint mint 5.6K Mar  5 17:20 .bash_history
+0
+----
+
+The `head` command ran fine, so the exit status is `0`, even if `ls` had failed, it wouldn't show up here.
+
+.Example: First command fails, but exit status is still 0
+[source,bash]
+----
+ls -lah no-directory | head -n 4
+echo $?
+----
+
+.Output
+[source,console]
+----
+ls: cannot access 'no-directory': No such file or directory
+0
+----
+
+[IMPORTANT]
+====
+Even though `ls` failed, the exit status reflects the result of `head`, which succeeded.  
+This behavior is important to remember when checking for command failures inside a pipeline.
+====
+
+To retrieve the exit status of **all** commands in a pipeline, use the `${PIPESTATUS[@]}` array:
+
+[source,bash]
+----
+ls no-dir | head
+echo "${PIPESTATUS[@]}"
+----
+
+== The `exit` Command
+
+The `exit` command ends a Bash script and returns an exit status to the shell.
+
+[source,bash]
+----
+exit N
+----
+
+- If `N` is provided, `exit` returns that as the script's exit code.
+- If no value is provided, the script exits with the status of the last command.
+
+[NOTE]
+====
+This also applies to the interactive shell. Typing `exit 0` will close your shell session with a "successful" status.
+====
+
+== Using `exit` in Scripts
+
+You can control the exit status of a script to communicate success or failure to whatever called it. This is useful for automation tools, cron jobs, and error handling logic.
+
+[source,bash]
+----
+#!/bin/bash
+
+FILE=~/logs.txt
+
+if test -f "$FILE"; then
+  echo "$FILE exists."
+  exit 2
+else
+  echo "$FILE doesn't exist."
+  exit 4
+fi
+----
+
+- If the file exists, the script exits with status `2`.
+- If it doesn’t, it exits with `4`.
+
+You can check this afterward using:
+
+[source,bash]
+----
+echo $?
+----
+
+== What If You Don’t Pass an Argument?
+
+If no argument is passed to `exit`, it returns the exit code of the **last executed command**:
+
+[source,bash]
+----
+#!/bin/bash
+
+FILE=~/logs.txt
+
+if test -f "$FILE"; then
+  echo "$FILE exists."
+  exit
+else
+  echo "$FILE doesn't exist."
+  touch logs.txt
+  exit
+fi
+----
+
+In this case:
+
+- If the file exists, the exit code will match the exit status of the `echo` command.
+- If not, the exit status will match that of the `touch` command.
+
+[IMPORTANT]
+====
+If you don’t use `exit` explicitly at all, the script still exits using the last command’s status.
+====
+
+

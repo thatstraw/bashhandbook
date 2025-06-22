@@ -1,0 +1,196 @@
+= Quoting in Bash
+
+Quoting can be tricky for new Linux users. Bash uses special characters like `$`, `*`, and backticks (`` ` ``) to represent variables, wildcards, and command substitution. But what if you want to display these characters *literally*, without triggering their special meanings?
+
+That’s where quoting comes in. Bash provides three main ways to control how special characters behave:
+
+- Double quotes: `"..."` allow some interpretation.
+- Single quotes: `'...'` treat everything literally.
+- Backslashes: `\` escape specific characters.
+
+Understanding when and how to use each quoting method is essential when writing reliable scripts or working at the command line.
+
+== Using Double Quotes
+
+Double quotes `"..."` allow Bash to interpret some—but not all—special characters. Variables and command substitutions are expanded, but wildcards (`*`) and filename globbing are not.
+
+=== Expanding Variables
+
+This command will expand the `$USER` variable to your current username:
+
+[source,bash]
+----
+echo "$USER"
+----
+
+.Output:
+[source]
+----
+traw
+----
+
+=== Command Substitution Inside Double Quotes
+
+[source,bash]
+----
+echo "The time is `date`."
+----
+
+.Output:
+[source]
+----
+The time is Wed Feb 28 22:44:37 SAST 2024.
+----
+
+You can also use the modern `$()` syntax:
+
+[source,bash]
+----
+echo "Today is $(date)"
+----
+
+=== What Gets Interpreted Inside Double Quotes?
+
+- **Variable Expansion**: `"My home is $HOME"`
+- **Command Substitution**: `"Time: $(date)"`
+
+But wildcards stay literal:
+
+[source,bash]
+----
+echo "*.txt"
+----
+
+.Output:
+[source]
+----
+*.txt
+----
+
+Compare that with unquoted output:
+
+[source,bash]
+----
+echo *.txt
+----
+
+.Output (example):
+[source]
+----
+data.txt hello.txt new.txt
+----
+
+=== Example: Breaking Long Lines
+
+[source,bash]
+----
+echo "This is a long string that \
+spans multiple \
+lines"
+----
+
+.Output:
+[source]
+----
+This is a long string that spans multiple lines
+----
+
+== Using Single Quotes
+
+Single quotes `'...'` completely disable interpretation. Everything inside is printed *exactly* as it appears.
+
+=== Example: Printing a Variable Name
+
+[source,bash]
+----
+echo '$USER'
+----
+
+.Output:
+[source]
+----
+$USER
+----
+
+No expansion happens. Bash treats everything inside as literal text.
+
+=== Example: Disabling Wildcards and Substitution
+
+[source,bash]
+----
+echo '*.txt'
+echo 'Today is $(date)'
+----
+
+.Output:
+[source]
+----
+*.txt
+Today is $(date)
+----
+
+=== When to Use Single Quotes
+
+Use them when you *don’t want* Bash to interpret anything:
+
+- To print wildcards like `*`
+- To show variable names like `$HOME`
+- To include command syntax like `$(...)`
+
+With single quotes, there is **no** expansion or evaluation.
+
+== Using Backslashes
+
+The backslash `\` escapes a single character, telling Bash to treat it literally—even inside unquoted or double-quoted strings.
+
+=== Escaping Dollar Signs
+
+[source,bash]
+----
+echo \$PATH
+----
+
+.Output:
+[source]
+----
+$PATH
+----
+
+=== Escaping Quotes
+
+[source,bash]
+----
+echo \"Hello, Linux folks\"
+----
+
+.Output:
+[source]
+----
+"Hello, Linux folks"
+----
+
+This is equivalent to quoting the entire string:
+
+[source,bash]
+----
+echo '"Hello, Linux folks"'
+----
+
+=== When to Use Backslashes
+
+Use them to:
+
+- Escape special characters: `\$`, `\*`, `\``
+- Continue long lines: `\`
+- Escape spaces in filenames
+- Prevent globbing (wildcard expansion)
+
+== Summary
+
+Quoting gives you fine-grained control over how Bash treats special characters. Here’s the difference:
+
+- Use **double quotes** when you want to allow variable and command expansion but suppress globbing.
+- Use **single quotes** when you want the entire string treated literally.
+- Use **backslashes** to escape just one character at a time.
+
+Once you understand these rules, you’ll avoid surprises in your scripts—and prevent Bash from doing something unexpected with your special characters.

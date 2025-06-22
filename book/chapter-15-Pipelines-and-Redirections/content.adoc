@@ -1,0 +1,163 @@
+== Pipelines and Redirections
+
+== Pipelines in Bash
+
+Pipelines are one of Bash's most powerful features, allowing you to connect commands together so that the output of one becomes the input of the next. This chaining mechanism enables complex data processing to be written in a clean and efficient way.
+
+=== What Is a Pipeline?
+
+A pipeline is a sequence of commands connected by the pipe symbol (`|`). Bash sends the standard output (stdout) of the command on the left side of the pipe as standard input (stdin) to the command on the right.
+
+.Syntax
+[source,bash]
+----
+command1 | command2 | command3
+----
+
+Each command processes the data it receives and passes it along the chain. This allows for complex processing in one line.
+
+=== Basic Example
+
+.Example: Count the number of lines containing the word "error" in a log file
+[source,bash]
+----
+grep "error" log.txt | wc -l
+----
+
+Here's what happens:
+
+* `grep "error" log.txt` finds all lines with the word "error".
+* `wc -l` counts how many lines `grep` returned.
+
+=== Filtering and Transforming Data
+
+Pipelines are especially powerful when combined with text processing tools like `grep`, `sed`, `awk`, `cut`, and `sort`.
+
+.Example: Replace the word "failure" with "success" in lines that contain "error"
+[source,bash]
+----
+grep "error" log.txt | sed 's/failure/success/g'
+----
+
+What's happening here:
+
+* `grep` filters lines containing "error".
+* `sed` replaces every instance of "failure" with "success" in those lines.
+
+=== Combining Pipelines with Redirection
+
+You can combine pipelines with redirection operators to save or read from files.
+
+.Example: Save the output of a pipeline to a file
+[source,bash]
+----
+command1 | command2 > output.txt
+----
+
+.Example: Feed input to a pipeline from a file
+[source,bash]
+----
+command1 < input.txt | command2
+----
+
+You can also redirect standard error:
+
+.Example: Redirect stderr to a file while piping stdout
+[source,bash]
+----
+command1 2> errors.txt | command2
+----
+
+=== Real-World Example
+
+.Example: Extract and deduplicate log information
+[source,bash]
+----
+grep "error" log.txt | awk '{print $3, $5}' | sort | uniq > unique_errors.txt
+----
+
+Step-by-step breakdown:
+
+* `grep "error" log.txt` filters lines with "error".
+* `awk '{print $3, $5}'` selects the 3rd and 5th fields from each line.
+* `sort` organizes the lines alphabetically.
+* `uniq` removes duplicates.
+* `>` writes the result to `unique_errors.txt`.
+
+Pipelines let you:
+
+* Combine multiple commands for cleaner, more expressive shell scripts.
+* Pass data from one tool to another seamlessly.
+* Process and transform large datasets without temporary files.
+
+Use them whenever you find yourself doing multiple steps on the same data — they're the glue that makes shell scripting flexible and composable.
+
+== Redirections in Bash
+
+When working with input and output in Bash, everything is treated as a stream of data. These streams are managed using **file descriptors**. By default, three file descriptors are always open in a shell session:
+
+[cols="1,1,4",options="header"]
+|===
+| File Descriptor | Abbreviation | Description
+| `0` | `STDIN` | Standard input. This is usually your keyboard. When you use the input redirection symbol (`<`), Bash reads input from a file as if it were typed at the keyboard.
+| `1` | `STDOUT` | Standard output. This is usually your terminal screen. When you use the output redirection symbol (`>`), Bash writes the output to a file instead of the screen.
+| `2` | `STDERR` | Standard error. Like `STDOUT`, this normally writes to your screen, but is used specifically for error messages. You can redirect it using `2>` to capture error output separately.
+|===
+
+[TIP]
+====
+Unless explicitly closed, file descriptors always point to something—typically your terminal when Bash starts.
+
+In addition to `0`, `1`, and `2`, you can open and close custom file descriptors (`3`, `4`, `5`, ...), and even duplicate them to point to the same location. These are powerful tools for advanced scripting and redirection techniques.
+====
+
+Coming up next: how to use redirection symbols (`>`, `>>`, `<`, `2>`, `&>`, and so on) in practice.
+
+=== Redirection Operators
+
+Redirection in Bash allows you to control where input comes from and where output goes. Below is a comprehensive list of redirection operators and what they do.
+
+[cols="2,6", options="header"]
+|===
+| Redirection | Description
+| `command > file` | Redirect standard output (stdout) of a command to a file. Same as `command 1> file`.
+| `command 2> file` | Redirect standard error (stderr) to a file.
+| `command >> file` | Append stdout to a file without overwriting existing content.
+| `command 2>> file` | Append stderr to a file without overwriting existing content.
+| `command &> file` | Redirect both stdout and stderr to a file. Same as `command > file 2>&1`. **[WARNING]** The order matters — `command 2>&1 > file` will not behave the same.
+| `command > /dev/null` | Discard stdout completely.
+| `command 2> /dev/null` | Discard stderr completely.
+| `command &> /dev/null` | Discard both stdout and stderr. Same as `command > /dev/null 2>&1`.
+| `command < file` | Read standard input from a file. Same as `command 0< file`.
+| `command << EOL`<br/>`line1`<br/>`line2`<br/>`EOL` | A here-document. Redirects a block of text as input to a command, until a line matching `EOL` is encountered.
+| `command <<- EOL`<br/>`\tfoo`<br/>`\t\tbar`<br/>`EOL` | A here-document that strips leading tabs from the content. Note the `<<-` operator.
+| `command <<< 'string'` | A here-string. Redirects a single line or variable as input to a command.
+| `command >| file` | Force overwrite a file, even if `noclobber` is set.
+| `exec 2> file` | Redirect stderr of all subsequent commands in the script to a file.
+| `exec > file` | Redirect stdout of all subsequent commands to a file.
+| `exec 3< file` | Open file descriptor 3 for reading from a file.
+| `exec 3> file` | Open file descriptor 3 for writing to a file.
+| `exec 3<> file` | Open file descriptor 3 for both reading and writing.
+| `exec 3>&-` | Close file descriptor 3.
+| `exec 4<&3` | Copy file descriptor 3 to 4 (read mode).
+| `exec 4>&3-` | Copy file descriptor 3 to 4 and then close 3.
+| `echo "foo" >&3` | Write to file descriptor 3.
+| `cat <&3` | Read from file descriptor 3.
+| `exec 3<> /dev/tcp/host/port` | Open a TCP connection to host:port (Bash feature).
+| `exec 3<> /dev/udp/host/port` | Open a UDP connection to host:port (Bash feature).
+| `(cmd1; cmd2) > file` | Run commands in a subshell and redirect their combined stdout to a file.
+| `{ cmd1; cmd2; } > file` | Run multiple commands in the current shell (no subshell) and redirect stdout to a file. **[IMPORTANT]** Spaces are required around the braces.
+| `command <(command1)` | Process substitution. Redirect stdout of `command1` to a FIFO and pass its path as a file argument to `command`.
+| `command < <(command1)` | Redirect stdout of `command1` to stdin of `command`. Common with tools like `diff`.
+| `command <(command1) <(command2)` | Provide multiple substituted outputs as input file arguments to a command.
+| `command1 >(command2)` | Run `command2` with its stdin connected to a FIFO. Pass the FIFO filename to `command1`.
+| `command1 > >(command2)` | Redirect stdout of `command1` into `command2` using an anonymous FIFO.
+| `command1 | command2` | Pipe stdout of `command1` to stdin of `command2`. Equivalent to: `command1 > >(command2)` `command2 < <(command1)` `> >(command2) command1` `< <(command1) command2`
+| `command1 |& command2` | Pipe both stdout and stderr of `command1` to stdin of `command2`. (Requires Bash 4.0+)
+| `command | tee file` | Write stdout to both a file and the terminal.
+| `exec {filew}> file` | Open a file for writing using a named file descriptor (Bash 4.1+).
+| `command 3>&1 1>&2 2>&3` | Swap stdout and stderr.
+| `cmd > >(cmd1) 2> >(cmd2)` | Send stdout to `cmd1` and stderr to `cmd2` using separate FIFOs.
+| `cmd1 | cmd2 | cmd3 | cmd4`<br/>`echo ${PIPESTATUS[@]}` | Get the exit status of each command in the pipeline.
+|===
+

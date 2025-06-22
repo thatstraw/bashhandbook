@@ -1,0 +1,140 @@
+= Globbing in Bash
+
+Globbing is Bash’s built-in pattern-matching mechanism for filenames. It allows you to use wildcard characters to match multiple files or directories without having to name them one by one. While it may look similar to regular expressions, globbing is strictly used for filename expansion in the shell — not for pattern matching in tools like `grep` or `sed`.
+
+== What Is Globbing?
+
+Bash expands wildcard patterns into matching filenames. This expansion happens **before** the command is run. The most commonly used globbing characters are:
+
+* `*` – matches **zero or more** characters
+* `?` – matches **exactly one** character
+* `[]` – matches **one character** from a set or range
+
+These patterns help automate file processing tasks in shell scripts or interactive use.
+
+== Matching Any String with `*`
+
+The asterisk (`*`) matches any number of characters, including none.
+
+.Example: List all files in the current directory
+[source,bash]
+----
+ls *
+----
+
+.Example: Match all `.txt` files
+[source,bash]
+----
+ls *.txt
+----
+
+This will match:
+
+[source]
+----
+notes.txt
+report.txt
+summary.txt
+----
+
+But not:
+
+[source]
+----
+image.png
+----
+
+
+== Matching a Single Character with `?`
+
+The question mark (`?`) matches exactly **one** character. It’s useful when you expect consistent filename structures.
+
+.Example: Match files like `file1.txt`, `fileA.txt`
+[source,bash]
+----
+ls file?.txt
+----
+
+This would match:
+
+[source]
+----
+file1.txt
+fileA.txt
+----
+
+but not:
+
+[source]
+----
+file12.txt
+file.txt
+----
+
+
+== Matching Specific Characters with `[]`
+
+Square brackets allow you to define a set or range of characters. Bash will match **any one character** from the list inside the brackets.
+
+.Example: Match file1.txt to file5.txt
+[source,bash]
+----
+ls file[1-5].txt
+----
+
+.Example: Match any letter after "file", regardless of case
+[source,bash]
+----
+ls file[a-zA-Z]*.txt
+----
+
+This pattern matches:
+
+[source]
+----
+filea.txt
+fileZebra.txt
+----
+
+
+== Matching Hidden Files
+
+In Unix-based systems, files beginning with a dot (`.`) are considered hidden. You can match them specifically using patterns that start with a dot.
+
+.Example: List all hidden files and directories
+[source,bash]
+----
+ls -a
+----
+
+.Example: Match all hidden files with globbing
+[source,bash]
+----
+ls .*
+----
+
+This will include:
+
+[source]
+----
+.bashrc
+.gitconfig
+.profile
+----
+
+
+[IMPORTANT]
+====
+The glob `*` does **not** match hidden files by default. You must explicitly use `.*` to include them.
+====
+
+== Summary
+
+Globbing gives you a powerful and intuitive way to match groups of files. Use:
+
+- `*` to match anything
+- `?` to match a single character
+- `[]` to match characters from a list or range
+- `.*` to match hidden files
+
+It's one of those small features in Bash that makes a big difference once you understand how it works.

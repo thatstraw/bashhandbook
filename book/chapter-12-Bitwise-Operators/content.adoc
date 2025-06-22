@@ -1,0 +1,127 @@
+= Bitwise Operators in Bash
+
+Bitwise operators allow you to manipulate data at the binary level — flipping, shifting, or combining bits. These operators are useful in scripts where you work with system flags, low-level network operations, or data processing that benefits from binary logic.
+
+== What Are Bits and Bytes?
+
+Before diving into the operators, it’s important to understand how numbers are represented in binary. Each binary digit (bit) holds a value of either 0 or 1.
+
+A byte is made up of 8 bits and can represent numbers from 0 to 255. For example:
+
+----
+Decimal: 13
+Binary:  00001101
+----
+
+Each position in a binary number represents a power of 2, increasing from right to left.
+
+== Supported Bitwise Operators in Bash
+
+Bash supports six bitwise operators:
+
+[cols="1,3", options="header"]
+|===
+| Operator | Description
+| &        | Bitwise AND
+| \|       | Bitwise OR
+| ^        | Bitwise XOR (exclusive OR)
+| ~        | Bitwise NOT
+| <<       | Left Shift
+| >>       | Right Shift
+|===
+
+All bitwise operations in Bash are performed using the `$((...))` arithmetic expansion syntax.
+
+== Bitwise AND (`&`)
+
+The AND operator compares two numbers bit by bit. It only sets a bit to 1 if *both* bits are 1.
+
+[source, bash]
+----
+a=15     # 1111
+b=7      # 0111
+result=$((a & b))
+echo $result  # Output: 7
+----
+
+The binary result of `1111 & 0111` is `0111`, which is 7 in decimal.
+
+== Bitwise OR (`|`)
+
+The OR operator sets a bit to 1 if *either* bit is 1.
+
+[source, bash]
+----
+a=15     # 1111
+b=7      # 0111
+result=$((a | b))
+echo $result  # Output: 15
+----
+
+`1111 | 0111` results in `1111`, or 15 in decimal.
+
+== Bitwise XOR (`^`)
+
+The XOR operator sets a bit to 1 only if the bits are different.
+
+[source, bash]
+----
+a=15     # 1111
+b=7      # 0111
+result=$((a ^ b))
+echo $result  # Output: 8
+----
+
+`1111 ^ 0111` equals `1000`, or 8 in decimal.
+
+== Bitwise NOT (`~`)
+
+The NOT operator flips every bit of the number. In Bash (and most shells), numbers are signed 32-bit integers. So flipping all bits of a number results in a negative value.
+
+[source, bash]
+----
+a=15     # 00000000 00000000 00000000 00001111
+result=$((~a))
+echo $result  # Output: -16
+----
+
+Flipping all bits of `15` yields `-16` because of two’s complement representation.
+
+== Bitwise Left Shift (`<<`)
+
+This operator shifts all bits to the left, effectively multiplying the number by 2 for each shift.
+
+[source, bash]
+----
+a=8     # 1000
+result=$((a << 2))
+echo $result  # Output: 32
+----
+
+`1000 << 2` becomes `100000`, which is 32 in decimal.
+
+== Bitwise Right Shift (`>>`)
+
+This operator shifts bits to the right, effectively dividing the number by 2 for each shift.
+
+[source, bash]
+----
+a=32    # 100000
+result=$((a >> 2))
+echo $result  # Output: 8
+----
+
+`100000 >> 2` becomes `1000`, which is 8 in decimal.
+
+== Practical Uses of Bitwise Operators
+
+- Toggle feature flags in configuration variables
+- Parse protocol headers or status registers
+- Perform quick integer multiplications/divisions
+- Create masks for selective bit extraction
+
+[NOTE]
+====
+While not used daily in typical scripting tasks, bitwise operators become powerful tools in performance-sensitive scripts or when dealing with binary data.
+====
+

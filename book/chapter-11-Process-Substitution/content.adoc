@@ -1,0 +1,80 @@
+= Process Substitution
+
+Process substitution allows you to use the output or input of a command as if it were a file. This makes it possible to pass the output of one command directly into another where a file is normally expected.
+
+== Syntax
+
+[source,bash]
+----
+<(command)    # Treats output as a file (used as input)
+>(command)    # Treats input as a file (receives output)
+----
+
+The `<(...)` form is the most commonly used. It creates a temporary, system-managed file descriptor that the receiving command can read from.
+
+== Comparing Files
+
+You can compare the output of commands without writing temporary files:
+
+[source,bash]
+----
+diff <(sort data.txt) <(sort backup-data.txt)
+----
+
+This compares the sorted contents of two files directly using `diff`, without needing to create intermediate files.
+
+== Comparing Command Output
+
+[source,bash]
+----
+diff <(ls /data) <(ls /data-backup)
+----
+
+Here, `ls` output from two directories is compared using `diff`, treating both outputs as if they were files.
+
+== Searching Through Output
+
+[source,bash]
+----
+grep 'error' <(cat /var/log/syslog /var/log/apache2/error.log)
+----
+
+This searches for the word "error" across multiple log files. The `cat` output is treated as a single input file to `grep`.
+
+== Sorting and Saving Output
+
+[source,bash]
+----
+sort <(ps aux) > processes.sorted
+----
+
+The `ps aux` output is sorted and redirected to a file. No intermediate file is created to hold the raw process list.
+
+== Opening Multiple Files
+
+[source,bash]
+----
+vim <(cat data.txt new.txt)
+----
+
+You can use process substitution to open the combined content of multiple files in `vim` as if they were a single file.
+
+== Transferring Compressed Files Over SSH
+
+[source,bash]
+----
+tar -cf >(ssh remote_server tar xf -)
+----
+
+This creates a tar archive and streams it over SSH to a remote machine, where it's extracted — all in one command.
+
+== Benefits
+
+* **No temporary files:** Bash handles the creation and cleanup of the file descriptors automatically.
+* **Cleaner pipelines:** Makes your commands and scripts more readable by avoiding extra redirection logic.
+* **Works with commands expecting filenames:** Lets you "trick" tools into reading from or writing to the output of other commands.
+
+[IMPORTANT]
+====
+Process substitution requires a shell that supports it — like `bash` or `zsh`. It won’t work in POSIX `sh`.
+====

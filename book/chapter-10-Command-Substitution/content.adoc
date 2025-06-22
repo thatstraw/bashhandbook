@@ -1,0 +1,58 @@
+= Command Substitution
+
+Command substitution lets you capture the output of a command and use it as part of another command or assign it to a variable. This is especially useful when scripting, as it allows you to embed live command results directly into your logic.
+
+== Syntax
+
+There are two ways to perform command substitution in Bash:
+
+[source,bash]
+----
+$(command)    # Preferred modern syntax
+`command`     # Legacy syntax (backticks)
+----
+
+The `$(...)` syntax is easier to read and nest, and is preferred for clarity.
+
+== Basic Example
+
+[source,bash]
+----
+today=$(date +%F)
+echo "Today's date is $today"
+----
+
+This runs the `date +%F` command and stores the result (e.g. `2025-06-22`) in the variable `today`.
+
+Without command substitution, this would assign the literal string:
+
+[source,bash]
+----
+today=date +%F
+echo "Today's date is $today"  # Outputs: Today's date is date +%F
+----
+
+== Assigning Values Dynamically
+
+You can use command substitution to assign system-generated or calculated values to variables.
+
+[source,bash]
+----
+count=$(ls | wc -l)         # Count number of items in current directory
+dirsize=$(du -sh /home)     # Get human-readable size of /home directory
+----
+
+== Using Output as Arguments
+
+You can pass the result of a command directly as an argument to another command:
+
+[source,bash]
+----
+grep "foo" $(find . -name '*.txt')     # Search "foo" in all .txt files
+tar -cvzf $(date +%F).tar.gz /mydir    # Backup folder with today's date
+----
+
+[TIP]
+====
+Command substitution strips trailing newlines from the output. If you need to preserve exact formatting (including newlines), consider using `readarray` or process substitution instead.
+====
