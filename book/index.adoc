@@ -50,20 +50,43 @@ include::preface.adoc[]
 include::foreword.adoc[]
 
 include::chapter-01-getting-started/content.adoc[]
+
 include::chapter-02-built-in-commands/content.adoc[]
+
 include::chapter-03-arrays/content.adoc[]
+
 include::chapter-04-conditions-and-flow/content.adoc[]
+
 include::chapter-05-loops/content.adoc[]
+
 include::chapter-06-functions/content.adoc[]
+
 include::chapter-07-arithmetic-operations/content.adoc[]
+
 include::chapter-08-Parameter-Exapansion/content.adoc[]
+
 include::chapter-09-Command-line-Chaining/content.adoc[]
+
 include::chapter-10-Command-Substitution/content.adoc[]
+
 include::chapter-11-Process-Substitution/content.adoc[]
+
 include::chapter-12-Bitwise-Operators/content.adoc[]
+
 include::Chapter-13-Quoting/content.adoc[]
+
 include::chapter-14-Globbing/content.adoc[]
+
 include::chapter-15-Pipelines-and-Redirections/content.adoc[]
+
 include::chapter-16-Exit-Status-Codes/content.adoc[]
+
+include::Chapter-17-History/content.adoc[]
+
+include::chapter-18-Options/content.adoc[]
+
+include::chapter-19-Regular-Expressions/content.adoc[]
+
+include::appendix.adoc[]
 
 

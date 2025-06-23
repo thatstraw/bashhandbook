@@ -1,8 +1,11 @@
 [preface]
-= Our Preface
+= Preface
 
-This is a Preface
+Welcome to "Pancakes in Space: Bash Notes" — a practical, hands-on resource designed for anyone looking to master Bash scripting and command-line essentials. This book is structured as a set of concise, example-driven notes, making it ideal for both beginners and experienced users who want a quick reference or a deeper understanding of Bash.
 
-== Preface Subsection
+Whether you're automating tasks, troubleshooting, or just exploring the power of the shell, these notes are crafted to be clear, direct, and immediately useful. My motivation for creating this collection was to provide a single, accessible place for the most important Bash concepts, tips, and real-world examples that I wish I had when I started.
 
-This is a preface subsection
+== How to Use This Book
+
+Feel free to jump between chapters, use the examples in your own scripts, and revisit sections as needed. Happy scripting!
+
