@@ -1,10 +1,10 @@
 [separator=::]
-= Pancakes in Space
-:author: Mike Willson
+= Bash Scripting Reference Guide
+:author: TRÄW 
 :creator: {author}
-:copyright: 2023 Mike Willson
+:copyright: 2025 SYSXPLORE
 :revnumber: v1.0
-:revdate: 01.01.2022
+:revdate: 01.05.2025
 :revremark: First draft
 :doctype: book
 :leveloffset: +1
@@ -14,8 +14,8 @@
 :toc: left
 :toclevels: 3
 :toc-title: Table of Contents
-:description: HTML meta tag content for description
-:keywords: HTML meta tag content for keywords
+:description: Bash Scripting Reference Guide
+:keywords: Bash, Scripting, Reference, Guide
 :icons: font
 :pdf-themesdir: {docdir}/themes
 :pdf-fontsdir: {docdir}/fonts
@@ -24,26 +24,11 @@
 :imagesdir: ./images
 :xrefstyle: short
 :source-highlighter: pygments
-:pygments-style: vs
+:pygments-style: emacs
 :pygments-linenums-mode: table
 :source-language: bash
 
-The following is a bunch of text:
 
-`pygments-style` options for source code highlighting:
-
-* friendly
-* colorful
-* fruity (dark background)
-* monokai (dark background)
-* stata-dark (dark background)
-* stata-light
-* tango
-* zenburn (dark background)
-* vs
-
-This is the optional preamble (an untitled section body). Useful for
-writing simple sectionless documents consisting only of a preamble.
 
 include::preface.adoc[]
 
