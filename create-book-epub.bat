@@ -1,9 +1,9 @@
-REM Docker image: https://hub.docker.com/r/asciidoctor/docker-asciidoctor
-REM Docker image repository: https://github.com/asciidoctor/docker-asciidoctor
+@echo off
+REM Use a custom Docker image with pygments.rb and Python installed
+SET DOCKER_IMAGE=custom-asciidoctor-pdf:pygments
 
-REM The directory where the book source is located
-SET BOOK_SOURCE_DIR=book
-REM The directory where the book's generated output files will be created
-SET BOOK_BUILD_DIR=build
+docker build -t %DOCKER_IMAGE% -f Dockerfile.asciidoctor-pdf .
 
-docker run --rm -v "%CD%":/documents/ asciidoctor/docker-asciidoctor asciidoctor-epub3 -D %BOOK_BUILD_DIR% --trace %BOOK_SOURCE_DIR%/index.adoc
+docker run --rm -w /documents -v %cd%:/documents/ %DOCKER_IMAGE% asciidoctor-epub3 ^
+    -D build ^
+    book/index.adoc

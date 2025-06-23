@@ -1,0 +1,10 @@
+FROM asciidoctor/docker-asciidoctor
+
+# Install Python (for pygments.rb)
+RUN apk add --no-cache python3 py3-pip
+
+# Install the pygments.rb gem
+RUN gem install pygments.rb
+
+# Default entrypoint is unchanged 
+# docker build -t custom-asciidoctor-pdf:pygments -f Dockerfile.asciidoctor-pdf .

@@ -11,8 +11,14 @@ BOOK_BUILD_DIR=build
 #    -a pdf-themesdir=$BOOK_SOURCE_DIR/themes \
 #    -a pdf-theme=$1 \
 #    -a pdf-fontsdir=$BOOK_SOURCE_DIR/fonts \
-docker run --rm -v $(pwd):/documents/ asciidoctor/docker-asciidoctor asciidoctor-pdf \
+
+# Use a custom Docker image with pygments.rb and Python installed
+DOCKER_IMAGE=custom-asciidoctor-pdf:pygments
+
+docker build -t $DOCKER_IMAGE -f Dockerfile.asciidoctor-pdf .
+
+docker run --rm -w /documents -v $(pwd):/documents/ $DOCKER_IMAGE asciidoctor-pdf \
     -D $BOOK_BUILD_DIR \
-    -r $BOOK_SOURCE_DIR/extensions/pdf-converter-admonition-theme-per-type.rb \
+    -r ./book/extensions/pdf-converter-admonition-theme-per-type.rb \
     --trace \
     $BOOK_SOURCE_DIR/index.adoc
