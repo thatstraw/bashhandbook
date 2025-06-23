@@ -1,4 +1,4 @@
-== Bash Arrays
+= Bash Arrays
 
 Arrays let you store multiple values in a single variable. Bash supports both indexed and associative arrays. Here's how to declare them:
 

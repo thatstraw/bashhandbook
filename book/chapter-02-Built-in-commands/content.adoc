@@ -1,4 +1,4 @@
-== Bash Built-in Commands
+= Bash Built-in Commands
 
 Built-in commands are part of the shell itself and do not require launching a separate executable. Because they're compiled directly into the shell, they are generally faster and more efficient than external commands.
 

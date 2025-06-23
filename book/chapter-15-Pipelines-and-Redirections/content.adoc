@@ -1,4 +1,4 @@
-== Pipelines and Redirections
+= Pipelines and Redirections
 
 == Pipelines in Bash
 

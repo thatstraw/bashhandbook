@@ -1,0 +1,543 @@
+= Regular Expressions in Bash
+
+Regular expressions (regex) are patterns used to match and manipulate strings. They're an essential tool when working with commands like `grep`, `sed`, and `awk`, and are commonly used in shell scripts for filtering and parsing text.
+
+== Types of Regular Expressions
+
+There are two main types of regex syntax you'll encounter in Bash:
+
+* **POSIX Basic Regular Expressions (BRE)** – used by default in tools like `grep`.
+* **POSIX Extended Regular Expressions (ERE)** – used with tools like `egrep` or `grep -E`, and `awk`. These allow for more complex patterns without the need for excessive escaping.
+
+[NOTE]
+====
+For most use cases in scripting or on the command line, POSIX EREs are more readable and flexible.
+====
+
+== Anchors
+
+Anchors are special characters that match positions rather than actual characters.
+
+[cols="1,3",options="header"]
+|===
+| Pattern | Description
+
+| `^`
+| Matches the start of a string or start of a line in multiline mode
+
+| `\A`
+| Matches only the start of a string
+
+| `$`
+| Matches the end of a string or end of a line in multiline mode
+
+| `\Z`
+| Matches only the end of a string
+
+| `\b`
+| Matches a word boundary (between word and non-word characters)
+
+| `\B`
+| Matches a position that is *not* a word boundary
+
+| `\<`
+| Matches the beginning of a word (GNU extension)
+
+| `\>`
+| Matches the end of a word (GNU extension)
+|===
+
+== Character Classes
+
+Character classes allow you to define a set or range of characters that a position in your regex can match.
+
+[cols="1,3",options="header"]
+|===
+| Pattern | Description
+
+| `[abc]`
+| Matches any one character: a, b, or c
+
+| `[^abc]`
+| Matches any character *except* a, b, or c
+
+| `[a-z]`
+| Matches any lowercase letter from a to z
+
+| `[^a-z]`
+| Matches any character *except* lowercase letters a to z
+
+| `[0-9]`
+| Matches any digit from 0 to 9
+
+| `[a-zA-Z]`
+| Matches any letter (uppercase or lowercase)
+
+| `[a-zA-Z0-9]`
+| Matches any alphanumeric character
+|===
+
+[NOTE]
+====
+You can combine ranges and specific characters inside a single class: `[a-cXYZ0-9]`
+====
+
+== Shorthand Character Classes
+
+Many regex engines (especially Perl-compatible ones) support shorthand symbols for common character classes.
+
+[cols="1,3",options="header"]
+|===
+| Pattern | Description
+
+| `\c`
+| Matches a control character
+
+| `\s`
+| Matches any whitespace (space, tab, newline)
+
+| `\S`
+| Matches any non-whitespace character
+
+| `\d`
+| Matches any digit (equivalent to `[0-9]`)
+
+| `\D`
+| Matches any non-digit character
+
+| `\w`
+| Matches any "word" character: `[a-zA-Z0-9_]`
+
+| `\W`
+| Matches any non-word character
+
+| `\x`
+| Matches a hexadecimal digit (implementation-specific)
+
+| `\O`
+| Matches an octal digit (implementation-specific)
+|===
+
+[CAUTION]
+====
+The behavior of `\x` and `\O` can vary across tools. Use `[0-7]` or `[0-9a-fA-F]` when you want to be explicit.
+====
+
+== POSIX Character Classes (for BRE/ERE)
+
+POSIX character classes make your regular expressions more portable and readable by replacing common character ranges with symbolic names. These are especially useful inside `[` and `]` brackets when working with tools like `grep`, `sed`, and `awk`.
+
+[cols="1,2,3",options="header"]
+|===
+| Class | Equivalent | Description
+
+| `[[:alnum:]]`
+| `[0-9A-Za-z]`
+| Matches any alphanumeric character: digits and letters
+
+| `[[:alpha:]]`
+| `[A-Za-z]`
+| Matches any letter, regardless of case
+
+| `[[:blank:]]`
+| `[ \t]`
+| Matches a space or a tab
+
+| `[[:digit:]]`
+| `[0-9]`
+| Matches any single digit
+
+| `[[:graph:]]`
+| `[[:alnum:][:punct:]]`
+| Matches any visible character (excluding space)
+
+| `[[:lower:]]`
+| `[a-z]`
+| Matches any lowercase letter
+
+| `[[:print:]]`
+| `[ -~]`
+| Matches any printable character, including space
+
+| `[[:punct:]]`
+| `[!"#$%&'()*+,-./:;<=>?@[\]^_\`{|}~]`
+| Matches any punctuation character
+
+| `[[:space:]]`
+| `[ \t\n\v\f\r]`
+| Matches any whitespace character (space, tab, newline, etc.)
+
+| `[[:upper:]]`
+| `[A-Z]`
+| Matches any uppercase letter
+
+| `[[:word:]]`
+| `[0-9A-Za-z_]`
+| Matches word characters (like those used in variable names)
+
+| `[[:xdigit:]]`
+| `[0-9A-Fa-f]`
+| Matches hexadecimal digits
+
+| `[[:<:]]`
+| `\b(?=\w)`
+| Matches the start of a word (GNU extension)
+
+| `[[:>:]]`
+| `\b(?<=\w)`
+| Matches the end of a word (GNU extension)
+
+| `[[:ascii:]]`
+| `[\x00-\x7F]`
+| Matches ASCII characters (codes 0–127)
+
+| `[[:cntrl:]]`
+| `[\x00-\x1F\x7F]`
+| Matches control characters (non-printable)
+|===
+
+[IMPORTANT]
+====
+POSIX classes should only be used inside bracket expressions, like `[[:digit:]]` rather than `[:digit:]`.
+====
+
+== Quantifiers
+
+Quantifiers let you specify how many times a part of your regex should match. They are essential for writing flexible and powerful patterns.
+
+[cols="1,3",options="header"]
+|===
+| Pattern | Description
+
+| `?`
+| Matches the preceding element zero or one time
+
+| `*`
+| Matches the preceding element zero or more times
+
+| `+`
+| Matches the preceding element one or more times
+
+| `[0-9]+`
+| Matches one or more digits (0 through 9)
+
+| `{m}`
+| Matches the preceding element exactly `m` times
+
+| `{m,n}`
+| Matches the preceding element at least `m` times, but no more than `n` times
+
+| `{m,}`
+| Matches the preceding element `m` or more times
+
+| `a*`
+| Greedy: matches as many occurrences of `a` as possible
+
+| `a*?`
+| Lazy: matches as few as possible while still allowing the overall pattern to match
+
+| `a*+`
+| Possessive: matches as many as possible without backtracking
+
+| `{,n}`
+| Matches the preceding element up to `n` times
+|===
+
+== Escaping Special Characters
+
+Some characters have special meanings in regular expressions. To match them literally, you must prefix them with a backslash (`\`).
+
+[cols="4*",options="header"]
+|===
+| Special Characters
+| `^` 
+| `$` 
+| `*` 
+| `+`
+
+| `?` 
+| `.` 
+| `|` 
+| `\`
+
+| `[` 
+| `]` 
+| `{` 
+| `}`
+
+| `(` 
+| `)` 
+| `<` 
+| `>`
+|===
+
+[CAUTION]
+====
+When in doubt, escape characters using `\` to avoid unintended matches.
+====
+
+== Groups and Ranges
+
+Regular expressions support grouping, alternation, and ranges to match more complex patterns. These features are particularly useful when you're trying to match multiple possibilities in one go.
+
+[cols="1,3",options="header"]
+|===
+| Pattern | Description
+
+| `.`
+| Matches any character except a newline (`\n`)
+
+| `(a|b)`
+| Matches either `a` or `b` (alternation)
+
+| `(...)`
+| Capturing group: groups part of the regex and remembers the match
+
+| `(?:...)`
+| Non-capturing group: groups part of the regex without capturing it
+
+| `[abc]`
+| Matches any single character: `a`, `b`, or `c`
+
+| `[^abc]`
+| Matches any character *except* `a`, `b`, or `c`
+
+| `[a-q]`
+| Matches any lowercase letter from `a` to `q`
+
+| `[A-Q]`
+| Matches any uppercase letter from `A` to `Q`
+
+| `[0-7]`
+| Matches any digit from `0` to `7`
+
+| `\x`
+| Refers to a previously matched sub-pattern (by number)
+|===
+
+== Pattern Modifiers
+
+These modifiers tweak how the regex engine behaves when interpreting the pattern.
+
+[cols="1,3",options="header"]
+|===
+| Modifier | Description
+
+| `g`
+| Global match: apply the regex to *all* matches in the input, not just the first
+
+| `i`
+| Case-insensitive matching
+
+| `m`
+| Treat input as multiple lines (affects `^` and `$` anchors)
+
+| `s`
+| Treat input as a single line (dot `.` will match newline too)
+
+| `x`
+| Ignore whitespace and allow comments in pattern (for readability)
+
+| `e`
+| Evaluate replacement as code (used in some `sed` variants)
+
+| `U`
+| Makes quantifiers ungreedy by default
+|===
+
+== Assertions
+
+Assertions are zero-width conditions—meaning they don't consume characters but still affect matches. Think of them as invisible checks.
+
+[cols="1,3",options="header"]
+|===
+| Assertion | Description
+
+| `(?=...)`
+| Positive lookahead: checks for a match *ahead* without consuming it
+
+| `(?!...)`
+| Negative lookahead: ensures a pattern is *not* ahead
+
+| `(?<=...)`
+| Positive lookbehind: checks for a pattern *behind* the current position
+
+| `(?<!...)`
+| Negative lookbehind: ensures a pattern *doesn't* exist behind
+
+| `(?>...)`
+| Atomic group: once matched, prevents backtracking
+
+| `(?(cond)yes)`
+| Conditional match (rare)
+
+| `(?(cond)yes|no)`
+| Conditional with else clause
+
+| `(?# comment )`
+| Inline comment (only supported in some engines)
+|===
+
+== String Replacement Variables
+
+Used in tools like `sed`, Perl, and some `bash` string substitutions, these refer to portions of the original match.
+
+[cols="1,3",options="header"]
+|===
+| Symbol | Description
+
+| `$n`
+| Contents of the nth capture group
+
+| `$2`
+| Second capture group (e.g. `xyz` in `/^(abc(xyz))$/`)
+
+| `$1`
+| First capture group (e.g. `xyz` in `/^(?:abc)(xyz)$/`)
+
+| ``$````
+| Part of the string *before* the match
+
+| `$'`
+| Part of the string *after* the match
+
+| `$+`
+| Last matched group
+
+| `$&`
+| Entire matched string
+|===
+
+== Escape Sequences
+
+Some characters must be escaped to be interpreted literally or to represent invisible characters.
+
+[cols="1,3",options="header"]
+|===
+| Sequence | Description
+
+| `\\`
+| Escape the next character
+
+| `\Q`
+| Begin literal mode (treat all characters literally)
+
+| `\E`
+| End literal mode (resume special character interpretation)
+|===
+
+[IMPORTANT]
+====
+Escaping is how you prevent special characters from acting like metacharacters. For example, to match a literal dot (`.`), use `\.` instead of `.`.
+====
+
+== Special Characters
+
+These sequences represent common invisible characters or encodings.
+
+[cols="1,3",options="header"]
+|===
+| Sequence | Description
+
+| `\n`
+| Newline
+
+| `\r`
+| Carriage return
+
+| `\t`
+| Horizontal tab
+
+| `\v`
+| Vertical tab
+
+| `\f`
+| Form feed
+
+| `\xxx`
+| Octal value for character
+
+| `\xhh`
+| Hexadecimal value for character
+|===
+
+
+
+== Search for Lines That Start with a Word
+
+[source,bash]
+----
+grep '^ERROR' /var/log/syslog
+----
+
+This command finds all lines in `/var/log/syslog` that start with the word `ERROR`.
+
+- `^` is the regex anchor for the beginning of the line.
+- This ensures it doesn't match lines where `ERROR` appears later in the line.
+
+[NOTE]
+====
+Use quotes around patterns with special characters like `^` to prevent shell expansion.
+====
+
+== Match IP Addresses Using `grep`
+
+[source,bash]
+----
+grep -Eo '([0-9]{1,3}\.){3}[0-9]{1,3}' access.log
+----
+
+- `-E` enables extended regex.
+- `-o` prints only the matched portion, not the whole line.
+- `([0-9]{1,3}\.){3}[0-9]{1,3}` matches typical IPv4 addresses.
+
+[WARNING]
+====
+This matches numbers like `999.999.999.999`, which aren't valid IPs—but it's fine for quick parsing. Use stricter patterns for validation.
+====
+
+== Find Email Addresses in a Text File
+
+[source,bash]
+----
+grep -Eo '[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}' newsletter.txt
+----
+
+This matches most standard email formats.
+
+- `+` matches one or more of the preceding character set.
+- `@` is literal.
+- `[A-Za-z]{2,}` ensures domain extensions are at least 2 letters long.
+
+== Replace Tabs with Commas Using `sed`
+
+[source,bash]
+----
+sed 's/\t/,/g' input.tsv > output.csv
+----
+
+- `\t` matches tab characters.
+- `s/old/new/g` is the basic `sed` substitution.
+- This converts tab-separated files to comma-separated format.
+
+== Print Lines That Don’t Contain a Pattern
+
+[source,bash]
+----
+grep -vE 'DEBUG|TRACE' app.log
+----
+
+- `-v` inverts the match.
+- `-E` allows extended regex, so you can use `|` to match multiple patterns.
+- This filters out noisy log levels.
+
+== Extract Usernames from `/etc/passwd`
+
+[source,bash]
+----
+awk -F: '{ print $1 }' /etc/passwd | grep '^[a-z]'
+----
+
+- `awk -F:` sets the delimiter to `:`.
+- `{ print $1 }` grabs the username field.
+- `grep '^[a-z]'` filters for lowercase usernames only.
