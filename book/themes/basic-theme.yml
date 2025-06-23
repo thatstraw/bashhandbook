@@ -20,6 +20,22 @@ font:
       bold: SourceCodePro/SourceCodePro-Bold.ttf
       italic: SourceCodePro/SourceCodePro-Italic.ttf
       bold_italic: SourceCodePro/SourceCodePro-BoldItalic.ttf
+    Roboto:
+      normal: Roboto/static/Roboto-Regular.ttf
+      bold: Roboto/static/Roboto-Bold.ttf
+      italic: Roboto/static/Roboto-Italic.ttf
+      bold_italic: Roboto/static/Roboto-BoldItalic.ttf
+    Calibri:
+      normal: Calibri/calibri.ttf
+      bold: Calibri/calibrib.ttf
+      italic: Calibri/calibrii.ttf
+      bold_italic: Calibri/calibriz.ttf
+    JetBrains Mono:
+      normal: JetBrains Mono/fonts/ttf/JetBrainsMono-Regular.ttf
+      bold: JetBrains Mono/fonts/ttf/JetBrainsMono-Bold.ttf
+      italic: JetBrains Mono/fonts/ttf/JetBrainsMono-Italic.ttf
+      bold_italic: JetBrains Mono/fonts/ttf/JetBrainsMono-BoldItalic.ttf
+    
     MDI:
       normal: material-icons/MaterialIcons-Regular.ttf
     Bundled M+ 1mn:
@@ -39,13 +55,14 @@ font:
       bold_italic: GEM_FONTS_DIR/notosans-bold_italic-subset.ttf
       
 base:
-  font-color: 1d1d1d
-  font-family: Georgia
+  font-color: #222633
+  font-family: Calibri  
   font-size: 10
   line-height: 1.2
 
 heading:
-  font-color: #880011     
+  #font-color: #222633   
+  font-color: #5fedac
 
 
 fallbacks:
@@ -68,15 +85,16 @@ page:
 
 code:
   font:
-    family: Source Code Pro
+    family: JetBrains Mono
     size: 10
+  breakable: false
 
 
  
 
 
 codespan:
-  font-family: Source Code Pro
+  font-family: JetBrains Mono
   font-color: #232229
   # background-color: #eedffd
   # border-radius: 3
@@ -92,7 +110,7 @@ admonition:
   background-color: #FFFFFF
   border-color: #E6E8FA
   border-radius: 3
-  border-style: dashed
+  border-style: solid
   font-kerning: none
   font-style: normal
   padding: 0.3cm
@@ -115,84 +133,94 @@ admonition:
   icon:
     tip:
       name: fas-lightbulb
-      stroke-color: #5CB85C
+      stroke-color: #5fedac
       size: 14
     note:
       name: fas-info-circle
-      stroke-color: #5BC0DE
+      stroke-color: #4a6ef4
       size: 14
     important:
       name: fas-exclamation-circle
-      stroke-color: #9C27B0
+      stroke-color: #7843ed
       size: 14
     caution:
       name: fas-radiation
-      stroke-color: #FF9800
+      stroke-color: #ef7a2b
       size: 14
     warning:
       name: fas-bomb
-      stroke-color: #D9534F
+      stroke-color: #ff5072
       size: 14
 
 # TIP (Green)
 admonition_tip:
-  font_color: #3C763D
-  background-color: #DFF0D8
-  border-color: #5CB85C
-  border-style: dashed
-  border-width: 0.75
+  font_color: #218c5a
+  background-color: #e9fdf3
+  border-color: #5fedac
+  border-style: solid
+  border-width: 0.4
   border-radius: 4
   font-size: $base-font-size
+  font-family: Calibri
   text-align: left
   padding: 0.3cm
+  breakable: false
 
 # NOTE (Blue)
 admonition_note:
-  font_color: #31708F
-  background-color: #E3F2FD
-  border-color: #5BC0DE
-  border-style: dashed
-  border-width: 0.75
+  font_color: #27408b
+  background-color: #eef2fd
+  border-color: #4a6ef4
+  border-style: solid
+  border-width: 0.4
   border-radius: 4
   font-size: $base-font-size
+  font-family: Calibri
   text-align: left
   padding: 0.3cm
+  breakable: false
 
 # IMPORTANT (Purple)
 admonition_important:
-  font_color: #4A148C
-  background-color: #F3E5F5
-  border-color: #9C27B0
-  border-style: dashed
-  border-width: 0.75
+  font_color: #4a2a8c
+  background-color: #f2effd
+  border-color: #7843ed
+  border-style: solid
+  border-width: 0.4
   border-radius: 4
   font-size: $base-font-size
+  font-family: Calibri
   text-align: left
   padding: 0.3cm
+  breakable: false
 
 # CAUTION (Orange)
 admonition_caution:
-  font_color: #8A6D3B
-  background-color: #FCF8E3
-  border-color: #FF9800
-  border-style: dashed
-  border-width: 0.75
+  font_color: #a85a1a
+  background-color: #fdf4ec
+  border-color: #ef7a2b
+  border-style: solid
+  border-width: 0.4
   border-radius: 4
   font-size: $base-font-size
+  font-family: Calibri
   text-align: left
   padding: 0.3cm
+  breakable: false
 
 # WARNING (Red)
 admonition_warning:
-  font_color: #A94442
-  background-color: #F2DEDE
-  border-color: #D9534F
-  border-style: dashed
-  border-width: 0.75
+  font_color: #b02a4a
+  background-color: #fff1f5
+  border-color: #ff5072
+  border-style: solid
+  border-width: 0.4
   border-radius: 4
   font-size: $base-font-size
+  font-family: Calibri
   text-align: left
   padding: 0.3cm
+  breakable: false
 
 # LISTS
 list:
