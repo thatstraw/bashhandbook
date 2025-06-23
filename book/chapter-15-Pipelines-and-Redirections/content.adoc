@@ -116,48 +116,129 @@ Coming up next: how to use redirection symbols (`>`, `>>`, `<`, `2>`, `&>`, and 
 === Redirection Operators
 
 Redirection in Bash allows you to control where input comes from and where output goes. Below is a comprehensive list of redirection operators and what they do.
-
-[cols="2,6", options="header"]
+[cols="1,3", options="header"]
 |===
-| Redirection | Description
-| `command > file` | Redirect standard output (stdout) of a command to a file. Same as `command 1> file`.
-| `command 2> file` | Redirect standard error (stderr) to a file.
-| `command >> file` | Append stdout to a file without overwriting existing content.
-| `command 2>> file` | Append stderr to a file without overwriting existing content.
-| `command &> file` | Redirect both stdout and stderr to a file. Same as `command > file 2>&1`. **[WARNING]** The order matters — `command 2>&1 > file` will not behave the same.
-| `command > /dev/null` | Discard stdout completely.
-| `command 2> /dev/null` | Discard stderr completely.
-| `command &> /dev/null` | Discard both stdout and stderr. Same as `command > /dev/null 2>&1`.
-| `command < file` | Read standard input from a file. Same as `command 0< file`.
-| `command << EOL`<br/>`line1`<br/>`line2`<br/>`EOL` | A here-document. Redirects a block of text as input to a command, until a line matching `EOL` is encountered.
-| `command <<- EOL`<br/>`\tfoo`<br/>`\t\tbar`<br/>`EOL` | A here-document that strips leading tabs from the content. Note the `<<-` operator.
-| `command <<< 'string'` | A here-string. Redirects a single line or variable as input to a command.
-| `command >| file` | Force overwrite a file, even if `noclobber` is set.
-| `exec 2> file` | Redirect stderr of all subsequent commands in the script to a file.
-| `exec > file` | Redirect stdout of all subsequent commands to a file.
-| `exec 3< file` | Open file descriptor 3 for reading from a file.
-| `exec 3> file` | Open file descriptor 3 for writing to a file.
-| `exec 3<> file` | Open file descriptor 3 for both reading and writing.
-| `exec 3>&-` | Close file descriptor 3.
-| `exec 4<&3` | Copy file descriptor 3 to 4 (read mode).
-| `exec 4>&3-` | Copy file descriptor 3 to 4 and then close 3.
-| `echo "foo" >&3` | Write to file descriptor 3.
-| `cat <&3` | Read from file descriptor 3.
-| `exec 3<> /dev/tcp/host/port` | Open a TCP connection to host:port (Bash feature).
-| `exec 3<> /dev/udp/host/port` | Open a UDP connection to host:port (Bash feature).
-| `(cmd1; cmd2) > file` | Run commands in a subshell and redirect their combined stdout to a file.
-| `{ cmd1; cmd2; } > file` | Run multiple commands in the current shell (no subshell) and redirect stdout to a file. **[IMPORTANT]** Spaces are required around the braces.
-| `command <(command1)` | Process substitution. Redirect stdout of `command1` to a FIFO and pass its path as a file argument to `command`.
-| `command < <(command1)` | Redirect stdout of `command1` to stdin of `command`. Common with tools like `diff`.
-| `command <(command1) <(command2)` | Provide multiple substituted outputs as input file arguments to a command.
-| `command1 >(command2)` | Run `command2` with its stdin connected to a FIFO. Pass the FIFO filename to `command1`.
-| `command1 > >(command2)` | Redirect stdout of `command1` into `command2` using an anonymous FIFO.
-| `command1 | command2` | Pipe stdout of `command1` to stdin of `command2`. Equivalent to: `command1 > >(command2)` `command2 < <(command1)` `> >(command2) command1` `< <(command1) command2`
-| `command1 |& command2` | Pipe both stdout and stderr of `command1` to stdin of `command2`. (Requires Bash 4.0+)
-| `command | tee file` | Write stdout to both a file and the terminal.
-| `exec {filew}> file` | Open a file for writing using a named file descriptor (Bash 4.1+).
-| `command 3>&1 1>&2 2>&3` | Swap stdout and stderr.
-| `cmd > >(cmd1) 2> >(cmd2)` | Send stdout to `cmd1` and stderr to `cmd2` using separate FIFOs.
-| `cmd1 | cmd2 | cmd3 | cmd4`<br/>`echo ${PIPESTATUS[@]}` | Get the exit status of each command in the pipeline.
-|===
+| Redirection
+| Description
 
+| `command > file`
+| Redirect the standard output (stdout) of a `command` to a specified file. Same as `command 1> file`.
+
+| `command 2> file`
+| Redirect the standard error (stderr) of a `command` to a specified file.
+
+| `command >> file`
+| Append stdout of a `command` to a specified file without overriding existing data.
+
+| `command 2>> file`
+| Append stderr of a `command` to a specified file without overriding existing data.
+
+| `command &> file`
+| Redirect both stdout and stderr of a `command` to a file. Same as `command > file 2>&1`, but not `command 2>&1 > file`.
+
+| `command > /dev/null`
+| Discard stdout of a `command`. `/dev/null` discards all data written to it.
+
+| `command 2> /dev/null`
+| Discard stderr of a `command`.
+
+| `command &> /dev/null`
+| Discard both stdout and stderr of a `command`. Same as `command > /dev/null 2>&1`.
+
+| `command < file`
+| Redirect the contents of a file to stdin of a `command`. Same as `command 0< file`.
+
+| `command << EOL`
+| Redirect multiple lines to stdin using a here-document. Ends when a line with only `EOL` is found.
+
+| `command <<- EOL`
+| Same as `<<` but strips leading tab characters from the input.
+
+| `command <<< 'string'`
+| Use a here-string to redirect input from a single string.
+
+| `command <<< $word`
+| Same as above but using a variable.
+
+| `command >\| file`
+| Overrides the `noclobber` shell option to force file overwrite.
+
+| `exec 2> file`
+| Redirect stderr of all commands to a file.
+
+| `exec > file`
+| Redirect stdout of all commands to a file.
+
+| `exec 3< file`
+| Create custom file descriptor (3) for reading from a file.
+
+| `exec 3> file`
+| Create custom file descriptor (3) for writing to a file.
+
+| `exec 3<> file`
+| Create custom file descriptor (3) for both reading and writing.
+
+| `exec 3>&-`
+| Close the created file descriptor.
+
+| `exec 4<&3`
+| Make file descriptor 4 a copy of file descriptor 3.
+
+| `exec 4>&3-`
+| Copy file descriptor 3 to 4 and close file descriptor 3.
+
+| `echo "foo" >&3`
+| Write to custom file descriptor 3.
+
+| `cat <&3`
+| Read from custom file descriptor 3.
+
+| `exec 3<> /dev/tcp/host/port`
+| Open a TCP connection. Bash feature only.
+
+| `exec 3<> /dev/udp/host/port`
+| Open a UDP connection. Bash feature only.
+
+| `(command1; command2) > file`
+| Redirect stdout from multiple commands to a file using a subshell.
+
+| `{ command1; command2; } > file`
+| Redirect stdout from multiple commands to a file without subshell. Faster.
+
+| `command < <(command1)`
+| Redirect stdout of `command1` to an anonymous pipe and pass to `command`.
+
+| `command < <( command1 )`
+| Same as above. Example: `diff <(find /path1 \| sort) <(find /path2 \| sort)`
+
+| `command < <(command1) < <(command2)`
+| Redirect output of two commands to anonymous pipes and pass to another command.
+
+| `command1 >(command2)`
+| Run `command2` with stdin connected to a named pipe and pass filename to `command1`.
+
+| `command1 > >(command2)`
+| Run `command2` with stdout from `command1` through a named pipe.
+
+| `command1 \| command2`
+| Redirect stdout of `command1` to stdin of `command2`.
+
+| `command1 \|& command2`
+| Redirect stdout and stderr of `command1` to stdin of `command2`. (Bash 4.0+)
+
+| `command \| tee file`
+| Redirect stdout of `command` to both a file and screen.
+
+| `exec {filew}> file`
+| Open file for writing using a named file descriptor (`filew`). Bash 4.1+.
+
+| `command 3>&1 1>&2 2>&3`
+| Swap stdout and stderr of a `command`.
+
+| `cmd > >(cmd1) 2> >(cmd2)`
+| Send stdout to `cmd1` and stderr to `cmd2`.
+
+| `cmd1 \| cmd2 \| cmd3 \| cmd4; echo \${PIPESTATUS[@]}`
+| Show exit codes of all piped commands.
+
+|===
