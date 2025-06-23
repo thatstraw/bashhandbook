@@ -59,7 +59,7 @@ Character classes allow you to define a set or range of characters that a positi
 | Matches any one character: a, b, or c
 
 | `[^abc]`
-| Matches any character *except* a, b, or c
+| Matches any character *except* a, b, or c (the caret `^` negates character classes)
 
 | `[a-z]`
 | Matches any lowercase letter from a to z
@@ -127,7 +127,7 @@ The behavior of `\x` and `\O` can vary across tools. Use `[0-7]` or `[0-9a-fA-F]
 
 POSIX character classes make your regular expressions more portable and readable by replacing common character ranges with symbolic names. These are especially useful inside `[` and `]` brackets when working with tools like `grep`, `sed`, and `awk`.
 
-[cols="1,2,3",options="header"]
+[cols="1,1,1",options="header"]
 |===
 | Class | Equivalent | Description
 
@@ -140,7 +140,7 @@ POSIX character classes make your regular expressions more portable and readable
 | Matches any letter, regardless of case
 
 | `[[:blank:]]`
-| `[ \t]`
+| `[ \\t]`
 | Matches a space or a tab
 
 | `[[:digit:]]`
@@ -160,11 +160,11 @@ POSIX character classes make your regular expressions more portable and readable
 | Matches any printable character, including space
 
 | `[[:punct:]]`
-| `[!"#$%&'()*+,-./:;<=>?@[\]^_\`{|}~]`
+| `[!"#$%&'()*+,-./:;<=>?@[\]^_'{\|}~]`
 | Matches any punctuation character
 
 | `[[:space:]]`
-| `[ \t\n\v\f\r]`
+| `[ \\t\\n\\v\\f\\r]`
 | Matches any whitespace character (space, tab, newline, etc.)
 
 | `[[:upper:]]`
@@ -180,19 +180,19 @@ POSIX character classes make your regular expressions more portable and readable
 | Matches hexadecimal digits
 
 | `[[:<:]]`
-| `\b(?=\w)`
+| `\\b(?=\\w)`
 | Matches the start of a word (GNU extension)
 
 | `[[:>:]]`
-| `\b(?<=\w)`
+| `\\b(?<=\\w)`
 | Matches the end of a word (GNU extension)
 
 | `[[:ascii:]]`
-| `[\x00-\x7F]`
+| `[\\x00-\\x7F]`
 | Matches ASCII characters (codes 0–127)
 
 | `[[:cntrl:]]`
-| `[\x00-\x1F\x7F]`
+| `[\\x00-\\x1F\\x7F]`
 | Matches control characters (non-printable)
 |===
 
@@ -249,7 +249,7 @@ Some characters have special meanings in regular expressions. To match them lite
 
 [cols="4*",options="header"]
 |===
-| Special Characters
+.4+| Special Characters
 | `^` 
 | `$` 
 | `*` 
@@ -257,8 +257,8 @@ Some characters have special meanings in regular expressions. To match them lite
 
 | `?` 
 | `.` 
-| `|` 
-| `\`
+| `\\|` 
+| `\\`
 
 | `[` 
 | `]` 
@@ -285,9 +285,9 @@ Regular expressions support grouping, alternation, and ranges to match more comp
 | Pattern | Description
 
 | `.`
-| Matches any character except a newline (`\n`)
+| Matches any character except a newline (`\\n`)
 
-| `(a|b)`
+| `(a\|b)`
 | Matches either `a` or `b` (alternation)
 
 | `(...)`
@@ -311,7 +311,7 @@ Regular expressions support grouping, alternation, and ranges to match more comp
 | `[0-7]`
 | Matches any digit from `0` to `7`
 
-| `\x`
+| `\\x`
 | Refers to a previously matched sub-pattern (by number)
 |===
 
@@ -371,7 +371,7 @@ Assertions are zero-width conditions—meaning they don't consume characters but
 | `(?(cond)yes)`
 | Conditional match (rare)
 
-| `(?(cond)yes|no)`
+| `(?(cond)yes\\|no)`
 | Conditional with else clause
 
 | `(?# comment )`
@@ -416,13 +416,13 @@ Some characters must be escaped to be interpreted literally or to represent invi
 |===
 | Sequence | Description
 
-| `\\`
+| `\\\\`
 | Escape the next character
 
-| `\Q`
+| `\\Q`
 | Begin literal mode (treat all characters literally)
 
-| `\E`
+| `\\E`
 | End literal mode (resume special character interpretation)
 |===
 
@@ -439,25 +439,25 @@ These sequences represent common invisible characters or encodings.
 |===
 | Sequence | Description
 
-| `\n`
+| `\\n`
 | Newline
 
-| `\r`
+| `\\r`
 | Carriage return
 
-| `\t`
+| `\\t`
 | Horizontal tab
 
-| `\v`
+| `\\v`
 | Vertical tab
 
-| `\f`
+| `\\f`
 | Form feed
 
-| `\xxx`
+| `\\xxx`
 | Octal value for character
 
-| `\xhh`
+| `\\xhh`
 | Hexadecimal value for character
 |===
 
@@ -516,11 +516,11 @@ This matches most standard email formats.
 sed 's/\t/,/g' input.tsv > output.csv
 ----
 
-- `\t` matches tab characters.
+- `\\t` matches tab characters.
 - `s/old/new/g` is the basic `sed` substitution.
 - This converts tab-separated files to comma-separated format.
 
-== Print Lines That Don’t Contain a Pattern
+== Print Lines That Don't Contain a Pattern
 
 [source,bash]
 ----
