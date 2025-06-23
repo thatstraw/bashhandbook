@@ -35,6 +35,11 @@ font:
       bold: JetBrains Mono/fonts/ttf/JetBrainsMono-Bold.ttf
       italic: JetBrains Mono/fonts/ttf/JetBrainsMono-Italic.ttf
       bold_italic: JetBrains Mono/fonts/ttf/JetBrainsMono-BoldItalic.ttf
+    Consolas:
+      normal: Consolas/consolas.ttf
+      bold: Consolas/consolasb.ttf
+      italic: Consolas/consolasi.ttf
+      bold_italic: Consolas/consolasz.ttf
     
     MDI:
       normal: material-icons/MaterialIcons-Regular.ttf
@@ -85,16 +90,16 @@ page:
 
 code:
   font:
-    family: JetBrains Mono
+    family: Consolas
     size: 10
   breakable: false
-
-
- 
-
+  background-color: #f7f8fa
+  border-color: #e0e3ea
+  border-width: 0.4
+  border-radius: 4
 
 codespan:
-  font-family: JetBrains Mono
+  font-family: Consolas
   font-color: #232229
   # background-color: #eedffd
   # border-radius: 3
