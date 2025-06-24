@@ -224,7 +224,7 @@ shopt -s dotglob nullglob globstar
 
 [INFO]
 ====
-For a full list of `shopt` options, check the official Bash manual: https://www.gnu.org/software/bash/manual/html_node/The-Shopt-Builtin.html
+For a full list of `shopt` options, check the https://www.gnu.org/software/bash/manual/html_node/The-Shopt-Builtin.html[official Bash manual].
 ====
 
 
