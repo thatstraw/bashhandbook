@@ -20,7 +20,7 @@ There are many ways to assign values to arrays in Bash. This includes assigning 
 [cols="1,3", options="header"]
 |===
 | Syntax | Description
-| `ARRAY[N]=VALUE` | Sets element `N` of an **indexed** array to `VALUE`. `N` can be any valid [arithmetic expression](https://wiki.bash-hackers.org/syntax/arith_expr).
+| `ARRAY[N]=VALUE` | Sets element `N` of an **indexed** array to `VALUE`. `N` can be any valid https://wiki.bash-hackers.org/syntax/arith_expr[arithmetic expression].
 | `ARRAY[STRING]=VALUE` | Sets element `STRING` of an **associative** array to `VALUE`.
 | `ARRAY=VALUE` | Assigns `VALUE` to index `0` by default. This also works for associative arrays — `VALUE` is stored under key `"0"`.
 | `ARRAY=(E1 E2 …)` | Compound assignment for indexed arrays. Clears the array and assigns values starting at index 0. Does not work for associative arrays.
@@ -42,7 +42,7 @@ Compound assignment is very powerful and can be used to build arrays efficiently
 
 [INFO]
 ====
-For clarification: When you use the subscripts `@` or `*` for mass-expanding arrays, their behavior matches that of `$@` and `$*` when [expanding positional parameters](https://wiki.bash-hackers.org/scripting/posparams#mass_usage). It's worth reading that article to fully understand the nuances.
+For clarification: When you use the subscripts `@` or `*` for mass-expanding arrays, their behavior matches that of `$@` and `$*` when https://wiki.bash-hackers.org/scripting/posparams#mass_usage[expanding positional parameters]. It's worth reading that article to fully understand the nuances.
 ====
 
 == Getting Values from Arrays
@@ -66,7 +66,7 @@ You can access specific elements, the entire array, or a slice of elements using
 
 [INFO]
 ====
-For clarification: When using `@` or `*` to expand arrays, their behavior mirrors how `$@` and `$*` behave with [positional parameters](https://wiki.bash-hackers.org/scripting/posparams#mass_usage).
+For clarification: When using `@` or `*` to expand arrays, their behavior mirrors how `$@` and `$*` behave with https://wiki.bash-hackers.org/scripting/posparams#mass_usage[positional parameters].
 
 - Quoted `"$@"` → each element separately quoted.
 - Quoted `"$*"` → all elements quoted as one string.
@@ -117,13 +117,9 @@ You can remove individual elements or entire arrays using the `unset` built-in.
 ====
 It’s best to explicitly use `-v` with `unset` for clarity and portability.
 
-See: https://wiki.bash-hackers.org/commands/builtin/unset#portability_considerations
+See: https://wiki.bash-hackers.org/commands/builtin/unset#portability_considerations[Bash Hackers Wiki]
 ====
 
-[INFO]
-====
-💡 Learn more: https://wiki.bash-hackers.org/syntax/arrays
-====
 
 == Array Discussion
 

@@ -113,7 +113,7 @@ Special parameters in Bash are predefined variables that give you information ab
 
 [INFO]
 ====
-For deeper reference, see: https://wiki.bash-hackers.org/syntax/shellvars#special_parameters_and_shell_variables
+For deeper reference, see: https://wiki.bash-hackers.org/syntax/shellvars#special_parameters_and_shell_variables[Bash Hackers Wiki]
 ====
 
 == Functions
@@ -202,7 +202,8 @@ Brace expansion is useful for generating multiple similar strings without writin
 
 [INFO]
 ====
-For more examples, see: https://wiki.bash-hackers.org/syntax/expansion/brace
+For more examples, see: https://wiki.bash-hackers.org/syntax/expansion/brace[Bash Hackers Wiki]
+
 ====
 
 == Operators in Bash

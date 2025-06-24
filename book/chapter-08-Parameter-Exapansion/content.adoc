@@ -89,8 +89,6 @@ length=2
 echo ${name:0:length}  # => Jo
 ----
 
-== Substrings
-
 == Basepath & Dirpath
 
 [source,bash]
