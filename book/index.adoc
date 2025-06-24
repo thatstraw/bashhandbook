@@ -1,14 +1,13 @@
 [separator=::]
-= Bash Scripting Reference Guide
-:author: TRÄW 
+= Bash Scripting Handbook
+:author: sysxplore.com
 :creator: {author}
 :copyright: 2025 SYSXPLORE
 :revnumber: v1.0
 :revdate: 01.05.2025
-:revremark: First draft
 :doctype: book
 :leveloffset: +1
-:front-cover-image: image:cover.jpeg[width=1700,height=2800]
+:front-cover-image: image:cover.png[width=1700,height=2800]
 :sectnums:
 :sectlinks:
 :toc: left
