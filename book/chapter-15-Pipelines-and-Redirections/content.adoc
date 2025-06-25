@@ -18,7 +18,7 @@ Each command processes the data it receives and passes it along the chain. This 
 
 === Basic Example
 
-.Example: Count the number of lines containing the word "error" in a log file
+Count the number of lines containing the word "error" in a log file
 [source,bash]
 ----
 grep "error" log.txt | wc -l
@@ -33,7 +33,7 @@ Here's what happens:
 
 Pipelines are especially powerful when combined with text processing tools like `grep`, `sed`, `awk`, `cut`, and `sort`.
 
-.Example: Replace the word "failure" with "success" in lines that contain "error"
+Replace the word "failure" with "success" in lines that contain "error"
 [source,bash]
 ----
 grep "error" log.txt | sed 's/failure/success/g'
@@ -48,13 +48,13 @@ What's happening here:
 
 You can combine pipelines with redirection operators to save or read from files.
 
-.Example: Save the output of a pipeline to a file
+Save the output of a pipeline to a file
 [source,bash]
 ----
 command1 | command2 > output.txt
 ----
 
-.Example: Feed input to a pipeline from a file
+Feed input to a pipeline from a file
 [source,bash]
 ----
 command1 < input.txt | command2
@@ -62,15 +62,15 @@ command1 < input.txt | command2
 
 You can also redirect standard error:
 
-.Example: Redirect stderr to a file while piping stdout
+Redirect stderr to a file while piping stdout
 [source,bash]
 ----
 command1 2> errors.txt | command2
 ----
 
-=== Real-World Example
+=== A quick practical example
 
-.Example: Extract and deduplicate log information
+Extract and deduplicate log information
 [source,bash]
 ----
 grep "error" log.txt | awk '{print $3, $5}' | sort | uniq > unique_errors.txt
