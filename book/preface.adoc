@@ -45,7 +45,7 @@ Note: Extra context, background, or alternative ways to think about a topic.
 
 [IMPORTANT]
 ====
-Important: Things you’ll want to pay attention to—especially if a command behaves differently depending on the shell or system.
+Important: Things you’ll want to pay attention to, especially if a command behaves differently depending on the shell or system.
 ====
 
 [CAUTION]
