@@ -62,7 +62,7 @@ All examples are written for Bash 5 and tested on modern Linux distributions. If
 
 == Contact
 
-If you have questions, suggestions, or spot something that could be improved in these notes, feel free to reach out.
+If you have questions, suggestions, or spot something that could be improved in these notes or any mistakes, feel free to reach out.
 
 You can message me on X: https://x.com/thatstraw[@thatstraw]  
 Or send an email to: mailto:book@sysxplore.com[book@sysxplore.com]
