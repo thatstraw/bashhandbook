@@ -90,7 +90,7 @@ Use logical operators to combine multiple conditions.
 |===
 | Condition | Description
 | `[[ condition1 ]] && [[ condition2 ]]` | True if both conditions are true (AND)
-| `[[ condition1 ]] || [[ condition2 ]]` | True if either condition is true (OR)
+| `[[ condition1 ]] \|\| [[ condition2 ]]` | True if either condition is true (OR)
 | `[ condition1 -a condition2 ]` | AND operator using single brackets (not recommended)
 | `[ condition1 -o condition2 ]` | OR operator using single brackets (not recommended)
 |===
