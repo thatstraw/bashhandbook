@@ -4,27 +4,29 @@ Bash supports a rich set of arithmetic and bitwise operators. You can use them i
 
 The table below summarizes all the available arithmetic operators in Bash:
 
-[cols="1,3", options="header"]
+[cols="2*", options="header"]
 |===
 | Arithmetic Operator | Description
-| `+`, `-` | Addition and subtraction
-| `*`, `/`, `%` | Multiplication, division, and remainder (modulo)
+
+| `+, -` | Addition and subtraction
+| `*, /, %` | Multiplication, division, and remainder (modulo)
 | `**` | Exponentiation
-| `<=`, `>=`, `<`, `>` | Less than or equal, greater than or equal, less than, and greater than
-| `==`, `!=` | Equality and inequality
-| `=`, `*=`, `/=`, `%=`, `+=`, `-=`, `<<=`, `>>=`, `&=`, `^=`, `|=` | Assignment-style operators
-| `id++`, `id--` | Post-increment and post-decrement
-| `++id`, `--id` | Pre-increment and pre-decrement
+| `\<=, >=, <, >` | Less than or equal, greater than or equal, less than, and greater than
+| `==, !=` | Equality (equal to) and inequality (not equal to)
+| `=, *=, /=, %=, +=, -=, <\<=, >>=, &=, ^=, \|=` | Assignment operators
+| `id++, id--` | Variable post-increment and post-decrement
+| `++id, --id` | Variable pre-increment and pre-decrement
 | `&&` | Logical AND
-| `||` | Logical OR
-| `-`, `+` | Unary minus, unary plus
-| `!`, `~` | Logical and bitwise negation
-| `<<`, `>>` | Bitwise left and right shifts
+| `\|\|` | Logical OR
+| `-, +` | Unary minus, plus
+| `!, ~` | Logical and bitwise negation
+| `<<, >>` | Left and right bitwise shifts
 | `&` | Bitwise AND
 | `^` | Bitwise XOR
-| `|` | Bitwise OR
-| `expr ? expr : expr` | Conditional ternary operator
+| `\|` | Bitwise OR
+| `expression ? expression : expression` | Conditional ternary operator
 |===
+
 
 [NOTE]
 ====
