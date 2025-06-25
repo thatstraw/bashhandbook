@@ -131,23 +131,24 @@ POSIX character classes make your regular expressions more portable and readable
 |===
 | Class | Equivalent | Description
 
-| `[[:alnum:]]` | `[0-9A-Za-z]` | Matches any alphanumeric character `0–9`, `A–Z`, or `a–z`
-| `[[:alpha:]]` | `[A-Za-z]` | Matches any alphabetical character, either upper or lower case
-| `[[:blank:]]` | `[\\t ]` | Matches a space or Tab character
-| `[[:digit:]]` | `[0-9]` | Matches a numerical digit from 0 through 9
-| `[[:graph:]]` | `[[:alnum:][:punct:]]` | Visible characters (not space)
-| `[[:lower:]]` | `[a-z]` | Matches any lowercase alphabetical character `a–z`
-| `[[:print:]]` | `[ -~] == [ [:graph:] ]` | Matches any printable character
-| `[[:punct:]]` | `[!"#\$%&'()*+,\-./:;\<=>?\@[\]^_\`{\|}~]` | Matches a punctuation character
-| `[[:space:]]` | `[\\t\\n\\v\\f\\r ]` | Matches any whitespace character: `space`, `Tab`, `NL` (newline), `FF` (formfeed), `VT` (vertical tab), `CR` (carriage return)
-| `[[:upper:]]` | `[A-Z]` | Matches any uppercase alphabetical character `A–Z`
-| `[[:word:]]` | `[0-9A-Za-z_]` | Matches all word characters
-| `[[:xdigit:]]` | `[0-9A-Fa-f]` | Matches all hexadecimal digits
-| `[[:<:]]` | `[\\b(?=\\w)]` | Matches start of word
-| `[[:>:]]` | `[\\b(?\<=\\w)]` | Matches end of word
-| `[[:ascii:]]` | `[\\x00-\\x7F]` | ASCII codes 0–127
-| `[[:cntrl:]]` | `[\\x00-\\x1F\\x7F]` | Control characters
+| `+[[:alnum:]]+` | `+[0-9A-Za-z]+` | Matches any alphanumeric character 0–9, A–Z, or a–z
+| `+[[:alpha:]]+` | `+[A-Za-z]+` | Matches any alphabetical character, either upper or lower case
+| `+[[:blank:]]+` | `+[\t ]+` | Matches a space or Tab character
+| `+[[:digit:]]+` | `+[0-9]+` | Matches a numerical digit from 0 through 9
+| `+[[:graph:]]+` | `+[[:alnum:][:punct:]]+` | Visible characters (not space)
+| `+[[:lower:]]+` | `+[a-z]+` | Matches any lowercase alphabetical character a–z
+| `+[[:print:]]+` | `+[ -~] == [ [:graph:] ]+` | Matches any printable character
+| `+[[:punct:]]+` | `+[!"#$%&'()*+,\-./:;\<=>?@[\]^_`{\|}~]+` | Matches a punctuation character
+| `+[[:space:]]+` | `+[\t\n\v\f\r ]+` | Matches any whitespace character: space, Tab, NL (newline), FF (formfeed), VT (vertical tab), CR (carriage return)
+| `+[[:upper:]]+` | `+[A-Z]+` | Matches any uppercase alphabetical character A–Z
+| `+[[:word:]]+` | `+[0-9A-Za-z_]+` | Matches all word characters
+| `+[[:xdigit:]]+` | `+[0-9A-Fa-f]+` | Matches all hexadecimal digits
+| `+[[:<:]]+` | `+[\b(?=\w)]+` | Matches start of word
+| `+[[:>:]]+` | `+[\b(?<=\w)]+` | Matches end of word
+| `+[[:ascii:]]+` | `+[\x00-\x7F]+` | ASCII codes 0–127
+| `+[[:cntrl:]]+` | `+[\x00-\x1F\x7F]+` | Control characters
 |===
+
 
 
 [IMPORTANT]
@@ -204,10 +205,11 @@ Some characters have special meanings in regular expressions. To match them lite
 [sidebar]
 .Common Meta-ch­ara­cters
 ----
-`^`                   `(`      `{`                `|`   
-`*`                   `<`      `$`                `)`
-`?`                   `>`      `.`                `+`
-`[`                   `\`                       
+^                   (       {                |   
+*                   <       $                )
+?                   >       .                +
+[                   \                      
+
 Escape these special characters with \
 ----
 
@@ -251,7 +253,7 @@ Regular expressions support grouping, alternation, and ranges to match more comp
 | `[0-7]`
 | Matches any digit from `0` to `7`
 
-| `\\x`
+| `\x`
 | Refers to a previously matched sub-pattern (by number)
 |===
 
@@ -299,7 +301,7 @@ Assertions are zero-width conditions—meaning they don't consume characters but
 | `(?!...)`
 | Negative lookahead: ensures a pattern is *not* ahead
 
-| `(?<=...)`
+| `(?\<=...)`
 | Positive lookbehind: checks for a pattern *behind* the current position
 
 | `(?<!...)`
@@ -356,13 +358,13 @@ Some characters must be escaped to be interpreted literally or to represent invi
 |===
 | Sequence | Description
 
-| `\\\\`
+| `\\`
 | Escape the next character
 
-| `\\Q`
+| `\Q`
 | Begin literal mode (treat all characters literally)
 
-| `\\E`
+| `\E`
 | End literal mode (resume special character interpretation)
 |===
 
@@ -379,25 +381,25 @@ These sequences represent common invisible characters or encodings.
 |===
 | Sequence | Description
 
-| `\\n`
+| `\n`
 | Newline
 
-| `\\r`
+| `\r`
 | Carriage return
 
-| `\\t`
+| `\t`
 | Horizontal tab
 
-| `\\v`
+| `\v`
 | Vertical tab
 
-| `\\f`
+| `\f`
 | Form feed
 
-| `\\xxx`
+| `\xxx`
 | Octal value for character
 
-| `\\xhh`
+| `\xhh`
 | Hexadecimal value for character
 |===
 
