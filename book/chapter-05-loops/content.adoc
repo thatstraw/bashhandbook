@@ -150,8 +150,9 @@ done < "/path/to/txt/file"
 
 This version runs in the current shell, so variables inside the loop are retained after it ends.
 
-[NOTE]
-====
+[sidebar]
+.NOTE
+----
 `read` reads one line at a time and splits input on whitespace. Use `IFS=` before `read` if you want to preserve leading/trailing spaces:
 
 [source,bash]
@@ -160,7 +161,7 @@ while IFS= read -r line; do
     echo "$line"
 done < file.txt
 ----
-====
+----
 
 == until Loop
 
