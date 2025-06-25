@@ -61,3 +61,16 @@ If you have questions, suggestions, or spot something that could be improved in 
 
 You can message me on X: https://x.com/thatstraw[@thatstraw]  
 Or send an email to: mailto:book@sysxplore.com[book@sysxplore.com]
+
+
+[sidebar]
+.More from the Author
+****
+If you found this book helpful, you might enjoy some of the other content and projects I'm working on:
+
+- My beginner-friendly Linux book: https://firststepswithlinux.com[firststepswithlinux.com]
+- Linux tutorials and deep dives: https://sysxplore.substack.com[sysxplore.substack.com]
+- Visual cheatsheets and graphics: https://thatstraw.gumroad.com/l/cheatsheets[Cheatsheets on Gumroad]
+- My blog: https://sysxplore.com[sysxplore.com]
+
+****
