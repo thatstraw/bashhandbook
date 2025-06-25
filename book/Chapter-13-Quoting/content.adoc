@@ -1,6 +1,6 @@
 = Quoting in Bash
 
-Quoting can be tricky for new Linux users. Bash uses special characters like `$`, `*`, and backticks (`` ` ``) to represent variables, wildcards, and command substitution. But what if you want to display these characters *literally*, without triggering their special meanings?
+Quoting can be tricky for new Linux users. Bash uses special characters like `$`, `*`, and backticks (` \` `) to represent variables, wildcards, and command substitution. But what if you want to display these characters *literally*, without triggering their special meanings?
 
 That’s where quoting comes in. Bash provides three main ways to control how special characters behave:
 
@@ -8,11 +8,9 @@ That’s where quoting comes in. Bash provides three main ways to control how sp
 - Single quotes: `'...'` treat everything literally.
 - Backslashes: `\` escape specific characters.
 
-Understanding when and how to use each quoting method is essential when writing reliable scripts or working at the command line.
-
 == Using Double Quotes
 
-Double quotes `"..."` allow Bash to interpret some—but not all—special characters. Variables and command substitutions are expanded, but wildcards (`*`) and filename globbing are not.
+Double quotes `"..."` allow Bash to interpret some but not all special characters. Variables and command substitutions are expanded, but wildcards (`*`) and filename globbing are not.
 
 === Expanding Variables
 
@@ -74,13 +72,13 @@ Compare that with unquoted output:
 echo *.txt
 ----
 
-.Output (example):
+.Output:
 [source]
 ----
 data.txt hello.txt new.txt
 ----
 
-=== Example: Breaking Long Lines
+=== Breaking Long Lines
 
 [source,bash]
 ----
@@ -99,7 +97,7 @@ This is a long string that spans multiple lines
 
 Single quotes `'...'` completely disable interpretation. Everything inside is printed *exactly* as it appears.
 
-=== Example: Printing a Variable Name
+=== Printing a Variable Name
 
 [source,bash]
 ----
@@ -114,7 +112,7 @@ $USER
 
 No expansion happens. Bash treats everything inside as literal text.
 
-=== Example: Disabling Wildcards and Substitution
+===  Disabling Wildcards and Substitution
 
 [source,bash]
 ----
@@ -185,8 +183,9 @@ Use them to:
 - Escape spaces in filenames
 - Prevent globbing (wildcard expansion)
 
-== Summary
-
+[sidebar]
+.NOTES
+----
 Quoting gives you fine-grained control over how Bash treats special characters. Here’s the difference:
 
 - Use **double quotes** when you want to allow variable and command expansion but suppress globbing.
@@ -194,3 +193,4 @@ Quoting gives you fine-grained control over how Bash treats special characters. 
 - Use **backslashes** to escape just one character at a time.
 
 Once you understand these rules, you’ll avoid surprises in your scripts—and prevent Bash from doing something unexpected with your special characters.
+----
