@@ -104,14 +104,14 @@ Options affect how scripts behave and are critical when building reliable, secur
 |===
 
 [sidebar]
-----
+****
 You can combine multiple options in one go:
 
 [source,bash]
 ----
 set -eux  # Exit on error, treat unset variables as errors, print commands
 ----
-----
+****
 
 == Additional Bash Options
 

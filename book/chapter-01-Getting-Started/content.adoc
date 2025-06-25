@@ -20,7 +20,7 @@ echo "${NAME}!"  # => TRAW! : Concatenation of variable value with !
 
 [sidebar]
 .Important
-----
+****
 When declaring variables, there must be no space between the variable name, the `=` sign, or the value:
 
 [source,bash]
@@ -32,7 +32,7 @@ To **assign** a value, you don't use the dollar sign (`$`). But when you **refer
 
 - Assignment: `NAME="TRAW"`
 - Reference: `echo $NAME`
-----
+****
 
 == Comments
 
