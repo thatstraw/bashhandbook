@@ -11,7 +11,7 @@ Every command that runs in Bash returns an exit status when it completes:
 
 Bash provides a special variable, `$?`, which always holds the exit status of the last executed command.
 
-.Example: Successful command
+.Successful command
 [source,bash]
 ----
 cat manifesto.txt
@@ -27,7 +27,7 @@ A Gentle reminder, I use Arch BTW!
 
 In this example, `cat` successfully displayed the file, so the exit status is `0`.
 
-.Example: Failed command
+.Failed command
 [source,bash]
 ----
 cat no-file
@@ -52,7 +52,7 @@ The exact exit codes and their meanings can vary depending on the command. You c
 
 When using pipes (`|`) to chain commands, the exit status stored in `$?` will be the exit code of the **last command** in the pipeline — not the first, even if the first one failed.
 
-.Example: Last command determines the exit status
+.Last command determines the exit status
 [source,bash]
 ----
 ls -lah | head -n 4
@@ -71,7 +71,7 @@ drwxr-xr-x 5 root root 4.0K Nov 22 13:54 ..
 
 The `head` command ran fine, so the exit status is `0`, even if `ls` had failed, it wouldn't show up here.
 
-.Example: First command fails, but exit status is still 0
+.First command fails, but exit status is still 0
 [source,bash]
 ----
 ls -lah no-directory | head -n 4
