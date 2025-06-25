@@ -7,7 +7,7 @@ Whether you're writing scripts, automating tasks,fixing things, or just explorin
 
 == How to Use This Book
 
-You don’t need to read everything in order. Skip around, copy examples, test commands, and come back whenever something doesn’t quite make sense. This is your toolkit—use it how you like. I’ve structured it to start with the basics and gradually move into more advanced topics.
+You don’t need to read everything in order. Skip around, copy examples, test commands, and come back whenever something doesn’t quite make sense. This is your toolkit, use it how you like. I’ve structured it to start with the basics and gradually move into more advanced topics.
 
 == Conventions Used in This Book
 
@@ -48,6 +48,11 @@ Note: Extra context, background, or alternative ways to think about a topic.
 Important: Things you’ll want to pay attention to—especially if a command behaves differently depending on the shell or system.
 ====
 
+[CAUTION]
+====
+Caution: Used when something could have unintended consequences like commands that modify system files, affect user data, or involve elevated privileges.
+====
+
 [WARNING]
 ====
 Warning: Mistakes to avoid, risky commands, or cases where something might break if used carelessly.
@@ -72,5 +77,4 @@ If you found this book helpful, you might enjoy some of the other content and pr
 - Linux tutorials and deep dives: https://sysxplore.substack.com[sysxplore.substack.com]
 - Visual cheatsheets and graphics: https://thatstraw.gumroad.com/l/cheatsheets[Cheatsheets on Gumroad]
 - My blog: https://sysxplore.com[sysxplore.com]
-
 ****

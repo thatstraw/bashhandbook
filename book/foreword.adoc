@@ -1,12 +1,15 @@
 [foreword]
 = Foreword
 
-Bash scripting is more than just a technical skill — it's a way to automate tasks, solve problems, and get more out of your computer. The command line is still one of the most powerful tools for developers, sysadmins, and anyone who likes to dig deeper into how things work.
+Bash scripting is more than just a technical skill. It's a way to automate tasks, solve problems, and get more out of your computer. The command line is still one of the most powerful tools for developers, sysadmins, and anyone who likes to dig deeper into how things work.
 
 This book is a collection of notes, examples, and tips pulled from real situations. It's meant to help you get comfortable with Bash, whether you're just starting out or looking to sharpen what you already know. Everything here is written to be practical and easy to follow.
 
-== A Note to the Reader
 
+[sidebar]
+.A Note to the Reader
+****
 Try things out. Break stuff. Change commands and see what happens. That’s how you’ll really learn Bash.
 
-These notes aren’t meant to be read once and forgotten—they’re here to come back to when you're stuck or curious. Use them as a guide while you experiment and build your own scripts.
+These notes aren’t meant to be read once and forgotten, they’re here to come back to when you're stuck or curious. Use them as a guide while you experiment and build your own scripts.
+****
