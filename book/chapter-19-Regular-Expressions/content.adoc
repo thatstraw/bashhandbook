@@ -138,7 +138,7 @@ POSIX character classes make your regular expressions more portable and readable
 | `[[:graph:]]` | `[[:alnum:][:punct:]]` | Visible characters (not space)
 | `[[:lower:]]` | `[a-z]` | Matches any lowercase alphabetical character `a–z`
 | `[[:print:]]` | `[ -~] == [ [:graph:] ]` | Matches any printable character
-| `[[:punct:]]` | `[!"#\$%&'()*+,\-./:;\<=>?\@[\]^_\`{|}~]` | Matches a punctuation character
+| `[[:punct:]]` | `[!"#\$%&'()*+,\-./:;\<=>?\@[\]^_\`{\|}~]` | Matches a punctuation character
 | `[[:space:]]` | `[\\t\\n\\v\\f\\r ]` | Matches any whitespace character: `space`, `Tab`, `NL` (newline), `FF` (formfeed), `VT` (vertical tab), `CR` (carriage return)
 | `[[:upper:]]` | `[A-Z]` | Matches any uppercase alphabetical character `A–Z`
 | `[[:word:]]` | `[0-9A-Za-z_]` | Matches all word characters
