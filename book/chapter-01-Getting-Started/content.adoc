@@ -17,23 +17,22 @@ echo '$NAME'     # => $NAME : This will print the exact string, not the value
 echo "${NAME}!"  # => TRAW! : Concatenation of variable value with !
 ----
 
-[WARNING]
-====
+
+[sidebar]
+.Important
+----
 When declaring variables, there must be no space between the variable name, the `=` sign, or the value:
 
 [source,bash]
 ----
 NAME = "TRAW"   # => Error (due to spaces)
 ----
-====
 
-[IMPORTANT]
-====
 To **assign** a value, you don't use the dollar sign (`$`). But when you **reference** a variable's value, you do:
 
 - Assignment: `NAME="TRAW"`
 - Reference: `echo $NAME`
-====
+----
 
 == Comments
 
