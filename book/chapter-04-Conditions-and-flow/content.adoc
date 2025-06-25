@@ -297,8 +297,8 @@ test "$name" = "Jay"
 ====
 There must be **spaces** around the brackets and between arguments. For example:
 
-✔ `[ "$name" = "Jay" ]`  
-✘ `["$name"="Jay"]` (syntax error)
+- `[ "$name" = "Jay" ]`  
+- `["$name"="Jay"]` (syntax error)
 ====
 
 === Why Use `test`?
