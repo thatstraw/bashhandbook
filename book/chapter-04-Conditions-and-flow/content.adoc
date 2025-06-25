@@ -322,10 +322,10 @@ Bash gives you several powerful syntaxes to enhance `if` conditions with subshel
 - **Arithmetic with double parentheses** `\(( ... ))`  
   Enables arithmetic comparisons and calculations. This makes numeric logic simpler and more readable.
 
-  [TIP]
-  ====
-  For more on math in Bash, see the section on performing arithmetic operations.
-  ====
+[NOTE]
+====
+For more on math in Bash, see the section on performing arithmetic operations.
+====
 
 - **Advanced tests with double brackets** `[[ ... ]]`  
   Offers extended syntax for string comparison, regex matching (`=~`), and better quoting behavior than `[ ... ]`.
