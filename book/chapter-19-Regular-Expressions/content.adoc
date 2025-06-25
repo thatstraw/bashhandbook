@@ -127,74 +127,28 @@ The behavior of `\x` and `\O` can vary across tools. Use `[0-7]` or `[0-9a-fA-F]
 
 POSIX character classes make your regular expressions more portable and readable by replacing common character ranges with symbolic names. These are especially useful inside `[` and `]` brackets when working with tools like `grep`, `sed`, and `awk`.
 
-[cols="1,1,1",options="header"]
+[cols="3*", options="header"]
 |===
 | Class | Equivalent | Description
 
-| `[[:alnum:]]`
-| `[0-9A-Za-z]`
-| Matches any alphanumeric character: digits and letters
-
-| `[[:alpha:]]`
-| `[A-Za-z]`
-| Matches any letter, regardless of case
-
-| `[[:blank:]]`
-| `[ \\t]`
-| Matches a space or a tab
-
-| `[[:digit:]]`
-| `[0-9]`
-| Matches any single digit
-
-| `[[:graph:]]`
-| `[[:alnum:][:punct:]]`
-| Matches any visible character (excluding space)
-
-| `[[:lower:]]`
-| `[a-z]`
-| Matches any lowercase letter
-
-| `[[:print:]]`
-| `[ -~]`
-| Matches any printable character, including space
-
-| `[[:punct:]]`
-| `[!"#$%&'()*+,-./:;<=>?@[\]^_'{\|}~]`
-| Matches any punctuation character
-
-| `[[:space:]]`
-| `[ \\t\\n\\v\\f\\r]`
-| Matches any whitespace character (space, tab, newline, etc.)
-
-| `[[:upper:]]`
-| `[A-Z]`
-| Matches any uppercase letter
-
-| `[[:word:]]`
-| `[0-9A-Za-z_]`
-| Matches word characters (like those used in variable names)
-
-| `[[:xdigit:]]`
-| `[0-9A-Fa-f]`
-| Matches hexadecimal digits
-
-| `[[:<:]]`
-| `\\b(?=\\w)`
-| Matches the start of a word (GNU extension)
-
-| `[[:>:]]`
-| `\\b(?<=\\w)`
-| Matches the end of a word (GNU extension)
-
-| `[[:ascii:]]`
-| `[\\x00-\\x7F]`
-| Matches ASCII characters (codes 0–127)
-
-| `[[:cntrl:]]`
-| `[\\x00-\\x1F\\x7F]`
-| Matches control characters (non-printable)
+| `[[:alnum:]]` | `[0-9A-Za-z]` | Matches any alphanumeric character `0–9`, `A–Z`, or `a–z`
+| `[[:alpha:]]` | `[A-Za-z]` | Matches any alphabetical character, either upper or lower case
+| `[[:blank:]]` | `[\\t ]` | Matches a space or Tab character
+| `[[:digit:]]` | `[0-9]` | Matches a numerical digit from 0 through 9
+| `[[:graph:]]` | `[[:alnum:][:punct:]]` | Visible characters (not space)
+| `[[:lower:]]` | `[a-z]` | Matches any lowercase alphabetical character `a–z`
+| `[[:print:]]` | `[ -~] == [ [:graph:] ]` | Matches any printable character
+| `[[:punct:]]` | `[!"#\$%&'()*+,\-./:;\<=>?\@[\]^_\`{|}~]` | Matches a punctuation character
+| `[[:space:]]` | `[\\t\\n\\v\\f\\r ]` | Matches any whitespace character: `space`, `Tab`, `NL` (newline), `FF` (formfeed), `VT` (vertical tab), `CR` (carriage return)
+| `[[:upper:]]` | `[A-Z]` | Matches any uppercase alphabetical character `A–Z`
+| `[[:word:]]` | `[0-9A-Za-z_]` | Matches all word characters
+| `[[:xdigit:]]` | `[0-9A-Fa-f]` | Matches all hexadecimal digits
+| `[[:<:]]` | `[\\b(?=\\w)]` | Matches start of word
+| `[[:>:]]` | `[\\b(?\<=\\w)]` | Matches end of word
+| `[[:ascii:]]` | `[\\x00-\\x7F]` | ASCII codes 0–127
+| `[[:cntrl:]]` | `[\\x00-\\x1F\\x7F]` | Control characters
 |===
+
 
 [IMPORTANT]
 ====
@@ -247,29 +201,15 @@ Quantifiers let you specify how many times a part of your regex should match. Th
 
 Some characters have special meanings in regular expressions. To match them literally, you must prefix them with a backslash (`\`).
 
-[cols="4*",options="header"]
-|===
-.4+| Special Characters
-| `^` 
-| `$` 
-| `*` 
-| `+`
-
-| `?` 
-| `.` 
-| `\\|` 
-| `\\`
-
-| `[` 
-| `]` 
-| `{` 
-| `}`
-
-| `(` 
-| `)` 
-| `<` 
-| `>`
-|===
+[sidebar]
+.Common Meta-ch­ara­cters
+----
+`^`                   `(`      `{`                `|`   
+`*`                   `<`      `$`                `)`
+`?`                   `>`      `.`                `+`
+`[`                   `\`                       
+Escape these special characters with \
+----
 
 [CAUTION]
 ====
