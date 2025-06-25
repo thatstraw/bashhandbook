@@ -183,6 +183,8 @@ person[eye_color]="blue"
 
 You can initialize all keys and values at once using a compound assignment.
 
+[%unbreakable]
+--
 [source,bash]
 ----
 : '
@@ -195,7 +197,7 @@ person=(["name"]="Jay" [age]=22 ["eye_color"]="blue")
 
 # person => Jay 22 blue
 ----
-
+--
 === Working with Associative Arrays
 
 Once an associative array is created, you can interact with it using standard Bash expansions.

@@ -45,6 +45,8 @@ Comments help explain your code and are ignored during execution. Use the `#` sy
 
 For multi-line comments, Bash doesn't have a dedicated syntax like other languages, but you can use a `: '` block trick.
 
+[%unbreakable]
+--
 [source,bash]
 ----
 : '
@@ -55,6 +57,7 @@ in bash
 If it looks very neat
 '
 ----
+--
 
 [TIP]
 ====
@@ -194,11 +197,13 @@ Brace expansion is a convenient way to generate strings or sequences in Bash.
 | `{1..5}`           | Expands to: 1 2 3 4 5
 |===
 
+[%unbreakable]
+--
 [TIP]
 ====
 Brace expansion is useful for generating multiple similar strings without writing them out manually. Great for looping over files or ranges.
 ====
-
+--
 [INFO]
 ====
 For more examples, see: https://wiki.bash-hackers.org/syntax/expansion/brace[Bash Hackers Wiki]

@@ -238,12 +238,15 @@ fi
 - `&&` (AND): both conditions must be true
 - `||` (OR): at least one condition must be true
 
+[%unbreakable]
+--
 [source,bash]
 ----
 if [[ "$user" == "admin" || "$user" == "support" ]]; then
     echo "Privileged user"
 fi
 ----
+--
 
 === Grouping with Double Brackets
 
@@ -278,6 +281,8 @@ If the expression is true, `test` returns exit status `0`; otherwise, it returns
 
 === Examples
 
+[%ubreakable]
+--
 [source,bash]
 ----
 # Check if a file exists
@@ -292,6 +297,7 @@ test 5 -gt 3
 test "$name" = "Jay"
 [ "$name" = "Jay" ]
 ----
+--
 
 [IMPORTANT]
 ====
@@ -341,6 +347,8 @@ The `case` statement lets you compare one value against multiple patterns. It's 
 
 Here’s the basic structure:
 
+[%unbreakable]
+--
 [source,bash]
 ----
 case WORD in
@@ -355,6 +363,7 @@ case WORD in
         ;;
 esac
 ----
+--
 
 The patterns can include wildcards like `*`, and the fallback case is written as `*).
 

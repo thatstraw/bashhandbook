@@ -6,15 +6,20 @@ Loops allow you to run a set of commands repeatedly. Bash provides several loop 
 
 The `for` loop is often used to iterate over a list of items. In its most common form, it loops through the results of a glob or a word list.
 
+[%unbreakable]
+--
 [source,bash]
 ----
 for i in /etc/*; do
     echo $i
 done
 ----
+--
 
 You can also write the loop using a line-break style, which works identically:
 
+[%unbreakable]
+--
 [source,bash]
 ----
 for i in /etc/*
@@ -22,6 +27,7 @@ do
     echo $i
 done
 ----
+--
 
 This loop prints every file or directory inside `/etc`.
 
@@ -29,15 +35,20 @@ This loop prints every file or directory inside `/etc`.
 
 Bash also supports a C-style `for` loop, which gives you full control over initialization, condition, and increment.
 
+[%unbreakable]
+--
 [source,bash]
 ----
 for ((i = 0 ; i < 100 ; i++)); do
     echo $i
 done
 ----
+--
 
 This is equivalent to:
 
+[%unbreakable]
+--
 [source,bash]
 ----
 for ((i = 0 ; i < 100 ; i++))
@@ -45,6 +56,7 @@ do
     echo $i
 done
 ----
+--
 
 Use this form when working with numeric ranges or indexed iteration.
 
@@ -52,36 +64,46 @@ Use this form when working with numeric ranges or indexed iteration.
 
 Brace expansion provides a simple way to loop through a sequence of numbers.
 
+[%unbreakable]
+--
 [source,bash]
 ----
 for i in {1..10}; do
     echo "Number: $i"
 done
 ----
+--
 
 You can also specify a step value:
 
+[%unbreakable]
+--
 [source,bash]
 ----
 for i in {5..50..5}; do
     echo "Number: $i"
 done
 ----
+--
 
 This prints: 5, 10, 15, ..., 50
 
+[%unbreakable]
+--
 [NOTE]
 ====
 Brace expansion happens **before** the loop runs. If you're using variables to define the range (like `{1..$limit}`), it won't work — you'll need to use a `C-style` loop or `seq`.
 ====
-
+--
 
 == Bash while Loop
 
-The `while` loop repeats commands **as long as a condition remains true**. It’s useful when you're not sure how many times a loop should run and want to stop based on logic instead of a fixed list.
+The `while` loop repeats commands **as long as a condition remains true**. It's useful when you're not sure how many times a loop should run and want to stop based on logic instead of a fixed list.
 
 === Counting Up
 
+[%unbreakable]
+--
 [source,bash]
 ----
 i=1
@@ -90,11 +112,14 @@ while [[ $i -lt 4 ]]; do
     ((i++)) 
 done
 ----
+--
 
 This prints numbers 1 through 3. The loop runs while `$i` is less than 4.
 
 === Counting Down
 
+[%unbreakable]
+--
 [source,bash]
 ----
 i=3
@@ -103,6 +128,7 @@ while [[ $i -gt 0 ]]; do
     ((i--))
 done
 ----
+--
 
 This prints numbers 3, 2, 1 — and stops when `$i` is no longer greater than 0.
 
@@ -110,6 +136,8 @@ This prints numbers 3, 2, 1 — and stops when `$i` is no longer greater than 0.
 
 If you want a loop that runs forever (until manually broken), you can use `while true` or `while :`.
 
+[%unbreakable]
+--
 [source,bash]
 ----
 # Long form
@@ -122,6 +150,7 @@ while :; do
     # TODO
 done
 ----
+--
 
 Use `break` to exit the loop when a condition is met inside.
 
@@ -129,6 +158,8 @@ Use `break` to exit the loop when a condition is met inside.
 
 The `while` loop is commonly used to read a file line by line.
 
+[%unbreakable]
+--
 [source,bash]
 ----
 # Using a pipe
@@ -136,20 +167,26 @@ cat file.txt | while read line; do
     echo $line
 done
 ----
+--
 
 This works but has a subshell caveat — any variables modified inside the loop won't persist outside.
 
 To avoid that, use input redirection instead:
 
+[%unbreakable]
+--
 [source,bash]
 ----
 while read line; do
     echo $line
 done < "/path/to/txt/file"
 ----
+--
 
 This version runs in the current shell, so variables inside the loop are retained after it ends.
 
+[%unbreakable]
+--
 [sidebar]
 .NOTE
 ****
@@ -162,11 +199,14 @@ while IFS= read -r line; do
 done < file.txt
 ----
 ****
+--
 
 == until Loop
 
 The `until` loop is like the opposite of `while`: it runs **until** the condition becomes true.
 
+[%unbreakable]
+--
 [source,bash]
 ----
 count=0
@@ -175,11 +215,14 @@ until [ $count -gt 10 ]; do
     ((count++))
 done
 ----
+--
 
 This loop runs as long as `$count` is **not** greater than 10 — that is, from 0 to 10.
 
 You can also count down:
 
+[%unbreakable]
+--
 [source,bash]
 ----
 count=10
@@ -188,13 +231,17 @@ until [ $count -eq 0 ]; do
     ((count--))
 done
 ----
+--
 
 The loop stops once `$count` reaches 0.
 
+[%unbreakable]
+--
 [NOTE]
 ====
 Unlike `while`, `until` loops continue **while the condition is false**, and exit when it becomes true.
 ====
+--
 
 == continue Statement
 
@@ -422,7 +469,7 @@ done
 
 [INFO]
 ====
-The `select` loop is rarely used in scripts that run automatically, but it’s a great tool for building simple, interactive menus.
+The `select` loop is rarely used in scripts that run automatically, but it's a great tool for building simple, interactive menus.
 ====
 
 
