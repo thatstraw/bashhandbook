@@ -64,7 +64,7 @@ You can access specific elements, the entire array, or a slice of elements using
 | `"${ARRAY[*]:N:M}"` | Slice expansion with `*`, quoted as a single string.
 |===
 
-[INFO]
+[NOTE]
 ====
 For clarification: When using `@` or `*` to expand arrays, their behavior mirrors how `$@` and `$*` behave with https://wiki.bash-hackers.org/scripting/posparams#mass_usage[positional parameters].
 
