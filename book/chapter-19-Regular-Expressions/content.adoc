@@ -204,14 +204,14 @@ Some characters have special meanings in regular expressions. To match them lite
 
 [sidebar]
 .Common Meta-ch­ara­cters
-----
+****
 ^                   (       {                |   
 *                   <       $                )
 ?                   >       .                +
 [                   \                      
 
 Escape these special characters with \
-----
+****
 
 [CAUTION]
 ====

@@ -213,14 +213,14 @@ These are some of the most useful options you can enable with `shopt -s` or disa
 |===
 
 [sidebar]
-----
+****
 To enable multiple options at once, you can list them:
 
 [source,bash]
 ----
 shopt -s dotglob nullglob globstar
 ----
-----
+****
 
 [INFO]
 ====

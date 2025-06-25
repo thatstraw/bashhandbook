@@ -185,7 +185,7 @@ Use them to:
 
 [sidebar]
 .NOTES
-----
+****
 Quoting gives you fine-grained control over how Bash treats special characters. Here’s the difference:
 
 - Use **double quotes** when you want to allow variable and command expansion but suppress globbing.
@@ -193,4 +193,4 @@ Quoting gives you fine-grained control over how Bash treats special characters. 
 - Use **backslashes** to escape just one character at a time.
 
 Once you understand these rules, you’ll avoid surprises in your scripts—and prevent Bash from doing something unexpected with your special characters.
-----
+****

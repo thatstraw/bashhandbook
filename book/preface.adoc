@@ -1,11 +1,63 @@
 [preface]
 = Preface
 
-Welcome to "Pancakes in Space: Bash Notes" — a practical, hands-on resource designed for anyone looking to master Bash scripting and command-line essentials. This book is structured as a set of concise, example-driven notes, making it ideal for both beginners and experienced users who want a quick reference or a deeper understanding of Bash.
+This is a hands-on guide for anyone learning Bash scripting or working with the command line. It's written as a collection of short, example-focused notes. It’s made for beginners who want to get started fast, and for experienced users who need a solid reference close at hand.
 
-Whether you're automating tasks, troubleshooting, or just exploring the power of the shell, these notes are crafted to be clear, direct, and immediately useful. My motivation for creating this collection was to provide a single, accessible place for the most important Bash concepts, tips, and real-world examples that I wish I had when I started.
+Whether you're writing scripts, automating tasks,fixing things, or just exploring what the shell can do, these notes are meant to be clear, direct, and ready to use. I started this collection to bring together the key Bash concepts, real-world examples, and small tricks I wish I had all in one place when I began.
 
 == How to Use This Book
 
-Feel free to jump between chapters, use the examples in your own scripts, and revisit sections as needed. Happy scripting!
+You don’t need to read everything in order. Skip around, copy examples, test commands, and come back whenever something doesn’t quite make sense. This is your toolkit—use it how you like. I’ve structured it to start with the basics and gradually move into more advanced topics.
 
+== Conventions Used in This Book
+
+Commands, filenames, variables, and syntax are shown in monospace like this: `echo $HOME`.
+
+Commands meant to be run in the terminal appear like this:
+
+[source,bash]
+----
+$ echo "Hello, world"
+----
+
+The `$` represents the shell prompt—you don’t need to type it.
+
+Longer scripts or multi-line examples are also shown in code blocks:
+
+[source,bash]
+----
+#!/bin/bash
+name="Alice"
+echo "Welcome, $name!"
+----
+
+Throughout the book, you’ll also see side notes:
+
+[TIP]
+====
+Tip: Helpful shortcuts or small tricks to save time or avoid extra steps.
+====
+
+[NOTE]
+====
+Note: Extra context, background, or alternative ways to think about a topic.
+====
+
+[IMPORTANT]
+====
+Important: Things you’ll want to pay attention to—especially if a command behaves differently depending on the shell or system.
+====
+
+[WARNING]
+====
+Warning: Mistakes to avoid, risky commands, or cases where something might break if used carelessly.
+====
+
+All examples are written for Bash 5 and tested on modern Linux distributions. If you’re using a different shell or operating system (like macOS or WSL), results may vary slightly.
+
+== Contact
+
+If you have questions, suggestions, or spot something that could be improved in these notes, feel free to reach out.
+
+You can message me on X: https://x.com/thatstraw[@thatstraw]  
+Or send an email to: mailto:book@sysxplore.com[book@sysxplore.com]

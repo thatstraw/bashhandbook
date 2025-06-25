@@ -7,7 +7,7 @@
 :revdate: 01.05.2025
 :doctype: book
 :leveloffset: +1
-:front-cover-image: image:cover.png[width=1700,height=2800]
+:front-cover-image: image:cover.png[]
 :sectnums:
 :sectlinks:
 :toc: left

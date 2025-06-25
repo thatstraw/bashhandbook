@@ -275,7 +275,7 @@ Relational operators are used for comparing integers and strings to evaluate con
 | -lt      | Less than | `[ $a -lt $b ]`
 | -le      | Less than or equal to | `[ $a -le $b ]`
 | <        | Less than (strings) | `[ "$a" < "$b" ]`
-| <=       | Less than or equal (strings) | `[ "$a" <= "$b" ]`
+| \<=       | Less than or equal (strings) | `[ "$a" <= "$b" ]`
 | >        | Greater than (strings) | `[ "$a" > "$b" ]`
 | >=       | Greater than or equal (strings) | `[ "$a" >= "$b" ]`
 | ==       | Equal to | `[ $a == $b ]`

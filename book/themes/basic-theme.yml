@@ -119,6 +119,7 @@ admonition:
   font-kerning: none
   font-style: normal
   padding: 0.3cm
+  breakable: false
   label:
     warning:
       font-size: 0
@@ -232,7 +233,7 @@ list:
   text-align: left
 
 sidebar:
-  align: left  
+  align: left
 
 toc:
   font_size: 10
@@ -278,9 +279,10 @@ conum:
 footer:
   recto:
     right:
-      content: '{chapter-title} | *{page-number}*'
+      content: 'sysxplore.com | {chapter-title} | *{page-number}*'
   verso:
-    left:
-      content: '*{page-number}* | {chapter-title}'
+    right:
+      content: 'sysxplore.com | *{page-number}* | {chapter-title}'
+
 
 
