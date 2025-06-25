@@ -103,15 +103,15 @@ Options affect how scripts behave and are critical when building reliable, secur
 | Unset all positional parameters. If arguments are given (`-- arg1 arg2`), positional parameters are set to them.
 |===
 
-[TIP]
-====
+[sidebar]
+----
 You can combine multiple options in one go:
 
 [source,bash]
 ----
 set -eux  # Exit on error, treat unset variables as errors, print commands
 ----
-====
+----
 
 == Additional Bash Options
 
@@ -212,15 +212,15 @@ These are some of the most useful options you can enable with `shopt -s` or disa
 
 |===
 
-[TIP]
-====
+[sidebar]
+----
 To enable multiple options at once, you can list them:
 
 [source,bash]
 ----
 shopt -s dotglob nullglob globstar
 ----
-====
+----
 
 [INFO]
 ====
