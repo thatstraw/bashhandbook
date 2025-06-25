@@ -280,7 +280,7 @@ done
 
 This is useful when working with space-separated input.
 
-====Breaking or Continuing Multiple Levels
+==== Breaking or Continuing Multiple Levels
 
 If you're in nested loops, you can use `break N` or `continue N` to jump out of multiple levels at once.
 
