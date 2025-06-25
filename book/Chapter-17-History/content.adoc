@@ -117,7 +117,7 @@ After selecting a word or range, you can apply **modifiers** to manipulate it:
 - `:e` → Extract file extension
 - `:p` → Print the command after expansion, don’t execute
 
-.Example: Strip filename and print
+Strip filename and print
 [source,bash]
 ----
 $ cat demo.sh
