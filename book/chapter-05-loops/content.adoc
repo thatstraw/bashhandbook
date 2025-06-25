@@ -381,12 +381,12 @@ done
 
 When run, this prints:
 
+[source,bash]
+----
 apple
-
 banana
-
-cherry #?
-
+cherry
+----
 
 Typing `2` selects `banana`, assigns it to `fruit`, and prints:
 
