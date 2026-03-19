@@ -146,7 +146,23 @@ The book content and assets are organized for AsciiDoc-based publishing:
 
 This repository uses an AsciiDoc-based workflow for building the handbook into publishable formats such as PDF.
 
-If you are working on the content, you can edit the source files in the `book/` directory and use the project's existing build scripts and workflow to generate the final book output.
+To generate the PDF locally:
+
+```sh
+./create-book-pdf.sh
+```
+
+The generated file is written as `bash-scripting-handbook.pdf`.
+
+If you are working on the content, edit the source files in `book/` and then rebuild to review the final output.
+
+## Open Source
+
+This project is open source under the MIT License.
+
+- License: [LICENSE](./LICENSE)
+- Contributing guide: [CONTRIBUTING.md](./CONTRIBUTING.md)
+- Code of conduct: [CODE_OF_CONDUCT.md](./CODE_OF_CONDUCT.md)
 
 ## Purpose
 
