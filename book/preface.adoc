@@ -65,7 +65,7 @@ All examples are written for Bash 5 and tested on modern Linux distributions. If
 If you have questions, suggestions, or spot something that could be improved in these notes or any mistakes, feel free to reach out.
 
 You can message me on X: https://x.com/thatstraw[@thatstraw]  
-Or send an email to: mailto:book@sysxplore.com[book@sysxplore.com]
+Or send an email to: mailto:hi@sysxplore.com[hi@sysxplore.com]
 
 
 [sidebar]
@@ -73,8 +73,6 @@ Or send an email to: mailto:book@sysxplore.com[book@sysxplore.com]
 ****
 If you found this book helpful, you might enjoy some of the other content and projects I'm working on:
 
-- My beginner-friendly Linux book: https://firststepswithlinux.com[firststepswithlinux.com]
-- Linux tutorials and deep dives: https://sysxplore.substack.com[sysxplore.substack.com]
-- Visual cheatsheets and graphics: https://thatstraw.gumroad.com/l/cheatsheets[Cheatsheets on Gumroad]
-- My blog: https://sysxplore.com[sysxplore.com]
+- First Steps with Linux: https://firststepswithlinux.com[firststepswithlinux.com]
+- Linux tutorials and deep dives: https://blog.sysxplore.com[blog.sysxplore.com]
 ****
