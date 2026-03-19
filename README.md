@@ -1,99 +1,153 @@
-[![book-generate-pdf](https://github.com/lirantal/asciidoc-book-starter/actions/workflows/book-generate-pdf.yaml/badge.svg?branch=main)](https://github.com/lirantal/asciidoc-book-starter/actions/workflows/book-generate-pdf.yaml)
+<table>
+  <tr>
+    <td width="34%" valign="top" align="center">
+      <img src="./assets/cover.png" alt="Bash Scripting Handbook cover" width="320" />
+    </td>
+    <td width="66%" valign="middle">
+      <h1>
+        Bash Scripting<br />
+        <span style="color:#61f2b0;">Handbook</span>
+      </h1>
+      <p>
+        A clear, example-based reference for learning and writing Bash scripts.
+        Focus on the commands and concepts you'll actually use when working in the shell.
+      </p>
+      <br />
+      <table>
+        <tr>
+          <td>
+            <code>~/bash-handbook</code>
+            <pre><code>$ echo "If you must do it more than once, automate it!"</code></pre>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>
 
-# AsciiDoc Book Starter
+This project is a practical Bash handbook focused on the commands, patterns, and shell concepts you'll actually use. It starts with the basics, then builds toward more advanced scripting techniques with concise explanations and real examples you can try in your terminal.
 
-This is a template repository for authoring books using AsciiDoc.
+## What You'll Learn
 
-I've briefly explored other formats such as Markdown, Latex, and Pandoc but I've found AsciiDoc to be the most flexible and powerful format for authoring books. It is easily readable and writable to a human, has a lax syntax and good set of defaults for authoring books, and it can be easily converted to other formats such as PDF, ePUB and HTML.
+The book walks through core Bash fundamentals and then expands into more advanced scripting topics. Along the way, you'll learn how to:
 
-AsciiDoc is also a very powerful format for authoring technical documentation, and is widely used in the media and content publishing industry, such as in O'Reilly's books.
+- Work with variables, arrays, loops, and conditional logic
+- Write reusable Bash functions and understand shell scope
+- Use quoting, redirection, pipelines, and exit codes correctly
+- Chain commands and capture output with substitution techniques
+- Apply parameter expansion for string manipulation
+- Debug scripts and understand shell behavior more confidently
+- Use regular expressions, globbing, and process substitution in real workflows
 
-## Basics of AsciiDoc and Writing
+The emphasis throughout the handbook is clarity, practicality, and example-driven learning.
 
-An important observation to get started when authoring a book with AsciiDoc is the notion of the language vs the implementations. AsciiDoc is a language that's intended to be a lightweight semantic markup. To generate output from AsciiDoc we use text processor tools such as [Asciidoctor](https://asciidoctor.org/), which is free and open source.
+## Chapters
 
-Get up to date with the latest AsciiDoc syntax and features by reading the [AsciiDoc User Guide](https://asciidoctor.org/docs/asciidoc-writers-guide/).
+### Chapter 1: Getting Started
 
-## Features
+Learn Bash fundamentals and environment setup.
 
-Book authoring experience provides the following features with this repository:
-- Table of Contents (TOC) generation.
-- Template prelude chapters: A `Preface`, and a `Forward`.
-- Template chapters with commonly used formatting in books.
-- Chapters are structured into their own chapter directories so they can be co-located with their images and other assets, such as code snippets.
-- A PDF output that uses a theme, and can be customized.
-- A PDF output that uses custom fonts (Google's open fonts family). Specifically, an [Open Sans](https://fonts.google.com/specimen/Open+Sans) font for the body text, and a [Source Code Pro](https://fonts.google.com/specimen/Source+Code+Pro?query=source+code+pro) font for source code snippets and inline code.
+### Chapter 2: Built-in Commands
 
-Book generation:
-- No need for a local installation of Asciidoctor, as the book generation is done via Docker.
-- No need for special CI setup, as the book generation is done via Docker.
-- Docker-based scripts to generate the book in various formats, including PDF, HTML and ePUB.
+Master essential Bash built-in commands.
 
-## Getting Started with AsciiDoc Book Starter
+### Chapter 3: Arrays
 
-We start off by getting familiar with the repository structure and the various files that are part of it.
+Work with indexed and associative arrays.
 
-The top-level directory structure looks like this:
+### Chapter 4: Conditions and Flow
 
-```
-.
-├── README.md
-├── book
-│   ├── preface.adoc
-│   ├── foreword.adoc
-│   ├── index.adoc
-│   ├── chapter-01-The-Beginning
-│   │   ├── content.adoc
-│   ├── chapter-02-The-Rocket
-│   │   ├── content.adoc
-│   ├── chapter-03-How-Planet-Systems-Work
-│   │   ├── content.adoc
-│   │   └── images
-│   ├── fonts/
-│   ├── images/
-│   └── themes/
-├── create-book-epub.sh
-├── create-book-pdf.sh
-└── interactive-asciidoctor-shell.sh
-```
+Implement conditional statements and logic.
 
-The `book` directory is where the book content is stored:
-- The `index.adoc` file is the main entry point for the book, and it's where we include all the other chapters and prelude chapters.
-- The `images/` directory is where you can store images that are used in the book.
-- Chapters are written in their own directory, and each chapter directory contains a `content.adoc` file which is the main entry point for the chapter, and an optional `images` directory for images that are used in the chapter. This helps to colocate assets for the same chapter together rather than having them all mixed together in one big directory.
-- In the same directory, you'll find the theme-able PDF `themes` directory, and the `fonts` directory which contains the fonts used in the book.
+### Chapter 5: Loops
 
-## Generate the AsciiDoc book
+Create efficient `for`, `while`, and `until` loops.
 
-### Building the AsciiDoc book locally
+### Chapter 6: Functions
 
-To build the book locally, you'll need to have Docker installed on your machine. Once you have Docker installed, you can run the following command to build the book in PDF format:
+Build reusable functions and understand scope.
 
-```bash
-./create-book-pdf.sh basic
-```
+### Chapter 7: Arithmetic Operations
 
-Or, generate a dark-mode themed PDF book:
+Perform mathematical calculations in Bash.
 
-```bash
-./create-book-pdf.sh dark
-```
+### Chapter 8: Parameter Expansion
 
-Then you can find the generated PDF file in the `book` directory. If you're on a macOS, you can open it with your default PDF reader as follows:
+Master string manipulation and shell transformations.
 
-```bash
-open book/index.pdf
-```
+### Chapter 9: Command-line Chaining
 
-### Helpful AsciiDoc Scripts
+Chain commands with operators and pipes.
 
-The asciidoc book starter repository also provides a few helpful scripts to help you generate other book output formats and debug the asciidoctor tool:
-- `create-book-ePUB.sh` - Generates the book in ePUB format.
-- `interactive-asciidoctor-shell.sh` - Starts an interactive shell inside the Docker image with the `asciidoctor` tool installed.
+### Chapter 10: Command Substitution
 
-## AsciiDoc Book Assets
+Capture and use command output effectively.
 
-Static assets for the book are stored in the `book` directory, and include the following:
-- The `images` directory is where you can store images that are used in the book. Inside this directory is a `cover.jpeg` image used for the book's cover, and a `space.jpeg` used as an example for an image in the book.
-- The `fonts` directory is where you can store fonts that are used in the book. It currently houses the [Open Sans](https://fonts.google.com/specimen/Open+Sans) and [Source Code Pro](https://fonts.google.com/specimen/Source+Code+Pro?query=source+code+pro) fonts, both with their original `.zip` file archived as downloaded from the Google Fonts website as well as extracted each to its own directory.
+### Chapter 11: Process Substitution
 
+Redirect the output or input of commands to appear as files using `<()` and `>()`.
+
+### Chapter 12: Bitwise Operators
+
+Work with bitwise operations and binary values.
+
+### Chapter 13: Quoting
+
+Master quoting rules and special characters.
+
+### Chapter 14: Globbing
+
+Use pattern matching and wildcards effectively.
+
+### Chapter 15: Pipelines and Redirections
+
+Handle input and output streams with confidence.
+
+### Chapter 16: Exit Status Codes
+
+Understand exit codes and error handling.
+
+### Chapter 17: History
+
+Work with command history and expansion.
+
+### Chapter 18: Options
+
+Configure Bash options and shell behavior.
+
+### Chapter 19: Regular Expressions
+
+Master pattern matching with regex syntax.
+
+### Chapter A: Appendix
+
+Quick reference, cheat sheets, and additional resources.
+
+## How to Use This Book
+
+You do not need to read the handbook from start to finish in order. You can jump between chapters, copy examples, test commands as you go, and come back to topics whenever something needs a second pass.
+
+It is designed to work both as:
+
+- A beginner-friendly path into Bash scripting
+- A quick reference for day-to-day shell work
+- A practical companion while writing or debugging scripts
+
+## Project Structure
+
+The book content and assets are organized for AsciiDoc-based publishing:
+
+- `book/chapters`: chapter source files
+- `book/images`: images used throughout the book
+- `book/themes`: theme and styling assets
+- `build/`: generated output such as PDF artifacts
+
+## Build
+
+This repository uses an AsciiDoc-based workflow for building the handbook into publishable formats such as PDF.
+
+If you are working on the content, you can edit the source files in the `book/` directory and use the project's existing build scripts and workflow to generate the final book output.
+
+## Purpose
+
+The goal of this handbook is simple: make Bash easier to learn, easier to reference, and easier to use well. Whether you are automating repetitive tasks, writing shell scripts for development workflows, or just trying to understand what is happening in the terminal, this handbook is meant to be a practical guide you can keep coming back to.
