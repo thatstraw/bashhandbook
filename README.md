@@ -27,30 +27,6 @@
 
 This project is a practical Bash handbook focused on the commands, patterns, and shell concepts you'll actually use. It starts with the basics, then builds toward more advanced scripting techniques with concise explanations and real examples you can try in your terminal.
 
-## New to Linux?
-
-If you are still getting comfortable with the terminal, filesystems, permissions, and everyday Linux workflows, start with _First Steps with Linux_ before diving deep into Bash scripting.
-
-<table>
-  <tr>
-    <td width="28%" valign="top" align="center">
-      <a href="https://firststepswithlinux.com">
-        <img src="./assets/book-cover-v2-01.png" alt="First Steps with Linux cover" width="220" />
-      </a>
-    </td>
-    <td width="72%" valign="middle">
-      <h3>Start with First Steps with Linux</h3>
-      <p>
-        A beginner-friendly introduction to using Linux with confidence.
-        It is the best starting point if you want a gentler path into the shell before moving into Bash scripting and automation.
-      </p>
-      <p>
-        <a href="https://firststepswithlinux.com">Visit firststepswithlinux.com</a>
-      </p>
-    </td>
-  </tr>
-</table>
-
 ## What You'll Learn
 
 The book walks through core Bash fundamentals and then expands into more advanced scripting topics. Along the way, you'll learn how to:
@@ -192,4 +168,26 @@ This project is open source under the MIT License.
 
 The goal of this handbook is simple: make Bash easier to learn, easier to reference, and easier to use well. Whether you are automating repetitive tasks, writing shell scripts for development workflows, or just trying to understand what is happening in the terminal, this handbook is meant to be a practical guide you can keep coming back to.
 
-If you are looking for the gentler Linux starting point that comes before this handbook, visit [First Steps with Linux](https://firststepswithlinux.com).
+## New to Linux?
+
+If you are still getting comfortable with the terminal, filesystems, permissions, and everyday Linux workflows, start with _First Steps with Linux_ before diving deep into Bash scripting.
+
+<table>
+  <tr>
+    <td width="28%" valign="top" align="center">
+      <a href="https://firststepswithlinux.com">
+        <img src="./assets/book-cover-v2-01.png" alt="First Steps with Linux cover" width="220" />
+      </a>
+    </td>
+    <td width="72%" valign="middle">
+      <h3>Start with First Steps with Linux</h3>
+      <p>
+        A beginner-friendly introduction to using Linux with confidence.
+        It is the best starting point if you want a gentler path into the shell before moving into Bash scripting and automation.
+      </p>
+      <p>
+        <a href="https://firststepswithlinux.com">Visit firststepswithlinux.com</a>
+      </p>
+    </td>
+  </tr>
+</table>
