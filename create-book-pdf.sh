@@ -19,6 +19,7 @@ docker build -t $DOCKER_IMAGE -f Dockerfile.asciidoctor-pdf .
 
 docker run --rm -w /documents -v $(pwd):/documents/ $DOCKER_IMAGE asciidoctor-pdf \
     -D $BOOK_BUILD_DIR \
+    -o bash-scripting-handbook.pdf \
     -r ./book/extensions/pdf-converter-admonition-theme-per-type.rb \
     --trace \
     $BOOK_SOURCE_DIR/index.adoc

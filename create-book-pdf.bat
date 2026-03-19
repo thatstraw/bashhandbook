@@ -6,6 +6,7 @@ docker build -t %DOCKER_IMAGE% -f Dockerfile.asciidoctor-pdf .
 
 docker run --rm -w /documents -v %cd%:/documents/ %DOCKER_IMAGE% asciidoctor-pdf ^
     -D build ^
+    -o bash-scripting-handbook.pdf ^
     -r ./book/extensions/pdf-converter-admonition-theme-per-type.rb ^
     --trace ^
     book/index.adoc
