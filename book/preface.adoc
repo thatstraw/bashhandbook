@@ -73,6 +73,6 @@ Or send an email to: mailto:hi@sysxplore.com[hi@sysxplore.com]
 ****
 If you found this book helpful, you might enjoy some of the other content and projects I'm working on:
 
-- First Steps with Linux: https://firststepswithlinux.com[firststepswithlinux.com]
+- New to Linux? Start here: https://firststepswithlinux.com[firststepswithlinux.com]
 - Linux tutorials and deep dives: https://blog.sysxplore.com[blog.sysxplore.com]
 ****
