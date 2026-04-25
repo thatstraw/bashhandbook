@@ -46,7 +46,10 @@ If you are still getting comfortable with the terminal, filesystems, permissions
       </p>
       <p>
         <a href="https://firststepswithlinux.com">Visit firststepswithlinux.com</a>
-
+        </p>
+    </td>
+  </tr>
+</table>
 
 ## What You'll Learn
 
@@ -188,8 +191,3 @@ This project is open source under the MIT License.
 ## Purpose
 
 The goal of this handbook is simple: make Bash easier to learn, easier to reference, and easier to use well. Whether you are automating repetitive tasks, writing shell scripts for development workflows, or just trying to understand what is happening in the terminal, this handbook is meant to be a practical guide you can keep coming back to.
-
-      </p>
-    </td>
-  </tr>
-</table>
